@@ -6,11 +6,12 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 17:04:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/02 16:26:36 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/02 18:46:17 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ListIter.hpp"
+#include "IterTypes.hpp"
 #include <iostream>
 
 struct	Test
@@ -31,13 +32,14 @@ int		main(void)
 	elem2.next = &elem3;
 	elem3.prev = &elem2;
 	elem2.prev = &elem1;
-	std::cout << ite->val << std::endl;
+	std::cout << *ite << std::endl;
 */
+
 	ListNode<int>	elem1(1);
 	ListNode<int>	elem2(0);
 	ListNode<int>	elem3(3);
-	ListIter<int>	ite(&elem1);
-	ListIter<int>	ite2(ite);
+	ListIter<bidirectional_iterator_tag, int>	ite(&elem1);
+	ListIter<bidirectional_iterator_tag, int>	ite2(ite);
 
 	elem1.next = &elem2;
 	elem2.next = &elem3;
