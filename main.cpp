@@ -6,12 +6,13 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 17:04:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/02 18:46:17 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/03 19:14:27 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ListIter.hpp"
 #include "IterTypes.hpp"
+#include "ListIter.hpp"
+#include "RevIter.hpp"
 #include <iostream>
 
 struct	Test
@@ -22,29 +23,29 @@ struct	Test
 
 int		main(void)
 {
+	ListNode<Test>	dumbeg;
+	ListNode<Test>	elem1(1);
+	ListNode<Test>	elem2(2);
+	ListNode<Test>	elem3(3);
+	ListNode<Test>	dumend;
+	ListIter<bidirectional_iterator_tag, Test>	beg(&elem1);
+	ListIter<bidirectional_iterator_tag, Test>	end(&dumend);
+
+	dumbeg.next = &elem1;
+	elem1.next = &elem2;
+	elem2.next = &elem3;
+	elem3.next = &dumend;
+	dumend.prev = &elem3;
+	elem3.prev = &elem2;
+	elem2.prev = &elem1;
+	elem1.prev = &dumbeg;
+	for (; beg != end; ++beg)
+		std::cout << beg->val << std::endl;
+	RevIter<ListIter<bidirectional_iterator_tag, Test> >	rbeg(end);
+	RevIter<ListIter<bidirectional_iterator_tag, Test> >	rend(&elem1);
+	for (; rbeg != rend; ++rbeg)
+		std::cout << rbeg->val << std::endl;
 /*
-	ListNode<Test>	elem1(1);	
-	ListNode<Test>	elem2(2);	
-	ListNode<Test>	elem3(3);	
-	ListIter<Test>	ite(&elem1);
-
-	elem1.next = &elem2;
-	elem2.next = &elem3;
-	elem3.prev = &elem2;
-	elem2.prev = &elem1;
-	std::cout << *ite << std::endl;
-*/
-
-	ListNode<int>	elem1(1);
-	ListNode<int>	elem2(0);
-	ListNode<int>	elem3(3);
-	ListIter<bidirectional_iterator_tag, int>	ite(&elem1);
-	ListIter<bidirectional_iterator_tag, int>	ite2(ite);
-
-	elem1.next = &elem2;
-	elem2.next = &elem3;
-	elem3.prev = &elem2;
-	elem2.prev = &elem1;
 	std::cout << (ite == ite2 ? "equal" : "different") << std::endl;
 	ite2++;
 	std::cout << (ite == ite2 ? "equal" : "different") << std::endl;
@@ -61,4 +62,6 @@ int		main(void)
 	std::cout << *--ite << std::endl;
 	ListNode<int>	elem4(elem3);
 	std::cout << elem4.val << std::endl;
+*/
+	return (0);
 }

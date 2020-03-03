@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/02 20:39:41 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/03 19:13:11 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ struct	ListIter
 		ListIter		&operator=(const ListIter &l);
 		bool			operator==(const ListIter &l) const;
 		bool			operator!=(const ListIter &l) const;
-		T				&operator*(void);
-		T				*operator->(void) const;
+		reference		operator*(void);
+		pointer			operator->(void);
 		ListIter		&operator++(void);
-		ListIter		operator++(int dummy);
+		ListIter		operator++(int valptr);
 		ListIter		&operator--(void);
-		ListIter		operator--(int dummy);
+		ListIter		operator--(int valptr);
 
 	private:
 		ListNode<value_type>		*_node;
@@ -61,8 +61,8 @@ ListIter<Category, T, Distance, Pointer, Reference>::~ListIter(void)
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-ListIter<Category, T, Distance, Pointer, Reference>
-	&ListIter<Category, T, Distance, Pointer, Reference>::operator=(const ListIter &l)
+ListIter<Category, T, Distance, Pointer, Reference>&
+ListIter<Category, T, Distance, Pointer, Reference>::operator=(const ListIter &l)
 {
 	if (&l == this)
 		return (*this);
@@ -71,34 +71,36 @@ ListIter<Category, T, Distance, Pointer, Reference>
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-bool		ListIter<Category, T, Distance, Pointer, Reference>::
-	operator==(const ListIter &l) const
+bool
+ListIter<Category, T, Distance, Pointer, Reference>::operator==(const ListIter &l) const
 {
 	return (_node == l._node);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-bool		ListIter<Category, T, Distance, Pointer, Reference>::
-	operator!=(const ListIter &l) const
+bool
+ListIter<Category, T, Distance, Pointer, Reference>::operator!=(const ListIter &l) const
 {
 	return (!(*this == l));
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-T			&ListIter<Category, T, Distance, Pointer, Reference>::operator*(void)
+Reference
+ListIter<Category, T, Distance, Pointer, Reference>::operator*(void)
 {
-	return (_node->val);
+	return (*(_node->valptr));
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-T			*ListIter<Category, T, Distance, Pointer, Reference>::operator->(void)
+Pointer
+ListIter<Category, T, Distance, Pointer, Reference>::operator->(void)
 {
-	return (&_node->val);
+	return (_node->valptr);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-ListIter<Category, T, Distance, Pointer, Reference>
-	&ListIter<Category, T, Distance, Pointer, Reference>::operator++(void)
+ListIter<Category, T, Distance, Pointer, Reference>&
+ListIter<Category, T, Distance, Pointer, Reference>::operator++(void)
 {
 	_node = _node->next;
 	return (*this);
@@ -106,7 +108,7 @@ ListIter<Category, T, Distance, Pointer, Reference>
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 ListIter<Category, T, Distance, Pointer, Reference>
-	ListIter<Category, T, Distance, Pointer, Reference>::operator++(int dummy)
+ListIter<Category, T, Distance, Pointer, Reference>::operator++(int valptr)
 {
 	ListIter<Category, T>	tmp;
 
@@ -116,8 +118,8 @@ ListIter<Category, T, Distance, Pointer, Reference>
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-ListIter<Category, T, Distance, Pointer, Reference>
-	&ListIter<Category, T, Distance, Pointer, Reference>::operator--(void)
+ListIter<Category, T, Distance, Pointer, Reference>&
+ListIter<Category, T, Distance, Pointer, Reference>::operator--(void)
 {
 	_node = _node->prev;
 	return (*this);
@@ -125,7 +127,7 @@ ListIter<Category, T, Distance, Pointer, Reference>
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 ListIter<Category, T, Distance, Pointer, Reference>
-	ListIter<Category, T, Distance, Pointer, Reference>::operator--(int dummy)
+ListIter<Category, T, Distance, Pointer, Reference>::operator--(int valptr)
 {
 	ListIter<Category, T>	tmp;
 
