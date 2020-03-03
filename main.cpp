@@ -6,13 +6,11 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 17:04:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/03 19:14:27 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/03 19:36:36 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "IterTypes.hpp"
-#include "ListIter.hpp"
-#include "RevIter.hpp"
+#include "List.hpp"
 #include <iostream>
 
 struct	Test
@@ -23,6 +21,7 @@ struct	Test
 
 int		main(void)
 {
+/*
 	ListNode<Test>	dumbeg;
 	ListNode<Test>	elem1(1);
 	ListNode<Test>	elem2(2);
@@ -45,7 +44,7 @@ int		main(void)
 	RevIter<ListIter<bidirectional_iterator_tag, Test> >	rend(&elem1);
 	for (; rbeg != rend; ++rbeg)
 		std::cout << rbeg->val << std::endl;
-/*
+
 	std::cout << (ite == ite2 ? "equal" : "different") << std::endl;
 	ite2++;
 	std::cout << (ite == ite2 ? "equal" : "different") << std::endl;
