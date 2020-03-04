@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/02 20:10:41 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/03 16:03:31 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/04 15:31:51 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ template <class Iter>
 class	RevIter
 {
 	public:
+		//Member types :
 		typedef	Iter								iterator_type;
 		typedef typename Iter::iterator_category	iterator_category;
 		typedef typename Iter::value_type			value_type;
@@ -24,10 +25,13 @@ class	RevIter
 		typedef typename Iter::pointer				pointer;
 		typedef typename Iter::reference			reference;
 
+		//Constructors and destructor :
 		RevIter(void);
 		RevIter(iterator_type it);
 		RevIter(const RevIter<iterator_type> &r);
 		~RevIter(void);
+
+		//Access operators :
 		iterator_type	base() const;
 		reference		operator*(void) const;
 		RevIter			operator+(difference_type n) const;
@@ -40,6 +44,8 @@ class	RevIter
 		RevIter			&operator-=(difference_type n);
 		pointer			operator->(void) const;
 		reference		operator[](difference_type n) const;
+
+		//Relational operators :
 		bool			operator==(const RevIter &l) const;
 		bool			operator!=(const RevIter &l) const;
 		bool			operator<(const RevIter &l) const;
@@ -48,6 +54,7 @@ class	RevIter
 		bool			operator>=(const RevIter &l) const;
 
 	private:
+		//Attibutes :
 		iterator_type	_base;
 };
 
@@ -112,6 +119,7 @@ RevIter<Iter>::operator++(int dummy)
 {
 	Iter	tmp(_base);
 
+	(void)dummy;
 	--_base;
 	return (RevIter<Iter>(tmp));
 }
@@ -150,6 +158,7 @@ RevIter<Iter>::operator--(int dummy)
 {
 	Iter	tmp(_base);
 
+	(void)dummy;
 	++_base;
 	return (RevIter<Iter>(tmp));
 }

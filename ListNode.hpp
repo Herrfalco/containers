@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:07:57 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/03 17:27:54 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/04 15:26:39 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@
 template	<typename T>
 struct		ListNode
 {
+		//Constructors, destructor and assignation :
 		ListNode(void);
 		ListNode(const T &v, bool dummy = false, ListNode<T> *p = 0, ListNode<T> *n = 0);
 		ListNode(const ListNode<T> &l);
 		~ListNode(void);
 		ListNode<T>		&operator=(const ListNode<T> &l);
 
+		//Attributes :
 		ListNode	*prev;
 		ListNode	*next;
 		T			val;

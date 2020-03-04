@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 17:04:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/03 19:36:36 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/04 20:20:21 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,26 @@ struct	Test
 
 int		main(void)
 {
+	int						init[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };		
+	List<int>				lst(init, init + 10);
+	int						init2[] = { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };		
+	List<int>				lst2(init2, init2 + 10);
+	List<int>::iterator		ite = lst.begin();
+
+	ite++;
+	++ite;
+	ite++;
+	for (List<int>::reverse_iterator it = lst.rbegin(); it != lst.rend(); it++)
+		std::cout << *it << " ";
+	std::cout << std::endl;
+	lst.insert(ite, size_t(3), 0);
+	for (List<int>::reverse_iterator it = lst.rbegin(); it != lst.rend(); it++)
+		std::cout << *it << " ";
+	std::cout << std::endl;
+	lst.insert(ite, init2, init2 + 10);
+	for (List<int>::reverse_iterator it = lst.rbegin(); it != lst.rend(); it++)
+		std::cout << *it << " ";
+	std::cout << std::endl;
 /*
 	ListNode<Test>	dumbeg;
 	ListNode<Test>	elem1(1);
