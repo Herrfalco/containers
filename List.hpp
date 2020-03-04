@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/04 20:24:17 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/04 20:25:35 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ List<T, Alloc>::List(const List &l) : _alloc(l._alloc), _front(), _back(), _size
 template <class T, class Alloc>
 List<T, Alloc>::~List(void)
 {
-//	clear();
+	clear();
 }
 
 template <class T, class Alloc>
