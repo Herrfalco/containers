@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/04 20:25:35 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/05 18:59:01 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,34 @@ class	List
 		void					resize(size_type n, value_type val = value_type());
 		void					clear();
 
+		//Operations :
+		void					splice(iterator position, list& x);
+		void					splice(iterator position, list& x, iterator i);
+		void					splice(iterator pos, list& x, iterator fst, iterator lst);
+		void					remove(const value_type& val);
+		template <class Predicate>
+		void					remove_if(Predicate pred);
+		void					unique();
+		template <class BinaryPredicate>
+		void					unique(BinaryPredicate binary_pred);
+		void					merge(list& x);
+		template <class Compare>
+		void					merge(list& x, Compare comp);
+		void					sort();
+		template <class Compare>
+		void					sort(Compare comp);
+		void					reverse();
+
 	private:
 		//Attibutes :
 		allocator_type	_alloc;
 		ListNode<T>		_front;
 		ListNode<T>		_back;
 		size_type		_size;
+
+		//Predicates :
+		bool					_equal(const_reference val, const_reference val2) const;
+		bool					_less(const_reference val, const_reference val2) const;
 };
 
 template <class T, class Alloc>
@@ -100,7 +122,9 @@ List<T, Alloc>::List(const allocator_type &alloc) :
 	_alloc(alloc), _front(), _back(), _size(0)
 {
 	_back.prev = &_front;
+	_back.next = &_back;
 	_front.next = &_back;
+	_front.prev = &_front;
 }
 
 template <class T, class Alloc>
@@ -108,7 +132,9 @@ List<T, Alloc>::List(size_type n, const value_type &val, const allocator_type &a
 	_alloc(alloc), _front(), _back(), _size(0)
 {
 	_back.prev = &_front;
+	_back.next = &_back;
 	_front.next = &_back;
+	_front.prev = &_front;
 	assign(n, val);
 }
 
@@ -118,7 +144,9 @@ List<T, Alloc>::List(InputIterator first, InputIterator last, const allocator_ty
 	: _alloc(alloc), _front(), _back(), _size(0)
 {
 	_back.prev = &_front;
+	_back.next = &_back;
 	_front.next = &_back;
+	_front.prev = &_front;
 	assign(first, last);
 }
 
@@ -126,7 +154,9 @@ template <class T, class Alloc>
 List<T, Alloc>::List(const List &l) : _alloc(l._alloc), _front(), _back(), _size(0)
 {
 	_back.prev = &_front;
+	_back.next = &_back;
 	_front.next = &_back;
+	_front.prev = &_front;
 	assign(l.begin(), l.end());
 }
 
@@ -393,6 +423,189 @@ List<T, Alloc>::clear()
 {
 	while (_size)
 		pop_back();
+}
+
+template <class T, class Alloc>
+void
+List<T, Alloc>::splice(iterator position, List<T, Alloc> &x)
+{
+	splice(position, x, x.begin(), x.end());
+}
+
+template <class T, class Alloc>
+void
+List<T, Alloc>::splice(iterator position, List<T, Alloc> &x, iterator i)
+{
+	i.node->prev->next = i.node->next;
+	i.node->next->prev = i.node->prev;
+	--(x._size);
+	position.node->prev->next = i.node;
+	i.node->prev = position.node->prev;
+	position.node->prev = i.node;
+	i.node->next = position.node;
+	++_size;
+}
+
+template <class T, class Alloc>
+void
+List<T, Alloc>::splice(iterator position, List<T, Alloc> &x, iterator fst, iterator lst)
+{
+	List<T, Alloc>::iterator	tmp(fst);
+
+	for (; fst != lst; fst = tmp)
+	{
+		tmp++;
+		splice(position, x, fst);
+	}
+}
+
+template <class T, class Alloc>
+void
+List<T, Alloc>::remove(const value_type& val)
+{
+	List<T, Alloc>::iterator tmp;
+
+	for (List<T, Alloc>::iterator it(begin()); (tmp = it++) != end(); )
+		if (*tmp == val)
+			erase(tmp);
+}
+
+template <class T, class Alloc>
+template <class Predicate>
+void
+List<T, Alloc>::remove_if(Predicate pred)
+{
+	List<T, Alloc>::iterator	tmp;
+
+	for (List<T, Alloc>::iterator it(begin()); (tmp = it++) != end(); )
+		if (pred(*tmp))
+			erase(tmp);
+}
+
+template <class T, class Alloc>
+void
+List<T, Alloc>::unique(void)
+{
+	unique(_equal);
+}
+
+template <class T, class Alloc>
+template <class BinaryPredicate>
+void
+List<T, Alloc>::unique(BinaryPredicate binary_pred)
+{
+	List<T, Alloc>::iterator	tmp;
+	T							last;
+
+	if (it != end())
+		last = *(it++);
+	else
+		return ;
+	for (List<T, Alloc>::iterator it(begin()); (tmp = it++) != end(); )
+	{
+		if (binary_pred(*tmp, last))
+			erase(tmp);
+		else
+			last = *tmp;
+	}
+}
+
+template <class T, class Alloc>
+void
+List<T, Alloc>::merge(list& x)
+{
+	merge(x, _less);
+}
+
+template <class T, class Alloc>
+template <class Compare>
+void
+List<T, Alloc>::merge(list& x, Compare comp)
+{
+	List<T, Alloc>::iterator	tmp;
+	List<T, Alloc>::iterator	to(begin());
+
+	if (&x == this)
+		return ;
+	for (List<T, Alloc>::iterator from(x.begin()); (tmp = from++) != x.end(); )
+	{
+		while (to != end() && !comp(*tmp, *to))
+			++to;
+		tmp.node->prev->next = tmp.node->next;
+		tmp.node->next->prev = tmp.node->prev;
+		tmp.node->prev = to.node->prev;
+		tmp.node->next = to.node;
+		to.node->prev->next = tmp.node;
+		to.node->prev = tmp.node;
+		--(x._size);
+		_size++;
+	}
+}
+
+template <class T, class Alloc>
+void
+List<T, Alloc>::sort(void)
+{
+}
+
+template <class T, class Alloc>
+template <class Compare>
+void
+List<T, Alloc>::sort(Compare comp)
+{
+	List<T, Alloc>::iterator it1;
+	List<T, Alloc>::iterator it2;
+	bool	sorted = false;
+
+	while (!sorted)
+	{
+		sorted = true;
+		for (it2 = begin(), it1 = it2++; it2 != end(); ++it1, ++it2)
+		{
+			if (comp(it2, it1))
+			{
+				sorted = false;
+				it1.node->prev->next = it2.node;
+				it2.node->next->prev = it1.node;
+				it1.node->next = it2.node->next;
+				it2.node->prev = it1.node->prev;
+				it1.node->prev = it2.node;
+				it2.node->next = it1.node;
+				_swap_it(it1, it2);
+			}
+		}
+	}
+}
+
+template <class T, class Alloc>
+void
+List<T, Alloc>::reverse(void)
+{
+}
+
+template <class T, class Alloc>
+bool
+List<T, Alloc>::_equal(const value_type &val, const value_type &val2) const
+{
+	return (val == val2);
+}
+
+template <class T, class Alloc>
+bool
+List<T, Alloc>::_less(const value_type &val, const value_type &val2) const
+{
+	return (val < val2);
+}
+
+template <class T, class Alloc>
+void
+List<T, Alloc>::_swap_it(List<T, Alloc>::iterator &it1, List<T, Alloc>::iterator &it2)
+{
+	List<T, Alloc>::iterator	tmp;
+
+	tmp = it1;
+	it1 = it2;
+	it2 = tmp;
 }
 
 #endif //LIST_HPP
