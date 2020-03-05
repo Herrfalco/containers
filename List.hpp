@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/05 18:59:01 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/05 22:00:25 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,18 +88,18 @@ class	List
 		void					clear();
 
 		//Operations :
-		void					splice(iterator position, list& x);
-		void					splice(iterator position, list& x, iterator i);
-		void					splice(iterator pos, list& x, iterator fst, iterator lst);
+		void					splice(iterator position, List& x);
+		void					splice(iterator position, List& x, iterator i);
+		void					splice(iterator pos, List& x, iterator fst, iterator lst);
 		void					remove(const value_type& val);
 		template <class Predicate>
 		void					remove_if(Predicate pred);
 		void					unique();
 		template <class BinaryPredicate>
 		void					unique(BinaryPredicate binary_pred);
-		void					merge(list& x);
+		void					merge(List& x);
 		template <class Compare>
-		void					merge(list& x, Compare comp);
+		void					merge(List& x, Compare comp);
 		void					sort();
 		template <class Compare>
 		void					sort(Compare comp);
@@ -112,9 +112,10 @@ class	List
 		ListNode<T>		_back;
 		size_type		_size;
 
-		//Predicates :
-		bool					_equal(const_reference val, const_reference val2) const;
-		bool					_less(const_reference val, const_reference val2) const;
+		//Utils :
+		static bool				_equal(const_reference val, const_reference val2);
+		static bool				_less(const_reference val, const_reference val2);
+		void					_swap_it(iterator &it1, iterator &it2);
 };
 
 template <class T, class Alloc>
@@ -494,6 +495,7 @@ template <class BinaryPredicate>
 void
 List<T, Alloc>::unique(BinaryPredicate binary_pred)
 {
+	List<T, Alloc>::iterator	it(begin());
 	List<T, Alloc>::iterator	tmp;
 	T							last;
 
@@ -501,7 +503,7 @@ List<T, Alloc>::unique(BinaryPredicate binary_pred)
 		last = *(it++);
 	else
 		return ;
-	for (List<T, Alloc>::iterator it(begin()); (tmp = it++) != end(); )
+	while ((tmp = it++) != end())
 	{
 		if (binary_pred(*tmp, last))
 			erase(tmp);
@@ -512,7 +514,7 @@ List<T, Alloc>::unique(BinaryPredicate binary_pred)
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::merge(list& x)
+List<T, Alloc>::merge(List &x)
 {
 	merge(x, _less);
 }
@@ -520,7 +522,7 @@ List<T, Alloc>::merge(list& x)
 template <class T, class Alloc>
 template <class Compare>
 void
-List<T, Alloc>::merge(list& x, Compare comp)
+List<T, Alloc>::merge(List &x, Compare comp)
 {
 	List<T, Alloc>::iterator	tmp;
 	List<T, Alloc>::iterator	to(begin());
@@ -546,6 +548,7 @@ template <class T, class Alloc>
 void
 List<T, Alloc>::sort(void)
 {
+	sort(_less);
 }
 
 template <class T, class Alloc>
@@ -562,7 +565,7 @@ List<T, Alloc>::sort(Compare comp)
 		sorted = true;
 		for (it2 = begin(), it1 = it2++; it2 != end(); ++it1, ++it2)
 		{
-			if (comp(it2, it1))
+			if (comp(*it2, *it1))
 			{
 				sorted = false;
 				it1.node->prev->next = it2.node;
@@ -581,20 +584,39 @@ template <class T, class Alloc>
 void
 List<T, Alloc>::reverse(void)
 {
+	List<T, Alloc>::iterator	it_beg(begin());
+	List<T, Alloc>::iterator	it_end(end());
+	ListNode<T>					*tmp_next;
+	ListNode<T>					*tmp_prev;
+	
+	for (; it_beg != it_end-- && it_beg != it_end; ++it_beg)
+	{
+		it_beg.node->prev->next = it_end.node;
+		it_beg.node->next->prev = it_end.node;
+		it_end.node->next->prev = it_beg.node;
+		it_end.node->prev->next = it_beg.node;
+		tmp_next = it_beg.node->next;
+		tmp_prev = it_beg.node->prev;
+		it_beg.node->next = it_end.node->next;
+		it_beg.node->prev = it_end.node->prev;
+		it_end.node->next = tmp_next;
+		it_end.node->prev = tmp_prev;
+		_swap_it(it_beg, it_end);
+	}
 }
 
 template <class T, class Alloc>
 bool
-List<T, Alloc>::_equal(const value_type &val, const value_type &val2) const
+List<T, Alloc>::_equal(const_reference val1, const_reference val2)
 {
-	return (val == val2);
+	return (val1 == val2);
 }
 
 template <class T, class Alloc>
 bool
-List<T, Alloc>::_less(const value_type &val, const value_type &val2) const
+List<T, Alloc>::_less(const_reference val1, const_reference val2)
 {
-	return (val < val2);
+	return (val1 < val2);
 }
 
 template <class T, class Alloc>
