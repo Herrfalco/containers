@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/02 20:10:41 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/04 15:31:51 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/06 18:15:46 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,18 @@ class	RevIter
 		pointer			operator->(void) const;
 		reference		operator[](difference_type n) const;
 
-		//Relational operators :
-		bool			operator==(const RevIter &l) const;
-		bool			operator!=(const RevIter &l) const;
-		bool			operator<(const RevIter &l) const;
-		bool			operator<=(const RevIter &l) const;
-		bool			operator>(const RevIter &l) const;
-		bool			operator>=(const RevIter &l) const;
+	 	//Relational operators :
+		friend bool	operator==(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs);
+		friend bool	operator!=(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs);
+		friend bool	operator<(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs);
+		friend bool	operator<=(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs);
+		friend bool	operator>(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs);
+		friend bool	operator>=(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs);
+
+		//Non-member overloads :
+		friend RevIter<Iter>	operator+(difference_type n, const RevIter<Iter> &rev_it);
+		friend difference_type
+			operator-(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs);
 
 	private:
 		//Attibutes :
@@ -98,11 +103,7 @@ template <class Iter>
 RevIter<Iter>
 RevIter<Iter>::operator+(typename Iter::difference_type n) const
 {
-	Iter	tmp(_base);
-
-	while (n--)
-		--tmp;
-	return (RevIter<Iter>(tmp));
+	return (RevIter<Iter>(_base - n));
 }
 
 template <class Iter>
@@ -128,8 +129,7 @@ template <class Iter>
 RevIter<Iter>
 &RevIter<Iter>::operator+=(typename Iter::difference_type n)
 {
-	while (n--)
-		--_base;
+	_base -= n;
 	return (*this);
 }
 
@@ -137,11 +137,7 @@ template <class Iter>
 RevIter<Iter>
 RevIter<Iter>::operator-(typename Iter::difference_type n) const
 {
-	Iter	tmp(_base);
-
-	while (n--)
-		++tmp;
-	return (RevIter<Iter>(tmp));
+	return (RevIter<Iter>(_base + n));
 }
 
 template <class Iter>
@@ -167,8 +163,7 @@ template <class Iter>
 RevIter<Iter>
 &RevIter<Iter>::operator-=(typename Iter::difference_type n)
 {
-	while (n--)
-		++_base;
+	_base += n;
 	return (*this);
 }
 
@@ -185,53 +180,63 @@ template <class Iter>
 typename Iter::reference
 RevIter<Iter>::operator[](typename Iter::difference_type n) const
 {
-	RevIter<Iter>	tmp(*this);
-
-	while (n--)
-		tmp++;
-	return (*tmp);
+	return (*((*this) + n));
 }
 
 template <class Iter>
 bool
-RevIter<Iter>::operator==(const RevIter &l) const
+operator==(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs)
 {
-	return (this->_base == l._base);
+	return (lhs._base == rhs._base);
 }
 
 template <class Iter>
 bool
-RevIter<Iter>::operator!=(const RevIter &l) const
+operator!=(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs)
 {
-	return (!(*this == l));
+	return (lhs._base != rhs._base);
 }
 
 template <class Iter>
 bool
-RevIter<Iter>::operator<(const RevIter &l) const
+operator<(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs)
 {
-	return (*this > l);
+	return (lhs._base > rhs._base);
 }
 
 template <class Iter>
 bool
-RevIter<Iter>::operator<=(const RevIter &l) const
+operator<=(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs)
 {
-	return (*this >= l);
+	return (lhs._base >= rhs._base);
 }
 
 template <class Iter>
 bool
-RevIter<Iter>::operator>(const RevIter &l) const
+operator>(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs)
 {
-	return (*this < l);
+	return (lhs._base < rhs._base);
 }
 
 template <class Iter>
 bool
-RevIter<Iter>::operator>=(const RevIter &l) const
+operator>=(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs)
 {
-	return (*this <= l);
+	return (lhs._base <= rhs._base);
+}
+
+template <class Iter>
+RevIter<Iter>
+operator+(typename RevIter<Iter>::difference_type n, const RevIter<Iter> &rev_it)
+{
+	return (rev_it + n);
+}
+
+template <class Iter>
+typename RevIter<Iter>::difference_type
+operator-(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs)
+{
+	return (rhs._base - lhs._base);
 }
 
 #endif //REVITER_HPP

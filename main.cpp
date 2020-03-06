@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 17:04:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/05 21:44:57 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/06 18:58:40 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,22 @@ struct	Test
 
 int		main(void)
 {
-	int						init[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };		
-	List<int>				lst(init, init + 10);
+	int						init1[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };		
+	List<int>				lst1(init1, init1 + 10);
 	int						init2[] = { 10, 11, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
 	List<int>				lst2(init2, init2 + 11);
-	List<int>::iterator		ite = lst.begin();
+	List<int>::iterator		ite = lst1.end();
 
+	std::cout << (lst1 == lst2 ? "equal" : "different") << std::endl;
+/*
 	ite++;
 	++ite;
 	ite++;
-	for (List<int>::reverse_iterator it = lst.rbegin(); it != lst.rend(); it++)
+	for (List<int>::reverse_iterator it(ite); it != lst1.rend(); it++)
 		std::cout << *it << " ";
 	std::cout << std::endl;
+*/
+/*
 	lst.insert(ite, size_t(3), 0);
 	for (List<int>::reverse_iterator it = lst.rbegin(); it != lst.rend(); it++)
 		std::cout << *it << " ";
@@ -47,6 +51,7 @@ int		main(void)
 	for (List<int>::reverse_iterator it = lst.rbegin(); it != lst.rend(); it++)
 		std::cout << *it << " ";
 	std::cout << std::endl;
+*/
 /*
 	ListNode<Test>	dumbeg;
 	ListNode<Test>	elem1(1);

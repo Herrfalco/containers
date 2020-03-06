@@ -6,16 +6,16 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/05 22:00:25 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/06 20:19:39 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIST_HPP
 # define LIST_HPP
 
+#include "IterTypes.hpp"
 #include "ListIter.hpp"
 #include "RevIter.hpp"
-#include "IterTypes.hpp"
 #include <memory>
 #include <cmath>
 
@@ -35,7 +35,7 @@ class	List
 		typedef RevIter<iterator>								reverse_iterator;
 		typedef RevIter<const_iterator>							const_reverse_iterator;
 		typedef ptrdiff_t										difference_type;
-		typedef unsigned int									size_type;
+		typedef size_t											size_type;
 
 		//Constructors, destructor and assignation :
 		List(const allocator_type &alloc = allocator_type());
@@ -72,38 +72,47 @@ class	List
 		//Modifiers :
 		template <class InputIterator>
 		void					assign(InputIterator first, InputIterator last);
-		void					assign(size_type n, const value_type& val);
-		void					push_front(const value_type& val);
+		void					assign(size_type n, const value_type &val);
+		void					push_front(const value_type &val);
 		void					pop_front();
-		void					push_back(const value_type& val);
+		void					push_back(const value_type &val);
 		void					pop_back();
-		iterator				insert(iterator it, const value_type& val);
-		void					insert(iterator it, size_type n, const value_type& val);
+		iterator				insert(iterator it, const value_type &val);
+		void					insert(iterator it, size_type n, const value_type &val);
 		template <class InputIterator>
 		void					insert(iterator it, InputIterator fst, InputIterator lst);
 		iterator				erase(iterator position);
 		iterator				erase(iterator first, iterator last);
-		void					swap(List& x);
+		void					swap(List &x);
 		void					resize(size_type n, value_type val = value_type());
 		void					clear();
 
 		//Operations :
-		void					splice(iterator position, List& x);
-		void					splice(iterator position, List& x, iterator i);
-		void					splice(iterator pos, List& x, iterator fst, iterator lst);
-		void					remove(const value_type& val);
+		void					splice(iterator position, List &x);
+		void					splice(iterator position, List &x, iterator i);
+		void					splice(iterator pos, List &x, iterator fst, iterator lst);
+		void					remove(const value_type &val);
 		template <class Predicate>
 		void					remove_if(Predicate pred);
 		void					unique();
 		template <class BinaryPredicate>
 		void					unique(BinaryPredicate binary_pred);
-		void					merge(List& x);
+		void					merge(List &x);
 		template <class Compare>
-		void					merge(List& x, Compare comp);
+		void					merge(List &x, Compare comp);
 		void					sort();
 		template <class Compare>
 		void					sort(Compare comp);
 		void					reverse();
+	
+		//Non member functions :
+		friend bool	operator==(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs);
+		friend bool	operator!=(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs);
+		friend bool	operator<(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs);
+		friend bool	operator<=(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs);
+		friend bool	operator>(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs);
+		friend bool	operator>=(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs);
+		friend void	swap(List<T, Alloc> &x, List<T, Alloc> &y);
 
 	private:
 		//Attibutes :
@@ -295,7 +304,7 @@ List<T, Alloc>::assign(InputIterator first, InputIterator last)
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::assign(size_type n, const value_type& val)
+List<T, Alloc>::assign(size_type n, const value_type &val)
 {
 	clear();
 	while (n--)
@@ -304,7 +313,7 @@ List<T, Alloc>::assign(size_type n, const value_type& val)
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::push_front(const value_type& val)
+List<T, Alloc>::push_front(const value_type &val)
 {
 	insert(begin(), val);
 }
@@ -318,7 +327,7 @@ List<T, Alloc>::pop_front()
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::push_back(const value_type& val)
+List<T, Alloc>::push_back(const value_type &val)
 {
 	insert(end(), val);
 }
@@ -334,7 +343,7 @@ List<T, Alloc>::pop_back()
 
 template <class T, class Alloc>
 typename List<T, Alloc>::iterator
-List<T, Alloc>::insert(iterator it, const value_type& val)
+List<T, Alloc>::insert(iterator it, const value_type &val)
 {
 	ListNode<T>	*new_node = new ListNode<T>(val);
 
@@ -394,12 +403,18 @@ List<T, Alloc>::erase(iterator first, iterator last)
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::swap(List& x)
+List<T, Alloc>::swap(List &x)
 {
-	List<T, Alloc>		tmp(*this);
+	ListNode<T>					*fst = _front.node->next;
+	ListNode<T>					*lst = _back.node->prev;
+	List<T, Alloc>::size_type	tmp = _size;
 
-	*this = x;
-	x = tmp;
+	_front.node->next = x._front.node->next;
+	_back.node->prev = x._back.node->prev;
+	x._front.node->next = fst;
+	x._back.node->prev = lst;
+	_size = x._size;
+	x._size = tmp;
 }
 
 template <class T, class Alloc>
@@ -462,7 +477,7 @@ List<T, Alloc>::splice(iterator position, List<T, Alloc> &x, iterator fst, itera
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::remove(const value_type& val)
+List<T, Alloc>::remove(const value_type &val)
 {
 	List<T, Alloc>::iterator tmp;
 
@@ -531,7 +546,7 @@ List<T, Alloc>::merge(List &x, Compare comp)
 		return ;
 	for (List<T, Alloc>::iterator from(x.begin()); (tmp = from++) != x.end(); )
 	{
-		while (to != end() && !comp(*tmp, *to))
+		while (to != end() & &!comp(*tmp, *to))
 			++to;
 		tmp.node->prev->next = tmp.node->next;
 		tmp.node->next->prev = tmp.node->prev;
@@ -589,7 +604,7 @@ List<T, Alloc>::reverse(void)
 	ListNode<T>					*tmp_next;
 	ListNode<T>					*tmp_prev;
 	
-	for (; it_beg != it_end-- && it_beg != it_end; ++it_beg)
+	for (; it_beg != it_end-- & &it_beg != it_end; ++it_beg)
 	{
 		it_beg.node->prev->next = it_end.node;
 		it_beg.node->next->prev = it_end.node;
@@ -603,6 +618,72 @@ List<T, Alloc>::reverse(void)
 		it_end.node->prev = tmp_prev;
 		_swap_it(it_beg, it_end);
 	}
+}
+
+template <class T, class Alloc>
+bool
+operator==(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs)
+{
+	typename List<T, Alloc>::iterator		lhs_it(lhs.begin());
+	typename List<T, Alloc>::iterator		rhs_it(rhs.begin());
+
+	if (lhs._size != rhs._size)
+		return (false);
+	for (; lhs_it != lhs.end(); ++lhs_it, ++rhs_it)
+		if (*lhs_it != *rhs_it)
+			return (false);
+	return (true);
+}
+
+template <class T, class Alloc>
+bool
+operator!=(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs)
+{
+	return (!(lhs == rhs));
+}
+
+template <class T, class Alloc>
+bool
+operator<(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs)
+{
+	typename List<T, Alloc>::iterator		lhs_it(lhs.begin());
+	typename List<T, Alloc>::iterator		rhs_it(rhs.begin());
+
+	for (; true; ++lhs_it, ++rhs_it)
+	{
+		if (rhs_it == rhs.end())
+			return (false);
+		else if (lhs_it == lhs.end() || *lhs_it < *rhs_it)
+			return (true);
+	}
+}
+
+template <class T, class Alloc>
+bool
+operator<=(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs)
+{
+	return (!(lhs > rhs));
+}
+
+template <class T, class Alloc>
+bool
+operator>(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs)
+{
+	return (rhs < lhs);
+}
+
+template <class T, class Alloc>
+bool
+operator>=(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs)
+{
+	return (!(lhs < rhs));
+}
+
+template <class T, class Alloc>
+void
+swap(List<T,Alloc> &x, List<T,Alloc> &y)
+{
+	x.swap(y);
 }
 
 template <class T, class Alloc>
