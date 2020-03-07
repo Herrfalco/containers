@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/02 20:10:41 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/06 18:15:46 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/07 19:31:23 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,26 @@ class	RevIter
 		reference		operator[](difference_type n) const;
 
 	 	//Relational operators :
-		friend bool	operator==(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs);
-		friend bool	operator!=(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs);
-		friend bool	operator<(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs);
-		friend bool	operator<=(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs);
-		friend bool	operator>(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs);
-		friend bool	operator>=(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs);
+		template <class Iter2>
+		friend bool	operator==(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
+		template <class Iter2>
+		friend bool	operator!=(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
+		template <class Iter2>
+		friend bool	operator<(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
+		template <class Iter2>
+		friend bool	operator<=(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
+		template <class Iter2>
+		friend bool	operator>(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
+		template <class Iter2>
+		friend bool	operator>=(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
 
 		//Non-member overloads :
-		friend RevIter<Iter>	operator+(difference_type n, const RevIter<Iter> &rev_it);
+		template <class Iter2>
+		friend RevIter<Iter2>	operator+(difference_type n,
+			const RevIter<Iter2> &rev_it);
+		template <class Iter2>
 		friend difference_type
-			operator-(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs);
+			operator-(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
 
 	private:
 		//Attibutes :

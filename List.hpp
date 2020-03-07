@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/06 20:19:39 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/07 21:13:05 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include "RevIter.hpp"
 #include <memory>
 #include <cmath>
+
+#include <iostream>
 
 template <class T, class Alloc = std::allocator<T> >
 class	List
@@ -106,13 +108,20 @@ class	List
 		void					reverse();
 	
 		//Non member functions :
-		friend bool	operator==(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs);
-		friend bool	operator!=(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs);
-		friend bool	operator<(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs);
-		friend bool	operator<=(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs);
-		friend bool	operator>(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs);
-		friend bool	operator>=(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs);
-		friend void	swap(List<T, Alloc> &x, List<T, Alloc> &y);
+		template <class T2, class Alloc2>
+		friend bool	operator==(const List<T2, Alloc2> &lhs, const List<T2, Alloc2> &rhs);
+		template <class T2, class Alloc2>
+		friend bool	operator!=(const List<T2, Alloc2> &lhs, const List<T2, Alloc2> &rhs);
+		template <class T2, class Alloc2>
+		friend bool	operator<(const List<T2, Alloc2> &lhs, const List<T2, Alloc2> &rhs);
+		template <class T2, class Alloc2>
+		friend bool	operator<=(const List<T2, Alloc2> &lhs, const List<T2, Alloc2> &rhs);
+		template <class T2, class Alloc2>
+		friend bool	operator>(const List<T2, Alloc2> &lhs, const List<T2, Alloc2> &rhs);
+		template <class T2, class Alloc2>
+		friend bool	operator>=(const List<T2, Alloc2> &lhs, const List<T2, Alloc2> &rhs);
+		template <class T2, class Alloc2>
+		friend void	swap(List<T2, Alloc2> &x, List<T2, Alloc2> &y);
 
 	private:
 		//Attibutes :
@@ -197,7 +206,8 @@ template <class T, class Alloc>
 typename List<T, Alloc>::const_iterator
 List<T, Alloc>::begin(void) const
 {
-	return (List<T, Alloc>::const_iterator(_front.next));
+	return (List<T, Alloc>::const_iterator(reinterpret_cast<ListNode<const T>*>
+		(_front.next)));
 }
 
 template <class T, class Alloc>
@@ -211,7 +221,8 @@ template <class T, class Alloc>
 typename List<T, Alloc>::const_iterator
 List<T, Alloc>::end(void) const
 {
-	return (List<T, Alloc>::const_iterator(&_back));
+	return (List<T, Alloc>::const_iterator(reinterpret_cast<ListNode<const T>*>
+		(_back.prev->next)));
 }
 
 template <class T, class Alloc>
@@ -260,8 +271,7 @@ template <class T, class Alloc>
 typename List<T, Alloc>::size_type
 List<T, Alloc>::max_size() const
 {
-	//peut-etre a changer
-	return (pow(2, sizeof(typename List<T, Alloc>::size_type) * 8));
+	return (_alloc.max_size() / sizeof(ListNode<T>));
 }
 
 template <class T, class Alloc>
@@ -624,8 +634,8 @@ template <class T, class Alloc>
 bool
 operator==(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs)
 {
-	typename List<T, Alloc>::iterator		lhs_it(lhs.begin());
-	typename List<T, Alloc>::iterator		rhs_it(rhs.begin());
+	typename List<T, Alloc>::const_iterator		lhs_it(lhs.begin());
+	typename List<T, Alloc>::const_iterator		rhs_it(rhs.begin());
 
 	if (lhs._size != rhs._size)
 		return (false);
@@ -646,8 +656,8 @@ template <class T, class Alloc>
 bool
 operator<(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs)
 {
-	typename List<T, Alloc>::iterator		lhs_it(lhs.begin());
-	typename List<T, Alloc>::iterator		rhs_it(rhs.begin());
+	typename List<T, Alloc>::const_iterator		lhs_it(lhs.begin());
+	typename List<T, Alloc>::const_iterator		rhs_it(rhs.begin());
 
 	for (; true; ++lhs_it, ++rhs_it)
 	{
