@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/07 21:13:05 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/08 01:37:32 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -415,14 +415,24 @@ template <class T, class Alloc>
 void
 List<T, Alloc>::swap(List &x)
 {
-	ListNode<T>					*fst = _front.node->next;
-	ListNode<T>					*lst = _back.node->prev;
+	ListNode<T>					*fst = _front.next;
+	ListNode<T>					*lst = _back.prev;
 	List<T, Alloc>::size_type	tmp = _size;
 
-	_front.node->next = x._front.node->next;
-	_back.node->prev = x._back.node->prev;
-	x._front.node->next = fst;
-	x._back.node->prev = lst;
+	if (_size)
+	{
+		_front.next->prev = &x._front;
+		_back.prev->next = &x._back;
+	}
+	if (x._size)
+	{
+		x._front.next->prev = &_front;
+		x._back.prev->next = &_back;
+	}
+	_front.next = x._size ? x._front.next : &_back;
+	_back.prev = x._size ? x._back.prev : &_front;
+	x._front.next = _size ? fst : &x._back;
+	x._back.prev = _size ? lst : &x._front;
 	_size = x._size;
 	x._size = tmp;
 }
