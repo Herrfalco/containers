@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 17:04:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/08 01:54:19 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/08 19:42:47 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,18 @@ void	make_tests(void)
 	test_mod<List<int>, int>(int_init, 9, 0, 9, "List<int>");
 	test_mod<List<double>, double>(double_init, 9, 0, 9, "List<double>");
 	test_mod<List<std::string>, std::string>(string_init, 9, "?", 9,
+		"List<string>");
+
+	std::cout << "\n\033[1;32mOPERATIONS :\n";
+	test_op<List<int>, int>(int_init, 9, 0, 9, "List<int>");
+	test_op<List<double>, double>(double_init, 9, 0, 9, "List<double>");
+	test_op<List<std::string>, std::string>(string_init, 9, "?", 9,
+		"List<string>");
+
+	std::cout << "\n\033[1;32mNON-MEMBER :\n";
+	test_nmem<List<int>, int>(int_init, 9, 0, 9, "List<int>");
+	test_nmem<List<double>, double>(double_init, 9, 0, 9, "List<double>");
+	test_nmem<List<std::string>, std::string>(string_init, 9, "?", 9,
 		"List<string>");
 }
 

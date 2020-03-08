@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/08 01:37:32 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/08 20:37:34 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -566,7 +566,7 @@ List<T, Alloc>::merge(List &x, Compare comp)
 		return ;
 	for (List<T, Alloc>::iterator from(x.begin()); (tmp = from++) != x.end(); )
 	{
-		while (to != end() & &!comp(*tmp, *to))
+		while (to != end() && !comp(*tmp, *to))
 			++to;
 		tmp.node->prev->next = tmp.node->next;
 		tmp.node->next->prev = tmp.node->prev;
@@ -624,18 +624,28 @@ List<T, Alloc>::reverse(void)
 	ListNode<T>					*tmp_next;
 	ListNode<T>					*tmp_prev;
 	
-	for (; it_beg != it_end-- & &it_beg != it_end; ++it_beg)
+	for (; it_beg != it_end-- && it_beg != it_end; ++it_beg)
 	{
 		it_beg.node->prev->next = it_end.node;
-		it_beg.node->next->prev = it_end.node;
 		it_end.node->next->prev = it_beg.node;
-		it_end.node->prev->next = it_beg.node;
-		tmp_next = it_beg.node->next;
-		tmp_prev = it_beg.node->prev;
-		it_beg.node->next = it_end.node->next;
-		it_beg.node->prev = it_end.node->prev;
-		it_end.node->next = tmp_next;
-		it_end.node->prev = tmp_prev;
+		if (it_beg.node->next == it_end.node)
+		{
+			it_beg.node->next = it_end.node->next;
+			it_end.node->prev = it_beg.node->prev;
+			it_beg.node->prev = it_end.node;
+			it_end.node->next = it_beg.node;
+		}
+		else
+		{
+			it_beg.node->next->prev = it_end.node;
+			it_end.node->prev->next = it_beg.node;
+			tmp_next = it_beg.node->next;
+			tmp_prev = it_beg.node->prev;
+			it_beg.node->next = it_end.node->next;
+			it_beg.node->prev = it_end.node->prev;
+			it_end.node->next = tmp_next;
+			it_end.node->prev = tmp_prev;
+		}
 		_swap_it(it_beg, it_end);
 	}
 }
