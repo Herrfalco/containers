@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/08 20:37:34 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/09 19:20:04 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@
 #include "ListIter.hpp"
 #include "RevIter.hpp"
 #include <memory>
-#include <cmath>
 
 #include <iostream>
+
+namespace	ft {
 
 template <class T, class Alloc = std::allocator<T> >
 class	List
@@ -40,8 +41,8 @@ class	List
 		typedef size_t											size_type;
 
 		//Constructors, destructor and assignation :
-		List(const allocator_type &alloc = allocator_type());
-		List(size_type n, const value_type &val = value_type(),
+		explicit List(const allocator_type &alloc = allocator_type());
+		explicit List(size_type n, const value_type &val = value_type(),
 			const allocator_type &alloc = allocator_type());
 		template <class InputIterator>
 		List(InputIterator first, InputIterator last,
@@ -739,6 +740,8 @@ List<T, Alloc>::_swap_it(List<T, Alloc>::iterator &it1, List<T, Alloc>::iterator
 	tmp = it1;
 	it1 = it2;
 	it2 = tmp;
+}
+
 }
 
 #endif //LIST_HPP

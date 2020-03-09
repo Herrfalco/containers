@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 17:04:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/08 19:42:47 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/09 15:51:25 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,43 +21,43 @@ void	make_tests(void)
 										  "H", "I" };
 
 	std::cout << "\033[1;32mCONSTRUCTORS & ASSIGNATION :\n";
-	test_const<List<int>, int>(int_init, 9, 0, 9, "List<int>");
-	test_const<List<double>, double>(double_init, 9, 0.0, 9, "List<double>");
-	test_const<List<std::string>, std::string>(string_init, 9, "?", 9,
-		"List<string>");
+	test_const<ft::List<int>, int>(int_init, 9, 0, 9, "ft::List<int>");
+	test_const<ft::List<double>, double>(double_init, 9, 0.0, 9, "ft::List<double>");
+	test_const<ft::List<std::string>, std::string>(string_init, 9, "?", 9,
+		"ft::List<string>");
 
 	std::cout << "\n\033[1;32mITERATORS :\n";
-	test_iter<List<int>, int>(int_init, 9, "List<int>");
-	test_iter<List<double>, double>(double_init, 9, "List<double>");
-	test_iter<List<std::string>, std::string>(string_init, 9, "List<string>");
+	test_iter<ft::List<int>, int>(int_init, 9, "ft::List<int>");
+	test_iter<ft::List<double>, double>(double_init, 9, "ft::List<double>");
+	test_iter<ft::List<std::string>, std::string>(string_init, 9, "ft::List<string>");
 
 	std::cout << "\n\033[1;32mCAPACITY :\n";
-	test_capacity<List<int>, int>(int_init, 9, "List<int>");
-	test_capacity<List<double>, double>(double_init, 9, "List<double>");
-	test_capacity<List<std::string>, std::string>(string_init, 9, "List<string>");
+	test_capacity<ft::List<int>, int>(int_init, 9, "ft::List<int>");
+	test_capacity<ft::List<double>, double>(double_init, 9, "ft::List<double>");
+	test_capacity<ft::List<std::string>, std::string>(string_init, 9, "ft::List<string>");
 
 	std::cout << "\n\033[1;32mACCESS :\n";
-	test_access<List<int>, int>(int_init, 9, "List<int>");
-	test_access<List<double>, double>(double_init, 9, "List<double>");
-	test_access<List<std::string>, std::string>(string_init, 9, "List<string>");
+	test_access<ft::List<int>, int>(int_init, 9, "ft::List<int>");
+	test_access<ft::List<double>, double>(double_init, 9, "ft::List<double>");
+	test_access<ft::List<std::string>, std::string>(string_init, 9, "ft::List<string>");
 
 	std::cout << "\n\033[1;32mMODIFIERS :\n";
-	test_mod<List<int>, int>(int_init, 9, 0, 9, "List<int>");
-	test_mod<List<double>, double>(double_init, 9, 0, 9, "List<double>");
-	test_mod<List<std::string>, std::string>(string_init, 9, "?", 9,
-		"List<string>");
+	test_mod<ft::List<int>, int>(int_init, 9, 0, 9, "ft::List<int>");
+	test_mod<ft::List<double>, double>(double_init, 9, 0, 9, "ft::List<double>");
+	test_mod<ft::List<std::string>, std::string>(string_init, 9, "?", 9,
+		"ft::List<string>");
 
 	std::cout << "\n\033[1;32mOPERATIONS :\n";
-	test_op<List<int>, int>(int_init, 9, 0, 9, "List<int>");
-	test_op<List<double>, double>(double_init, 9, 0, 9, "List<double>");
-	test_op<List<std::string>, std::string>(string_init, 9, "?", 9,
-		"List<string>");
+	test_op<ft::List<int>, int>(int_init, 9, 0, 9, "ft::List<int>");
+	test_op<ft::List<double>, double>(double_init, 9, 0, 9, "ft::List<double>");
+	test_op<ft::List<std::string>, std::string>(string_init, 9, "?", 9,
+		"ft::List<string>");
 
 	std::cout << "\n\033[1;32mNON-MEMBER :\n";
-	test_nmem<List<int>, int>(int_init, 9, 0, 9, "List<int>");
-	test_nmem<List<double>, double>(double_init, 9, 0, 9, "List<double>");
-	test_nmem<List<std::string>, std::string>(string_init, 9, "?", 9,
-		"List<string>");
+	test_nmem<ft::List<int>, int>(int_init, 9, 0, 9, "ft::List<int>");
+	test_nmem<ft::List<double>, double>(double_init, 9, 0, 9, "ft::List<double>");
+	test_nmem<ft::List<std::string>, std::string>(string_init, 9, "?", 9,
+		"ft::List<string>");
 }
 
 int		main(void)
