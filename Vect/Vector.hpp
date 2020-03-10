@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/10 22:58:43 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/11 00:05:27 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,7 +242,7 @@ Vector<T, Alloc>::resize(size_type n, value_type val)
 
 	if (n < _size)
 	{
-		for (iterator it = end() - _size - n; it != end(); ++it)
+		for (iterator it = end() - (_size - n); it != end(); ++it)
 			_alloc.destroy(it.ptr);
 	}
 	else if (n > _size)
@@ -424,7 +424,7 @@ Vector<T, Alloc>::insert(iterator it, InputIterator fst, InputIterator lst)
 
 	reserve(_size + (lst - fst));
 	_size += lst - fst;
-	for (iterator b(end() - 1), a(b - lst - fst); a >= it; --a, --b)
+	for (iterator b(end() - 1), a(b - (lst - fst)); a >= it; --a, --b)
 	{
 		if (b >= old_end)
 			_alloc.construct(b, *a);

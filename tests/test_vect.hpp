@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 17:00:58 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/10 23:07:18 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/11 00:05:02 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,38 @@ namespace	nvect
 void	test_vect(void);
 
 template <class Cont, class T>
-void	test_capacity(T *init, size_t size_init, std::string name)
+void	test_capacity(T def, size_t size_def, std::string name)
 {
-	Cont				c1;
-	Cont				c2(init, init + size_init);
-	std::stringstream	ss;
+	Cont					c1;
+	std::stringstream		ss;
 
 	std::cout << "   \033[1;33m" << name << "\033[0m\n";
 	print_cont(c1, "I", "I()");
-	std::cout << "\033[1;36m      I.empty()\033[0m\n         result : "
-		<< (c1.empty() ? "true" : "false") << "\n\033[0m";
 	std::cout << "\033[1;36m      I.size()\033[0m\n         result : "
 		<< c1.size() << "\n\033[0m";
 	std::cout << "\033[1;36m      I.max_size()\033[0m\n         result : "
 		<< c1.max_size() << "\n\033[0m";
-	ss << "II(init, init + " << size_init << ")";
-	print_cont(c2, "II", ss.str());
-	std::cout << "\033[1;36m      II.empty()\033[0m\n         result : "
-		<< (c2.empty() ? "true" : "false") << "\n\033[0m";
-	std::cout << "\033[1;36m      II.size()\033[0m\n         result : "
-		<< c2.size() << "\n\033[0m";
-	std::cout << "\033[1;36m      II.max_size()\033[0m\n         result : "
-		<< c2.max_size() << "\n\033[0m";
+	std::cout << "\033[1;36m      I.empty()\033[0m\n         result : "
+		<< (c1.empty() ? "true" : "false") << "\n\033[0m";
+	c1.resize(size_def, def);
+	ss << "resize(" << size_def << ")";
+	print_cont(c1, "I", ss.str());
+	std::cout << "\033[1;36m      I.capacity()\033[0m\n         result : "
+		<< c1.capacity() << "\n\033[0m";
+	std::cout << "\033[1;36m      I.empty()\033[0m\n         result : "
+		<< (c1.empty() ? "true" : "false") << "\n\033[0m";
+	c1.resize(5);
+	print_cont(c1, "I", "resize(5)");
+	std::cout << "\033[1;36m      I.capacity()\033[0m\n         result : "
+		<< c1.capacity() << "\n\033[0m";
+	c1.reserve(11);
+	std::cout << "\033[1;36m      I.reserve(11) & I.capacity()\033[0m\
+\n         result : "
+		<< c1.capacity() << "\n\033[0m";
+	c1.reserve(17);
+	std::cout << "\033[1;36m      I.reserve(17) & I.capacity()\033[0m\
+\n         result : "
+		<< c1.capacity() << "\n\033[0m";
 }
 
 template <class Cont, class T>
@@ -53,6 +63,10 @@ void	test_access(T *init, size_t size_init, std::string name)
 	
 	std::cout << "   \033[1;33m" << name << "\033[0m\n";
 	print_cont(c, "I", "I()");
+	std::cout << "\033[1;36m      I[4]\033[0m\n         result : "
+		<< c[4] << "\n\033[0m";
+	std::cout << "\033[1;36m      I.at(4)\033[0m\n         result : "
+		<< c.at(4) << "\n\033[0m";
 	std::cout << "\033[1;36m      I.front()\033[0m\n         result : "
 		<< c.front() << "\n\033[0m";
 	std::cout << "\033[1;36m      I.back()\033[0m\n         result : "

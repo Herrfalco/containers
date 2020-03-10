@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 15:40:29 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/10 23:09:12 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/10 23:58:17 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,18 @@ void	nvect::test_vect(void)
 	test_iter<ft::Vector<int>, int>(int_init, 9, "ft::Vector<int>");
 	test_iter<ft::Vector<double>, double>(double_init, 9, "ft::Vector<double>");
 	test_iter<ft::Vector<std::string>, std::string>(string_init, 9, "ft::Vector<string>");
-/*
+
 	std::cout << "\n\033[1;32mCAPACITY :\n";
-	test_capacity<ft::Vector<int>, int>(int_init, 9, "ft::Vector<int>");
-	test_capacity<ft::Vector<double>, double>(double_init, 9, "ft::Vector<double>");
-	test_capacity<ft::Vector<std::string>, std::string>(string_init, 9, "ft::Vector<string>");
+	test_capacity<ft::Vector<int>, int>(0, 9, "ft::Vector<int>");
+	test_capacity<ft::Vector<double>, double>(0, 9, "ft::Vector<double>");
+	test_capacity<ft::Vector<std::string>, std::string>("?", 9, "ft::Vector<string>");
 
 	std::cout << "\n\033[1;32mACCESS :\n";
 	test_access<ft::Vector<int>, int>(int_init, 9, "ft::Vector<int>");
 	test_access<ft::Vector<double>, double>(double_init, 9, "ft::Vector<double>");
 	test_access<ft::Vector<std::string>, std::string>(string_init, 9, "ft::Vector<string>");
 
+/*
 	std::cout << "\n\033[1;32mMODIFIERS :\n";
 	test_mod<ft::Vector<int>, int>(int_init, 9, 0, 9, "ft::Vector<int>");
 	test_mod<ft::Vector<double>, double>(double_init, 9, 0, 9, "ft::Vector<double>");
