@@ -6,16 +6,16 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/09 19:20:04 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/10 16:08:09 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIST_HPP
 # define LIST_HPP
 
-#include "IterTypes.hpp"
-#include "ListIter.hpp"
-#include "RevIter.hpp"
+#include "../Iter/IterTypes.hpp"
+#include "../Iter/ListIter.hpp"
+#include "../Iter/RevIter.hpp"
 #include <memory>
 
 #include <iostream>
@@ -680,13 +680,12 @@ operator<(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs)
 	typename List<T, Alloc>::const_iterator		lhs_it(lhs.begin());
 	typename List<T, Alloc>::const_iterator		rhs_it(rhs.begin());
 
-	for (; true; ++lhs_it, ++rhs_it)
+	for (; rhs_it != rhs.end(); ++lhs_it, ++rhs_it)
 	{
-		if (rhs_it == rhs.end())
-			return (false);
-		else if (lhs_it == lhs.end() || *lhs_it < *rhs_it)
+		if (lhs_it == lhs.end() || *lhs_it < *rhs_it)
 			return (true);
 	}
+	return (false);
 }
 
 template <class T, class Alloc>

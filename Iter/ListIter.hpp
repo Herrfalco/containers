@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/07 16:12:52 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/10 16:07:37 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define LISTITER_HPP
 
 # include <cstddef>
-# include "ListNode.hpp"
+# include "../List/ListNode.hpp"
 
 template <class Category, class T, class Distance = std::ptrdiff_t,
 	class Pointer = T*, class Reference = T&>
