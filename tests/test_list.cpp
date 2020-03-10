@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 15:40:29 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/10 16:24:18 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/10 23:08:53 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	nlist::test_list(void)
 		"ft::List<string>");
 
 	std::cout << "\n\033[1;32mITERATORS :\n";
-	nlist::test_iter<ft::List<int>, int>(int_init, 9, "ft::List<int>");
-	nlist::test_iter<ft::List<double>, double>(double_init, 9, "ft::List<double>");
-	nlist::test_iter<ft::List<std::string>, std::string>(string_init, 9, "ft::List<string>");
+	test_iter<ft::List<int>, int>(int_init, 9, "ft::List<int>");
+	test_iter<ft::List<double>, double>(double_init, 9, "ft::List<double>");
+	test_iter<ft::List<std::string>, std::string>(string_init, 9, "ft::List<string>");
 
 	std::cout << "\n\033[1;32mCAPACITY :\n";
 	nlist::test_capacity<ft::List<int>, int>(int_init, 9, "ft::List<int>");

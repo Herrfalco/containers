@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 17:00:58 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/10 16:22:03 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/10 23:07:33 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,6 @@ namespace	nlist
 {
 
 void	test_list(void);
-
-template <class Cont, class T>
-void	test_iter(T *init, size_t size_init, std::string name)
-{
-	Cont	c(init, init + size_init);
-
-	std::cout << "   \033[1;33m" << name << "\n\033[0m";
-	print_cont(c, "I", "I()");
-	print_cont(c, "I", "Regular");
-	rprint_cont(c, "I", "Reverse");
-}
 
 template <class Cont, class T>
 void	test_capacity(T *init, size_t size_init, std::string name)

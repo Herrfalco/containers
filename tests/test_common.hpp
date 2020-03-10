@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 16:19:42 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/10 16:21:56 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/10 23:07:09 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,17 @@ void	test_const(T *init, size_t size_init, T def, size_t size_def, std::string n
 	print_cont(c4, "IV", "IV(III)");
 	c1 = c2;
 	print_cont(c1, "I", "I = II");
+}
+
+template <class Cont, class T>
+void	test_iter(T *init, size_t size_init, std::string name)
+{
+	Cont	c(init, init + size_init);
+
+	std::cout << "   \033[1;33m" << name << "\n\033[0m";
+	print_cont(c, "I", "I()");
+	print_cont(c, "I", "Regular");
+	rprint_cont(c, "I", "Reverse");
 }
 
 #endif //TEST_COMMON_HPP

@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/10 21:51:24 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/10 22:58:43 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -392,8 +392,8 @@ template <class T, class Alloc>
 void
 Vector<T, Alloc>::insert(iterator it, size_type n, const value_type &val)
 {
-	iterator		old_end(end());
-	size_type		it_id = it - begin();
+	iterator			old_end(end());
+	difference_type		it_id = it - begin();
 
 	reserve(_size + n);
 	it = _sequence + it_id;
