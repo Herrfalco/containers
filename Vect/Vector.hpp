@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/10 18:07:07 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/10 21:51:24 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define VECTOR_HPP
 
 #include "../Iter/IterTypes.hpp"
+#include "../Iter/VectIter.hpp"
 #include "../Iter/RevIter.hpp"
 #include <memory>
 #include <cmath>
@@ -33,8 +34,8 @@ class	Vector
 		typedef typename allocator_type::const_reference		const_reference;
 		typedef typename allocator_type::pointer				pointer;
 		typedef typename allocator_type::const_pointer			const_pointer;
-		typedef T*												iterator;
-		typedef const T*										const_iterator;
+		typedef VectIter<random_access_iterator_tag, T>			iterator;
+		typedef VectIter<random_access_iterator_tag, const T>	const_iterator;
 		typedef RevIter<iterator>								reverse_iterator;
 		typedef RevIter<const_iterator>							const_reverse_iterator;
 		typedef std::ptrdiff_t									difference_type;
@@ -115,7 +116,7 @@ class	Vector
 		allocator_type		_alloc;
 		size_type			_size;
 		size_type			_cap_level;
-		T					*_sequence;
+		value_type			*_sequence;
 };
 
 template <class T, class Alloc>
@@ -167,28 +168,28 @@ template <class T, class Alloc>
 typename Vector<T, Alloc>::iterator
 Vector<T, Alloc>::begin(void)
 {
-	return (_sequence);
+	return (iterator(_sequence));
 }
 
 template <class T, class Alloc>
 typename Vector<T, Alloc>::const_iterator
 Vector<T, Alloc>::begin(void) const
 {
-	return (_sequence);
+	return (const_iterator(reinterpret_cast<const T*>(_sequence)));
 }
 
 template <class T, class Alloc>
 typename Vector<T, Alloc>::iterator
 Vector<T, Alloc>::end(void)
 {
-	return (_sequence + _size);
+	return (iterator(_sequence + _size));
 }
 
 template <class T, class Alloc>
 typename Vector<T, Alloc>::const_iterator
 Vector<T, Alloc>::end(void) const
 {
-	return (_sequence + _size);
+	return (const_iterator(reinterpret_cast<const T*>(_sequence + _size)));
 }
 
 template <class T, class Alloc>
@@ -242,14 +243,14 @@ Vector<T, Alloc>::resize(size_type n, value_type val)
 	if (n < _size)
 	{
 		for (iterator it = end() - _size - n; it != end(); ++it)
-			_alloc.destroy(it);
+			_alloc.destroy(it.ptr);
 	}
 	else if (n > _size)
 	{
 		reserve(n);
 		nb = n - _size;
 		for (iterator it = end(); nb; --nb, ++it)
-			_alloc.construct(it, val);
+			_alloc.construct(it.ptr, val);
 	}
 	_size = n;
 }
@@ -391,8 +392,8 @@ template <class T, class Alloc>
 void
 Vector<T, Alloc>::insert(iterator it, size_type n, const value_type &val)
 {
-	iterator	old_end(end());
-	size_type	it_id(it - begin());
+	iterator		old_end(end());
+	size_type		it_id = it - begin();
 
 	reserve(_size + n);
 	it = _sequence + it_id;
@@ -400,14 +401,14 @@ Vector<T, Alloc>::insert(iterator it, size_type n, const value_type &val)
 	for (iterator b(end() - 1), a(b - n); a >= it; --a, --b)
 	{
 		if (b >= old_end)
-			_alloc.construct(b, *a);
+			_alloc.construct(b.ptr, *a);
 		else
 			*b = *a;
 	}
 	for (; n; --n, ++it)
 	{
 		if (it >= old_end)
-			_alloc.construct(it, val);
+			_alloc.construct(it.ptr, val);
 		else
 			*it = val;
 	}
