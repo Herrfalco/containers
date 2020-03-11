@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 15:40:29 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/10 23:58:17 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/11 15:55:50 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,10 @@ void	nvect::test_vect(void)
 	test_access<ft::Vector<double>, double>(double_init, 9, "ft::Vector<double>");
 	test_access<ft::Vector<std::string>, std::string>(string_init, 9, "ft::Vector<string>");
 
-/*
 	std::cout << "\n\033[1;32mMODIFIERS :\n";
 	test_mod<ft::Vector<int>, int>(int_init, 9, 0, 9, "ft::Vector<int>");
 	test_mod<ft::Vector<double>, double>(double_init, 9, 0, 9, "ft::Vector<double>");
 	test_mod<ft::Vector<std::string>, std::string>(string_init, 9, "?", 9,
-		"ft::Vector<string>");
-
-	std::cout << "\n\033[1;32mOPERATIONS :\n";
-	test_op<ft::Vector<int>, int>(int_init, 9, 0, 9, "ft::Vector<int>");
-	test_op<ft::Vector<double>, double>(double_init, 9, 0, 9, "ft::Vector<double>");
-	test_op<ft::Vector<std::string>, std::string>(string_init, 9, "?", 9,
 		"ft::Vector<string>");
 
 	std::cout << "\n\033[1;32mNON-MEMBER :\n";
@@ -59,5 +52,4 @@ void	nvect::test_vect(void)
 	test_nmem<ft::Vector<double>, double>(double_init, 9, 0, 9, "ft::Vector<double>");
 	test_nmem<ft::Vector<std::string>, std::string>(string_init, 9, "?", 9,
 		"ft::Vector<string>");
-*/
 }

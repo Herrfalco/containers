@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/11 00:05:27 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/11 15:20:34 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -420,25 +420,23 @@ void
 Vector<T, Alloc>::insert(iterator it, InputIterator fst, InputIterator lst)
 {
 	iterator	old_end(end());
-	iterator	cpy(it);
 
 	reserve(_size + (lst - fst));
 	_size += lst - fst;
 	for (iterator b(end() - 1), a(b - (lst - fst)); a >= it; --a, --b)
 	{
 		if (b >= old_end)
-			_alloc.construct(b, *a);
+			_alloc.construct(b.ptr, *a);
 		else
 			*b = *a;
 	}
 	for (; fst != lst; ++fst, ++it)
 	{
 		if (it >= old_end)
-			_alloc.construct(it, fst);
+			_alloc.construct(it.ptr, *fst);
 		else
 			*it = *fst;
 	}
-	return (cpy);
 }
 
 template <class T, class Alloc>

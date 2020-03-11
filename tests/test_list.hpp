@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 17:00:58 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/10 23:07:33 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/11 15:55:06 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,6 +222,7 @@ void	test_nmem(T *init, size_t size_init, T def, size_t size_def, std::string na
 	Cont				c1(size_def, def);
 	Cont				c2(init, init + size_init);
 	Cont				c3(c2);
+	Cont				c4(c2);
 	std::stringstream	ss;
 
 	std::cout << "   \033[1;33m" << name << "\033[0m\n";
@@ -231,33 +232,49 @@ void	test_nmem(T *init, size_t size_init, T def, size_t size_def, std::string na
 	ss << "II(init, init + " << size_init << ")";
 	print_cont(c2, "II", ss.str());
 	print_cont(c3, "III", "III(II)");
+	c4.push_back(def);
+	ss.str("");
+	ss << "IV(II) & IV.push_back(" << def << ")";
+	print_cont(c4, "IV", ss.str());
 	std::cout << "\033[1;36m      I == II\033[0m\n         result : "
 		<< (c1 == c2 ? "true" : "false") << "\n\033[0m";
 	std::cout << "\033[1;36m      II == III\033[0m\n         result : "
 		<< (c2 == c3 ? "true" : "false") << "\n\033[0m";
+	std::cout << "\033[1;36m      III == IV\033[0m\n         result : "
+		<< (c3 == c4 ? "true" : "false") << "\n\033[0m";
 	std::cout << "\033[1;36m      I != II\033[0m\n         result : "
 		<< (c1 != c2 ? "true" : "false") << "\n\033[0m";
 	std::cout << "\033[1;36m      II != III\033[0m\n         result : "
 		<< (c2 != c3 ? "true" : "false") << "\n\033[0m";
+	std::cout << "\033[1;36m      III != IV\033[0m\n         result : "
+		<< (c3 != c4 ? "true" : "false") << "\n\033[0m";
 	std::cout << "\033[1;36m      I < II\033[0m\n         result : "
 		<< (c1 < c2 ? "true" : "false") << "\n\033[0m";
 	std::cout << "\033[1;36m      II < III\033[0m\n         result : "
 		<< (c2 < c3 ? "true" : "false") << "\n\033[0m";
+	std::cout << "\033[1;36m      III < IV\033[0m\n         result : "
+		<< (c3 < c4 ? "true" : "false") << "\n\033[0m";
 	std::cout << "\033[1;36m      I <= II\033[0m\n         result : "
 		<< (c1 <= c2 ? "true" : "false") << "\n\033[0m";
 	std::cout << "\033[1;36m      II <= III\033[0m\n         result : "
 		<< (c2 <= c3 ? "true" : "false") << "\n\033[0m";
+	std::cout << "\033[1;36m      III <= IV\033[0m\n         result : "
+		<< (c3 <= c4 ? "true" : "false") << "\n\033[0m";
 	std::cout << "\033[1;36m      I > II\033[0m\n         result : "
 		<< (c1 > c2 ? "true" : "false") << "\n\033[0m";
 	std::cout << "\033[1;36m      II > III\033[0m\n         result : "
 		<< (c2 > c3 ? "true" : "false") << "\n\033[0m";
+	std::cout << "\033[1;36m      III > IV\033[0m\n         result : "
+		<< (c3 > c4 ? "true" : "false") << "\n\033[0m";
 	std::cout << "\033[1;36m      I >= II\033[0m\n         result : "
 		<< (c1 >= c2 ? "true" : "false") << "\n\033[0m";
 	std::cout << "\033[1;36m      II >= III\033[0m\n         result : "
 		<< (c2 >= c3 ? "true" : "false") << "\n\033[0m";
-	swap(c1, c2);
-	print_cont(c1, "I", "swap(I, II)");
-	print_cont(c2, "II", "");
+	std::cout << "\033[1;36m      III >= IV\033[0m\n         result : "
+		<< (c3 >= c4 ? "true" : "false") << "\n\033[0m";
+	swap(c1, c4);
+	print_cont(c1, "I", "swap(I, IV)");
+	print_cont(c2, "IV", "");
 }
 
 }
