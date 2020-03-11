@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/10 23:00:53 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/11 16:09:31 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ struct	VectIter
 		//Access operators :
 		reference		operator*(void);
 		pointer			operator->(void);
+		reference		operator[](difference_type n) const;
 		VectIter		&operator++(void);
 		VectIter		operator++(int valptr);
 		VectIter		&operator--(void);
@@ -118,6 +119,13 @@ Pointer
 VectIter<Category, T, Distance, Pointer, Reference>::operator->(void)
 {
 	return (ptr);
+}
+
+template <class Category, class T, class Distance, class Pointer, class Reference>
+Reference
+VectIter<Category, T, Distance, Pointer, Reference>::operator[](difference_type n) const
+{
+	return (*(ptr + n));
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
