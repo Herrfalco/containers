@@ -6,12 +6,13 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 17:04:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/11 16:13:55 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/11 19:30:15 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tests/test_list.hpp"
 #include "tests/test_vect.hpp"
+#include <fstream>
 
 int		error(std::string msg, int ret)
 {
@@ -21,17 +22,21 @@ int		error(std::string msg, int ret)
 
 int		main(int ac, char **av)
 {
+	std::ofstream	out(".tmp");
 	std::string		par;
+	std::streambuf	*out_sav;
 
 	if (ac != 2)
 		return (error("tester needs a container type as parameter", 1));
 	par = *(++av);
+	out_sav = std::cout.rdbuf();
+	std::cout.rdbuf(out.rdbuf());
 	if (!par.compare("List") || !par.compare("list"))
 		nlist::test_list();
 	else if (!par.compare("Vector") || !par.compare("vector"))
 		nvect::test_vect();
 	else
 		return (error("unknown container type", 2));
-//	system("leaks test");
-	return (0);
+	std::cout.rdbuf(out_sav);
+	return (system("cat .tmp | less"));
 }

@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   List.hpp                                           :+:      :+:    :+:   */
+/*   Map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/11 17:44:19 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/11 18:13:52 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIST_HPP
-# define LIST_HPP
+#ifndef MAP_HPP
+# define MAP_HPP
 
 #include "../Iter/IterTypes.hpp"
-#include "../Iter/ListIter.hpp"
+#include "../Iter/MapIter.hpp"
 #include "../Iter/RevIter.hpp"
 #include <memory>
 
@@ -23,7 +23,7 @@
 namespace	ft {
 
 template <class T, class Alloc = std::allocator<T> >
-class	List
+class	Map
 {
 	public:
 		//Member types :
@@ -33,23 +33,23 @@ class	List
 		typedef typename allocator_type::const_reference		const_reference;
 		typedef typename allocator_type::pointer				pointer;
 		typedef typename allocator_type::const_pointer			const_pointer;
-		typedef ListIter<bidirectional_iterator_tag, T>			iterator;
-		typedef ListIter<bidirectional_iterator_tag, const T>	const_iterator;
+		typedef MapIter<bidirectional_iterator_tag, T>			iterator;
+		typedef MapIter<bidirectional_iterator_tag, const T>	const_iterator;
 		typedef RevIter<iterator>								reverse_iterator;
 		typedef RevIter<const_iterator>							const_reverse_iterator;
 		typedef ptrdiff_t										difference_type;
 		typedef size_t											size_type;
 
 		//Constructors, destructor and assignation :
-		explicit List(const allocator_type &alloc = allocator_type());
-		explicit List(size_type n, const value_type &val = value_type(),
+		explicit Map(const allocator_type &alloc = allocator_type());
+		explicit Map(size_type n, const value_type &val = value_type(),
 			const allocator_type &alloc = allocator_type());
 		template <class InputIterator>
-		List(InputIterator first, InputIterator last,
+		Map(InputIterator first, InputIterator last,
 			const allocator_type &alloc = allocator_type());
-		List(const List &l);
-		~List(void);
-		List					&operator=(const List &l);
+		Map(const Map &l);
+		~Map(void);
+		Map					&operator=(const Map &l);
 
 		//Iterators :
 		iterator				begin(void);
@@ -86,23 +86,23 @@ class	List
 		void					insert(iterator it, InputIterator fst, InputIterator lst);
 		iterator				erase(iterator position);
 		iterator				erase(iterator first, iterator last);
-		void					swap(List &x);
+		void					swap(Map &x);
 		void					resize(size_type n, value_type val = value_type());
 		void					clear();
 
 		//Operations :
-		void					splice(iterator position, List &x);
-		void					splice(iterator position, List &x, iterator i);
-		void					splice(iterator pos, List &x, iterator fst, iterator lst);
+		void					splice(iterator position, Map &x);
+		void					splice(iterator position, Map &x, iterator i);
+		void					splice(iterator pos, Map &x, iterator fst, iterator lst);
 		void					remove(const value_type &val);
 		template <class Predicate>
 		void					remove_if(Predicate pred);
 		void					unique();
 		template <class BinaryPredicate>
 		void					unique(BinaryPredicate binary_pred);
-		void					merge(List &x);
+		void					merge(Map &x);
 		template <class Compare>
-		void					merge(List &x, Compare comp);
+		void					merge(Map &x, Compare comp);
 		void					sort();
 		template <class Compare>
 		void					sort(Compare comp);
@@ -110,25 +110,25 @@ class	List
 	
 		//Non member functions :
 		template <class T2, class Alloc2>
-		friend bool	operator==(const List<T2, Alloc2> &lhs, const List<T2, Alloc2> &rhs);
+		friend bool	operator==(const Map<T2, Alloc2> &lhs, const Map<T2, Alloc2> &rhs);
 		template <class T2, class Alloc2>
-		friend bool	operator!=(const List<T2, Alloc2> &lhs, const List<T2, Alloc2> &rhs);
+		friend bool	operator!=(const Map<T2, Alloc2> &lhs, const Map<T2, Alloc2> &rhs);
 		template <class T2, class Alloc2>
-		friend bool	operator<(const List<T2, Alloc2> &lhs, const List<T2, Alloc2> &rhs);
+		friend bool	operator<(const Map<T2, Alloc2> &lhs, const Map<T2, Alloc2> &rhs);
 		template <class T2, class Alloc2>
-		friend bool	operator<=(const List<T2, Alloc2> &lhs, const List<T2, Alloc2> &rhs);
+		friend bool	operator<=(const Map<T2, Alloc2> &lhs, const Map<T2, Alloc2> &rhs);
 		template <class T2, class Alloc2>
-		friend bool	operator>(const List<T2, Alloc2> &lhs, const List<T2, Alloc2> &rhs);
+		friend bool	operator>(const Map<T2, Alloc2> &lhs, const Map<T2, Alloc2> &rhs);
 		template <class T2, class Alloc2>
-		friend bool	operator>=(const List<T2, Alloc2> &lhs, const List<T2, Alloc2> &rhs);
+		friend bool	operator>=(const Map<T2, Alloc2> &lhs, const Map<T2, Alloc2> &rhs);
 		template <class T2, class Alloc2>
-		friend void	swap(List<T2, Alloc2> &x, List<T2, Alloc2> &y);
+		friend void	swap(Map<T2, Alloc2> &x, Map<T2, Alloc2> &y);
 
 	private:
 		//Attibutes :
 		allocator_type	_alloc;
-		ListNode<T>		_front;
-		ListNode<T>		_back;
+		MapNode<T>		_front;
+		MapNode<T>		_back;
 		size_type		_size;
 
 		//Utils :
@@ -138,49 +138,57 @@ class	List
 };
 
 template <class T, class Alloc>
-List<T, Alloc>::List(const allocator_type &alloc) :
+Map<T, Alloc>::Map(const allocator_type &alloc) :
 	_alloc(alloc), _front(), _back(), _size(0)
 {
 	_back.prev = &_front;
+	_back.next = &_back;
 	_front.next = &_back;
+	_front.prev = &_front;
 }
 
 template <class T, class Alloc>
-List<T, Alloc>::List(size_type n, const value_type &val, const allocator_type &alloc) :
+Map<T, Alloc>::Map(size_type n, const value_type &val, const allocator_type &alloc) :
 	_alloc(alloc), _front(), _back(), _size(0)
 {
 	_back.prev = &_front;
+	_back.next = &_back;
 	_front.next = &_back;
+	_front.prev = &_front;
 	assign(n, val);
 }
 
 template <class T, class Alloc>
 template <class InputIterator>
-List<T, Alloc>::List(InputIterator first, InputIterator last, const allocator_type &alloc)
+Map<T, Alloc>::Map(InputIterator first, InputIterator last, const allocator_type &alloc)
 	: _alloc(alloc), _front(), _back(), _size(0)
 {
 	_back.prev = &_front;
+	_back.next = &_back;
 	_front.next = &_back;
+	_front.prev = &_front;
 	assign(first, last);
 }
 
 template <class T, class Alloc>
-List<T, Alloc>::List(const List &l) : _alloc(l._alloc), _front(), _back(), _size(0)
+Map<T, Alloc>::Map(const Map &l) : _alloc(l._alloc), _front(), _back(), _size(0)
 {
 	_back.prev = &_front;
+	_back.next = &_back;
 	_front.next = &_back;
+	_front.prev = &_front;
 	assign(l.begin(), l.end());
 }
 
 template <class T, class Alloc>
-List<T, Alloc>::~List(void)
+Map<T, Alloc>::~Map(void)
 {
 	clear();
 }
 
 template <class T, class Alloc>
-List<T, Alloc>
-&List<T, Alloc>::operator=(const List &l)
+Map<T, Alloc>
+&Map<T, Alloc>::operator=(const Map &l)
 {
 	if (&l == this)
 		return (*this);
@@ -189,108 +197,108 @@ List<T, Alloc>
 }
 
 template <class T, class Alloc>
-typename List<T, Alloc>::iterator
-List<T, Alloc>::begin(void)
+typename Map<T, Alloc>::iterator
+Map<T, Alloc>::begin(void)
 {
-	return (List<T, Alloc>::iterator(_front.next));
+	return (Map<T, Alloc>::iterator(_front.next));
 }
 
 template <class T, class Alloc>
-typename List<T, Alloc>::const_iterator
-List<T, Alloc>::begin(void) const
+typename Map<T, Alloc>::const_iterator
+Map<T, Alloc>::begin(void) const
 {
-	return (List<T, Alloc>::const_iterator(reinterpret_cast<ListNode<const T>*>
+	return (Map<T, Alloc>::const_iterator(reinterpret_cast<MapNode<const T>*>
 		(_front.next)));
 }
 
 template <class T, class Alloc>
-typename List<T, Alloc>::iterator
-List<T, Alloc>::end(void)
+typename Map<T, Alloc>::iterator
+Map<T, Alloc>::end(void)
 {
-	return (List<T, Alloc>::iterator(&_back));
+	return (Map<T, Alloc>::iterator(&_back));
 }
 
 template <class T, class Alloc>
-typename List<T, Alloc>::const_iterator
-List<T, Alloc>::end(void) const
+typename Map<T, Alloc>::const_iterator
+Map<T, Alloc>::end(void) const
 {
-	return (List<T, Alloc>::const_iterator(reinterpret_cast<ListNode<const T>*>
+	return (Map<T, Alloc>::const_iterator(reinterpret_cast<MapNode<const T>*>
 		(_back.prev->next)));
 }
 
 template <class T, class Alloc>
-typename List<T, Alloc>::reverse_iterator
-List<T, Alloc>::rbegin(void)
+typename Map<T, Alloc>::reverse_iterator
+Map<T, Alloc>::rbegin(void)
 {
-	return (List<T, Alloc>::reverse_iterator(end()));
+	return (Map<T, Alloc>::reverse_iterator(end()));
 }
 
 template <class T, class Alloc>
-typename List<T, Alloc>::const_reverse_iterator
-List<T, Alloc>::rbegin(void) const
+typename Map<T, Alloc>::const_reverse_iterator
+Map<T, Alloc>::rbegin(void) const
 {
-	return (List<T, Alloc>::const_reverse_iterator(end()));
+	return (Map<T, Alloc>::const_reverse_iterator(end()));
 }
 
 template <class T, class Alloc>
-typename List<T, Alloc>::reverse_iterator
-List<T, Alloc>::rend(void)
+typename Map<T, Alloc>::reverse_iterator
+Map<T, Alloc>::rend(void)
 {
-	return (List<T, Alloc>::reverse_iterator(begin()));
+	return (Map<T, Alloc>::reverse_iterator(begin()));
 }
 
 template <class T, class Alloc>
-typename List<T, Alloc>::const_reverse_iterator
-List<T, Alloc>::rend(void) const
+typename Map<T, Alloc>::const_reverse_iterator
+Map<T, Alloc>::rend(void) const
 {
-	return (List<T, Alloc>::const_reverse_iterator(begin()));
+	return (Map<T, Alloc>::const_reverse_iterator(begin()));
 }
 
 template <class T, class Alloc>
 bool
-List<T, Alloc>::empty() const
+Map<T, Alloc>::empty() const
 {
 	return (_size ? false : true);
 }
 
 template <class T, class Alloc>
-typename List<T, Alloc>::size_type
-List<T, Alloc>::size() const
+typename Map<T, Alloc>::size_type
+Map<T, Alloc>::size() const
 {
 	return (_size);
 }
 
 template <class T, class Alloc>
-typename List<T, Alloc>::size_type
-List<T, Alloc>::max_size() const
+typename Map<T, Alloc>::size_type
+Map<T, Alloc>::max_size() const
 {
-	return (_alloc.max_size() / sizeof(ListNode<T>));
+	return (_alloc.max_size() / sizeof(MapNode<T>));
 }
 
 template <class T, class Alloc>
-typename List<T, Alloc>::reference
-List<T, Alloc>::front()
-{
-	return (*begin());
-}
-
-template <class T, class Alloc>
-typename List<T, Alloc>::const_reference
-List<T, Alloc>::front() const
+typename Map<T, Alloc>::reference
+Map<T, Alloc>::front()
 {
 	return (*begin());
 }
 
 template <class T, class Alloc>
-typename List<T, Alloc>::reference
-List<T, Alloc>::back()
+typename Map<T, Alloc>::const_reference
+Map<T, Alloc>::front() const
+{
+	return (*begin());
+}
+
+template <class T, class Alloc>
+typename Map<T, Alloc>::reference
+Map<T, Alloc>::back()
 {
 	return (*rbegin());
 }
 
 template <class T, class Alloc>
-typename List<T, Alloc>::const_reference
-List<T, Alloc>::back() const
+typename Map<T, Alloc>::const_reference
+Map<T, Alloc>::back() const
 {
 	return (*rbegin());
 }
@@ -298,7 +306,7 @@ List<T, Alloc>::back() const
 template <class T, class Alloc>
 template <class InputIterator>
 void
-List<T, Alloc>::assign(InputIterator first, InputIterator last)
+Map<T, Alloc>::assign(InputIterator first, InputIterator last)
 {
 	clear();
 	for (; first != last; ++first)
@@ -307,7 +315,7 @@ List<T, Alloc>::assign(InputIterator first, InputIterator last)
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::assign(size_type n, const value_type &val)
+Map<T, Alloc>::assign(size_type n, const value_type &val)
 {
 	clear();
 	while (n--)
@@ -316,28 +324,28 @@ List<T, Alloc>::assign(size_type n, const value_type &val)
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::push_front(const value_type &val)
+Map<T, Alloc>::push_front(const value_type &val)
 {
 	insert(begin(), val);
 }
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::pop_front()
+Map<T, Alloc>::pop_front()
 {
 	erase(begin());
 }
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::push_back(const value_type &val)
+Map<T, Alloc>::push_back(const value_type &val)
 {
 	insert(end(), val);
 }
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::pop_back()
+Map<T, Alloc>::pop_back()
 {
 	iterator	it = end();
 
@@ -345,10 +353,10 @@ List<T, Alloc>::pop_back()
 }
 
 template <class T, class Alloc>
-typename List<T, Alloc>::iterator
-List<T, Alloc>::insert(iterator it, const value_type &val)
+typename Map<T, Alloc>::iterator
+Map<T, Alloc>::insert(iterator it, const value_type &val)
 {
-	ListNode<T>	*new_node = new ListNode<T>(val);
+	MapNode<T>	*new_node = new MapNode<T>(val);
 
 	new_node->next = it.node;
 	new_node->prev = it.node->prev;
@@ -360,7 +368,7 @@ List<T, Alloc>::insert(iterator it, const value_type &val)
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::insert(iterator it, size_type n, const value_type &val)
+Map<T, Alloc>::insert(iterator it, size_type n, const value_type &val)
 {
 	while (n--)
 		insert(it, val);
@@ -369,17 +377,17 @@ List<T, Alloc>::insert(iterator it, size_type n, const value_type &val)
 template <class T, class Alloc>
 template <class InputIterator>
 void
-List<T, Alloc>::insert(iterator it, InputIterator fst, InputIterator lst)
+Map<T, Alloc>::insert(iterator it, InputIterator fst, InputIterator lst)
 {
 	for (; fst != lst; ++fst)
 		insert(it, *fst);
 }
 
 template <class T, class Alloc>
-typename List<T, Alloc>::iterator
-List<T, Alloc>::erase(iterator position)
+typename Map<T, Alloc>::iterator
+Map<T, Alloc>::erase(iterator position)
 {
-	ListNode<T> *tmp = position.node;
+	MapNode<T> *tmp = position.node;
 
 	++position;
 	tmp->prev->next = tmp->next;
@@ -390,8 +398,8 @@ List<T, Alloc>::erase(iterator position)
 }
 
 template <class T, class Alloc>
-typename List<T, Alloc>::iterator
-List<T, Alloc>::erase(iterator first, iterator last)
+typename Map<T, Alloc>::iterator
+Map<T, Alloc>::erase(iterator first, iterator last)
 {
 	iterator	second = first;
 
@@ -406,11 +414,11 @@ List<T, Alloc>::erase(iterator first, iterator last)
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::swap(List &x)
+Map<T, Alloc>::swap(Map &x)
 {
-	ListNode<T>					*fst = _front.next;
-	ListNode<T>					*lst = _back.prev;
-	List<T, Alloc>::size_type	tmp = _size;
+	MapNode<T>					*fst = _front.next;
+	MapNode<T>					*lst = _back.prev;
+	Map<T, Alloc>::size_type	tmp = _size;
 
 	if (_size)
 	{
@@ -432,7 +440,7 @@ List<T, Alloc>::swap(List &x)
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::resize(size_type n, value_type val)
+Map<T, Alloc>::resize(size_type n, value_type val)
 {
 	if (n < _size)
 	{
@@ -448,7 +456,7 @@ List<T, Alloc>::resize(size_type n, value_type val)
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::clear()
+Map<T, Alloc>::clear()
 {
 	while (_size)
 		pop_back();
@@ -456,14 +464,14 @@ List<T, Alloc>::clear()
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::splice(iterator position, List<T, Alloc> &x)
+Map<T, Alloc>::splice(iterator position, Map<T, Alloc> &x)
 {
 	splice(position, x, x.begin(), x.end());
 }
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::splice(iterator position, List<T, Alloc> &x, iterator i)
+Map<T, Alloc>::splice(iterator position, Map<T, Alloc> &x, iterator i)
 {
 	i.node->prev->next = i.node->next;
 	i.node->next->prev = i.node->prev;
@@ -477,9 +485,9 @@ List<T, Alloc>::splice(iterator position, List<T, Alloc> &x, iterator i)
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::splice(iterator position, List<T, Alloc> &x, iterator fst, iterator lst)
+Map<T, Alloc>::splice(iterator position, Map<T, Alloc> &x, iterator fst, iterator lst)
 {
-	List<T, Alloc>::iterator	tmp(fst);
+	Map<T, Alloc>::iterator	tmp(fst);
 
 	for (; fst != lst; fst = tmp)
 	{
@@ -490,11 +498,11 @@ List<T, Alloc>::splice(iterator position, List<T, Alloc> &x, iterator fst, itera
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::remove(const value_type &val)
+Map<T, Alloc>::remove(const value_type &val)
 {
-	List<T, Alloc>::iterator tmp;
+	Map<T, Alloc>::iterator tmp;
 
-	for (List<T, Alloc>::iterator it(begin()); (tmp = it++) != end(); )
+	for (Map<T, Alloc>::iterator it(begin()); (tmp = it++) != end(); )
 		if (*tmp == val)
 			erase(tmp);
 }
@@ -502,18 +510,18 @@ List<T, Alloc>::remove(const value_type &val)
 template <class T, class Alloc>
 template <class Predicate>
 void
-List<T, Alloc>::remove_if(Predicate pred)
+Map<T, Alloc>::remove_if(Predicate pred)
 {
-	List<T, Alloc>::iterator	tmp;
+	Map<T, Alloc>::iterator	tmp;
 
-	for (List<T, Alloc>::iterator it(begin()); (tmp = it++) != end(); )
+	for (Map<T, Alloc>::iterator it(begin()); (tmp = it++) != end(); )
 		if (pred(*tmp))
 			erase(tmp);
 }
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::unique(void)
+Map<T, Alloc>::unique(void)
 {
 	unique(_equal);
 }
@@ -521,10 +529,10 @@ List<T, Alloc>::unique(void)
 template <class T, class Alloc>
 template <class BinaryPredicate>
 void
-List<T, Alloc>::unique(BinaryPredicate binary_pred)
+Map<T, Alloc>::unique(BinaryPredicate binary_pred)
 {
-	List<T, Alloc>::iterator	it(begin());
-	List<T, Alloc>::iterator	tmp;
+	Map<T, Alloc>::iterator	it(begin());
+	Map<T, Alloc>::iterator	tmp;
 	T							last;
 
 	if (it != end())
@@ -542,7 +550,7 @@ List<T, Alloc>::unique(BinaryPredicate binary_pred)
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::merge(List &x)
+Map<T, Alloc>::merge(Map &x)
 {
 	merge(x, _less);
 }
@@ -550,14 +558,14 @@ List<T, Alloc>::merge(List &x)
 template <class T, class Alloc>
 template <class Compare>
 void
-List<T, Alloc>::merge(List &x, Compare comp)
+Map<T, Alloc>::merge(Map &x, Compare comp)
 {
-	List<T, Alloc>::iterator	tmp;
-	List<T, Alloc>::iterator	to(begin());
+	Map<T, Alloc>::iterator	tmp;
+	Map<T, Alloc>::iterator	to(begin());
 
 	if (&x == this)
 		return ;
-	for (List<T, Alloc>::iterator from(x.begin()); (tmp = from++) != x.end(); )
+	for (Map<T, Alloc>::iterator from(x.begin()); (tmp = from++) != x.end(); )
 	{
 		while (to != end() && !comp(*tmp, *to))
 			++to;
@@ -574,7 +582,7 @@ List<T, Alloc>::merge(List &x, Compare comp)
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::sort(void)
+Map<T, Alloc>::sort(void)
 {
 	sort(_less);
 }
@@ -582,10 +590,10 @@ List<T, Alloc>::sort(void)
 template <class T, class Alloc>
 template <class Compare>
 void
-List<T, Alloc>::sort(Compare comp)
+Map<T, Alloc>::sort(Compare comp)
 {
-	List<T, Alloc>::iterator it1;
-	List<T, Alloc>::iterator it2;
+	Map<T, Alloc>::iterator it1;
+	Map<T, Alloc>::iterator it2;
 	bool	sorted = false;
 
 	while (!sorted)
@@ -610,12 +618,12 @@ List<T, Alloc>::sort(Compare comp)
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::reverse(void)
+Map<T, Alloc>::reverse(void)
 {
-	List<T, Alloc>::iterator	it_beg(begin());
-	List<T, Alloc>::iterator	it_end(end());
-	ListNode<T>					*tmp_next;
-	ListNode<T>					*tmp_prev;
+	Map<T, Alloc>::iterator	it_beg(begin());
+	Map<T, Alloc>::iterator	it_end(end());
+	MapNode<T>					*tmp_next;
+	MapNode<T>					*tmp_prev;
 	
 	for (; it_beg != it_end-- && it_beg != it_end; ++it_beg)
 	{
@@ -645,10 +653,10 @@ List<T, Alloc>::reverse(void)
 
 template <class T, class Alloc>
 bool
-operator==(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs)
+operator==(const Map<T, Alloc> &lhs, const Map<T, Alloc> &rhs)
 {
-	typename List<T, Alloc>::const_iterator		lhs_it(lhs.begin());
-	typename List<T, Alloc>::const_iterator		rhs_it(rhs.begin());
+	typename Map<T, Alloc>::const_iterator		lhs_it(lhs.begin());
+	typename Map<T, Alloc>::const_iterator		rhs_it(rhs.begin());
 
 	if (lhs._size != rhs._size)
 		return (false);
@@ -660,17 +668,17 @@ operator==(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs)
 
 template <class T, class Alloc>
 bool
-operator!=(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs)
+operator!=(const Map<T, Alloc> &lhs, const Map<T, Alloc> &rhs)
 {
 	return (!(lhs == rhs));
 }
 
 template <class T, class Alloc>
 bool
-operator<(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs)
+operator<(const Map<T, Alloc> &lhs, const Map<T, Alloc> &rhs)
 {
-	typename List<T, Alloc>::const_iterator		lhs_it(lhs.begin());
-	typename List<T, Alloc>::const_iterator		rhs_it(rhs.begin());
+	typename Map<T, Alloc>::const_iterator		lhs_it(lhs.begin());
+	typename Map<T, Alloc>::const_iterator		rhs_it(rhs.begin());
 
 	for (; rhs_it != rhs.end(); ++lhs_it, ++rhs_it)
 	{
@@ -682,51 +690,51 @@ operator<(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs)
 
 template <class T, class Alloc>
 bool
-operator<=(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs)
+operator<=(const Map<T, Alloc> &lhs, const Map<T, Alloc> &rhs)
 {
 	return (!(lhs > rhs));
 }
 
 template <class T, class Alloc>
 bool
-operator>(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs)
+operator>(const Map<T, Alloc> &lhs, const Map<T, Alloc> &rhs)
 {
 	return (rhs < lhs);
 }
 
 template <class T, class Alloc>
 bool
-operator>=(const List<T, Alloc> &lhs, const List<T, Alloc> &rhs)
+operator>=(const Map<T, Alloc> &lhs, const Map<T, Alloc> &rhs)
 {
 	return (!(lhs < rhs));
 }
 
 template <class T, class Alloc>
 void
-swap(List<T,Alloc> &x, List<T,Alloc> &y)
+swap(Map<T,Alloc> &x, Map<T,Alloc> &y)
 {
 	x.swap(y);
 }
 
 template <class T, class Alloc>
 bool
-List<T, Alloc>::_equal(const_reference val1, const_reference val2)
+Map<T, Alloc>::_equal(const_reference val1, const_reference val2)
 {
 	return (val1 == val2);
 }
 
 template <class T, class Alloc>
 bool
-List<T, Alloc>::_less(const_reference val1, const_reference val2)
+Map<T, Alloc>::_less(const_reference val1, const_reference val2)
 {
 	return (val1 < val2);
 }
 
 template <class T, class Alloc>
 void
-List<T, Alloc>::_swap_it(List<T, Alloc>::iterator &it1, List<T, Alloc>::iterator &it2)
+Map<T, Alloc>::_swap_it(Map<T, Alloc>::iterator &it1, Map<T, Alloc>::iterator &it2)
 {
-	List<T, Alloc>::iterator	tmp;
+	Map<T, Alloc>::iterator	tmp;
 
 	tmp = it1;
 	it1 = it2;
@@ -735,4 +743,4 @@ List<T, Alloc>::_swap_it(List<T, Alloc>::iterator &it1, List<T, Alloc>::iterator
 
 }
 
-#endif //LIST_HPP
+#endif //MAP_HPP

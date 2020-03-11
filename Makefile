@@ -16,7 +16,7 @@ $(NAME)	:	$(OBJS)
 			$(CC) $(CFLAGS) -c $< -o $@
 
 clean	:
-			$(RM) $(OBJS)
+			$(RM) $(OBJS) .tmp
 
 fclean	:	clean
 			$(RM) $(NAME)
