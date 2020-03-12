@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/12 21:51:56 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/12 22:49:04 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ class	Map
 		~Map(void);
 		Map					&operator=(const Map &l);
 
-/*
 		//Iterators :
 		iterator				begin(void);
 		const_iterator			begin(void) const;
@@ -69,6 +68,7 @@ class	Map
 		reverse_iterator		rend(void);
 		const_reverse_iterator	rend(void) const;
 
+/*
 		//Capacity :
 		bool					empty() const;
 		size_type				size() const;
@@ -225,65 +225,65 @@ Map<Key, T, Compare, Alloc>
 	return (*this);
 }
 
+template <class Key, class T, class Compare, class Alloc>
+typename Map<Key, T, Compare, Alloc>::iterator
+Map<Key, T, Compare, Alloc>::begin(void)
+{
+	return (Map<Key, T, Compare, Alloc>::iterator(_front.up));
+}
+
+template <class Key, class T, class Compare, class Alloc>
+typename Map<Key, T, Compare, Alloc>::const_iterator
+Map<Key, T, Compare, Alloc>::begin(void) const
+{
+	return (Map<Key, T, Compare, Alloc>::
+		const_iterator(reinterpret_cast<MapNode<const value_type> *>(_front.up)));
+}
+
+template <class Key, class T, class Compare, class Alloc>
+typename Map<Key, T, Compare, Alloc>::iterator
+Map<Key, T, Compare, Alloc>::end(void)
+{
+	return (Map<Key, T, Compare, Alloc>::iterator(&_back));
+}
+
+template <class Key, class T, class Compare, class Alloc>
+typename Map<Key, T, Compare, Alloc>::const_iterator
+Map<Key, T, Compare, Alloc>::end(void) const
+{
+	return (Map<Key, T, Compare, Alloc>::
+		const_iterator(reinterpret_cast<MapNode<const value_type> *>(_back.up->right)));
+}
+
+template <class Key, class T, class Compare, class Alloc>
+typename Map<Key, T, Compare, Alloc>::reverse_iterator
+Map<Key, T, Compare, Alloc>::rbegin(void)
+{
+	return (Map<Key, T, Compare, Alloc>::reverse_iterator(end()));
+}
+
+template <class Key, class T, class Compare, class Alloc>
+typename Map<Key, T, Compare, Alloc>::const_reverse_iterator
+Map<Key, T, Compare, Alloc>::rbegin(void) const
+{
+	return (Map<Key, T, Compare, Alloc>::const_reverse_iterator(end()));
+}
+
+template <class Key, class T, class Compare, class Alloc>
+typename Map<Key, T, Compare, Alloc>::reverse_iterator
+Map<Key, T, Compare, Alloc>::rend(void)
+{
+	return (Map<Key, T, Compare, Alloc>::reverse_iterator(begin()));
+}
+
+template <class Key, class T, class Compare, class Alloc>
+typename Map<Key, T, Compare, Alloc>::const_reverse_iterator
+Map<Key, T, Compare, Alloc>::rend(void) const
+{
+	return (Map<Key, T, Compare, Alloc>::const_reverse_iterator(begin()));
+}
+
 /*
-template <class T, class Alloc>
-typename Map<T, Alloc>::iterator
-Map<T, Alloc>::begin(void)
-{
-	return (Map<T, Alloc>::iterator(_front.next));
-}
-
-template <class T, class Alloc>
-typename Map<T, Alloc>::const_iterator
-Map<T, Alloc>::begin(void) const
-{
-	return (Map<T, Alloc>::const_iterator(reinterpret_cast<MapNode<const T>*>
-		(_front.next)));
-}
-
-template <class T, class Alloc>
-typename Map<T, Alloc>::iterator
-Map<T, Alloc>::end(void)
-{
-	return (Map<T, Alloc>::iterator(&_back));
-}
-
-template <class T, class Alloc>
-typename Map<T, Alloc>::const_iterator
-Map<T, Alloc>::end(void) const
-{
-	return (Map<T, Alloc>::const_iterator(reinterpret_cast<MapNode<const T>*>
-		(_back.prev->next)));
-}
-
-template <class T, class Alloc>
-typename Map<T, Alloc>::reverse_iterator
-Map<T, Alloc>::rbegin(void)
-{
-	return (Map<T, Alloc>::reverse_iterator(end()));
-}
-
-template <class T, class Alloc>
-typename Map<T, Alloc>::const_reverse_iterator
-Map<T, Alloc>::rbegin(void) const
-{
-	return (Map<T, Alloc>::const_reverse_iterator(end()));
-}
-
-template <class T, class Alloc>
-typename Map<T, Alloc>::reverse_iterator
-Map<T, Alloc>::rend(void)
-{
-	return (Map<T, Alloc>::reverse_iterator(begin()));
-}
-
-template <class T, class Alloc>
-typename Map<T, Alloc>::const_reverse_iterator
-Map<T, Alloc>::rend(void) const
-{
-	return (Map<T, Alloc>::const_reverse_iterator(begin()));
-}
-
 template <class T, class Alloc>
 bool
 Map<T, Alloc>::empty() const
