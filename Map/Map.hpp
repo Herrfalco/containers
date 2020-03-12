@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/12 23:30:14 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/13 00:06:13 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,10 @@ class	Map
 		size_type				size() const;
 		size_type				max_size() const;
 
-/*
 		//Element access :
-		reference				front();
-		const_reference			front() const;
-		reference				back();
-		const_reference			back() const;
+		mapped_type				&operator[](const key_type &k);
 
+/*
 		//Modifiers :
 		template <class InputIterator>
 		void					assign(InputIterator first, InputIterator last);
@@ -304,35 +301,14 @@ Map<Key, T, Compare, Alloc>::max_size() const
 	return (std::allocator<MapNode<value_type> >().max_size() + _size);
 }
 
+template <class Key, class T, class Compare, class Alloc>
+typename Map<Key, T, Compare, Alloc>::mapped_type
+&Map<Key, T, Compare, Alloc>::operator[](const key_type &k)
+{
+	return ((*((this->insert(make_pair(k, mapped_type()))).first)).second);
+}
+
 /*
-template <class T, class Alloc>
-typename Map<T, Alloc>::reference
-Map<T, Alloc>::front()
-{
-	return (*begin());
-}
-
-template <class T, class Alloc>
-typename Map<T, Alloc>::const_reference
-Map<T, Alloc>::front() const
-{
-	return (*begin());
-}
-
-template <class T, class Alloc>
-typename Map<T, Alloc>::reference
-Map<T, Alloc>::back()
-{
-	return (*rbegin());
-}
-
-template <class T, class Alloc>
-typename Map<T, Alloc>::const_reference
-Map<T, Alloc>::back() const
-{
-	return (*rbegin());
-}
-
 template <class T, class Alloc>
 template <class InputIterator>
 void
