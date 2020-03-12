@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/11 18:38:05 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/12 17:16:56 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ struct	MapIter
 		//Access operators :
 		reference		operator*(void);
 		pointer			operator->(void);
-		MapIter		&operator++(void);
-		MapIter		operator++(int valptr);
-		MapIter		&operator--(void);
-		MapIter		operator--(int valptr);
+		MapIter			&operator++(void);
+		MapIter			operator++(int valptr);
+		MapIter			&operator--(void);
+		MapIter			operator--(int valptr);
 
 		//Attibutes :
 		MapNode<value_type>		*node;
@@ -107,7 +107,21 @@ template <class Category, class T, class Distance, class Pointer, class Referenc
 MapIter<Category, T, Distance, Pointer, Reference>&
 MapIter<Category, T, Distance, Pointer, Reference>::operator++(void)
 {
-	node = node->next;
+	if (node->right)
+	{
+		node = node->right;
+		while (node->left)
+			node = node->left;
+	}
+	else if (node->type == lft)
+		node = node->up;
+	else if (node->type == rht)
+	{
+		do
+			node = node->up;
+		while (node->type != lft)
+		node = node->up;
+	}
 	return (*this);
 }
 
@@ -115,11 +129,11 @@ template <class Category, class T, class Distance, class Pointer, class Referenc
 MapIter<Category, T, Distance, Pointer, Reference>
 MapIter<Category, T, Distance, Pointer, Reference>::operator++(int dummy)
 {
-	MapIter<Category, T>	tmp;
+	MapIter<Category, T, Distance, Pointer, Reference>	tmp;
 
 	(void)dummy;
 	tmp = *this;
-	node = node->next;
+	++(*this);
 	return (tmp);
 }
 
@@ -127,7 +141,21 @@ template <class Category, class T, class Distance, class Pointer, class Referenc
 MapIter<Category, T, Distance, Pointer, Reference>&
 MapIter<Category, T, Distance, Pointer, Reference>::operator--(void)
 {
-	node = node->prev;
+	if (node->left)
+	{
+		node = node->left;
+		while (node->right)
+			node = node->right;
+	}
+	else if (node->type == rht)
+		node = node->up;
+	else if (node->type == lft)
+	{
+		do
+			node = node->up;
+		while (node->type != rht)
+		node = node->up;
+	}
 	return (*this);
 }
 
@@ -135,11 +163,11 @@ template <class Category, class T, class Distance, class Pointer, class Referenc
 MapIter<Category, T, Distance, Pointer, Reference>
 MapIter<Category, T, Distance, Pointer, Reference>::operator--(int dummy)
 {
-	MapIter<Category, T>	tmp;
+	MapIter<Category, T, Distance, Pointer, Reference>	tmp;
 
 	(void)dummy;
 	tmp = *this;
-	node = node->prev;
+	--(*this);
 	return (tmp);
 }
 

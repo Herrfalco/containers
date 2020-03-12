@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/10 16:07:37 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/12 17:13:24 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ template <class Category, class T, class Distance, class Pointer, class Referenc
 ListIter<Category, T, Distance, Pointer, Reference>
 ListIter<Category, T, Distance, Pointer, Reference>::operator++(int dummy)
 {
-	ListIter<Category, T>	tmp;
+	ListIter<Category, T, Distance, Pointer, Reference>	tmp;
 
 	(void)dummy;
 	tmp = *this;
@@ -135,7 +135,7 @@ template <class Category, class T, class Distance, class Pointer, class Referenc
 ListIter<Category, T, Distance, Pointer, Reference>
 ListIter<Category, T, Distance, Pointer, Reference>::operator--(int dummy)
 {
-	ListIter<Category, T>	tmp;
+	ListIter<Category, T, Distance, Pointer, Reference>	tmp;
 
 	(void)dummy;
 	tmp = *this;
