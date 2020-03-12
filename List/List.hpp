@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/12 17:47:54 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/12 23:21:42 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,7 @@ template <class T, class Alloc>
 typename List<T, Alloc>::size_type
 List<T, Alloc>::max_size() const
 {
-	return (_alloc.max_size() / sizeof(ListNode<T>));
+	return (std::allocator<ListNode<T> >().max_size() + _size);
 }
 
 template <class T, class Alloc>

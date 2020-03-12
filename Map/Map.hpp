@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/12 22:49:04 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/12 23:30:14 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ class	Map
 		reverse_iterator		rend(void);
 		const_reverse_iterator	rend(void) const;
 
-/*
 		//Capacity :
 		bool					empty() const;
 		size_type				size() const;
 		size_type				max_size() const;
 
+/*
 		//Element access :
 		reference				front();
 		const_reference			front() const;
@@ -283,28 +283,28 @@ Map<Key, T, Compare, Alloc>::rend(void) const
 	return (Map<Key, T, Compare, Alloc>::const_reverse_iterator(begin()));
 }
 
-/*
-template <class T, class Alloc>
+template <class Key, class T, class Compare, class Alloc>
 bool
-Map<T, Alloc>::empty() const
+Map<Key, T, Compare, Alloc>::empty() const
 {
 	return (_size ? false : true);
 }
 
-template <class T, class Alloc>
-typename Map<T, Alloc>::size_type
-Map<T, Alloc>::size() const
+template <class Key, class T, class Compare, class Alloc>
+typename Map<Key, T, Compare, Alloc>::size_type
+Map<Key, T, Compare, Alloc>::size() const
 {
 	return (_size);
 }
 
-template <class T, class Alloc>
-typename Map<T, Alloc>::size_type
-Map<T, Alloc>::max_size() const
+template <class Key, class T, class Compare, class Alloc>
+typename Map<Key, T, Compare, Alloc>::size_type
+Map<Key, T, Compare, Alloc>::max_size() const
 {
-	return (_alloc.max_size() / sizeof(MapNode<T>));
+	return (std::allocator<MapNode<value_type> >().max_size() + _size);
 }
 
+/*
 template <class T, class Alloc>
 typename Map<T, Alloc>::reference
 Map<T, Alloc>::front()

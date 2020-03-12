@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/12 17:48:05 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/12 23:22:08 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,7 @@ template <class T, class Alloc>
 typename Vector<T, Alloc>::size_type
 Vector<T, Alloc>::max_size() const
 {
-	return (_alloc.max_size() / sizeof(T));
+	return (_alloc.max_size() + _size);
 }
 
 template <class T, class Alloc>
