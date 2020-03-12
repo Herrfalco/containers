@@ -6,12 +6,13 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 17:04:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/11 19:30:15 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/12 18:27:04 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tests/test_list.hpp"
 #include "tests/test_vect.hpp"
+#include "tests/test_map.hpp"
 #include <fstream>
 
 int		error(std::string msg, int ret)

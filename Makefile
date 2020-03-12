@@ -1,6 +1,7 @@
 NAME	=	test
 SRCS	=	tests/test_list.cpp \
 			tests/test_vect.cpp \
+			tests/test_map.cpp \
 			main.cpp
 OBJS	=	$(SRCS:.cpp=.opp)
 CC		=	clang++-8 -std=c++98

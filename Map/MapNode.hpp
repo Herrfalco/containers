@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:07:57 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/12 16:03:41 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/12 19:25:59 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 
 typedef enum	e_node
 {
-	no;
-	lft;
-	rht;
+	no,
+	lft,
+	rht
 }				t_node;
 
 template	<typename T>
 struct		MapNode
 {
 		//Constructors, destructor and assignation :
-		MapNode(const T &v = 0, t_node typ = no, bool dummy = false,
+		MapNode(const T &v = T(), t_node typ = no, bool dummy = false,
 			MapNode<T> *u = 0, MapNode<T> *l = 0, MapNode<T> *r = 0);
 		MapNode(const MapNode<T> &m);
 		~MapNode(void);
@@ -51,9 +51,9 @@ MapNode<T>::MapNode(const T &v, t_node typ, bool dummy, MapNode<T> *u, MapNode<T
 
 template	<typename T>
 MapNode<T>::MapNode(const MapNode<T> &m) :
-	type(no), up(this), left(this), right(this), val(l.val), valptr(0)
+	type(no), up(this), left(this), right(this), val(m.val), valptr(0)
 {
-	valptr = !l.valptr ? 0 : &val;
+	valptr = !m.valptr ? 0 : &val;
 }
 
 template	<typename T>
@@ -62,12 +62,12 @@ MapNode<T>::~MapNode(void)
 }
 
 template	<typename T>
-MapNode<T>	&MapNode<T>::operator=(const MapNode<T> &l)
+MapNode<T>	&MapNode<T>::operator=(const MapNode<T> &m)
 {
-	if (&l == this)
+	if (&m == this)
 		return (*this);
-	val = l.val;
-	valptr = !l.valptr ? 0 : &val;
+	val = m.val;
+	valptr = !m.valptr ? 0 : &val;
 	return (*this);
 }
 

@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/11 17:44:19 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/12 17:47:54 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 #include "../Iter/ListIter.hpp"
 #include "../Iter/RevIter.hpp"
 #include <memory>
-
-#include <iostream>
 
 namespace	ft {
 

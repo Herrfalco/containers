@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/12 17:16:56 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/12 18:32:36 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ MapIter<Category, T, Distance, Pointer, Reference>::operator++(void)
 	{
 		do
 			node = node->up;
-		while (node->type != lft)
+		while (node->type != lft);
 		node = node->up;
 	}
 	return (*this);
@@ -153,7 +153,7 @@ MapIter<Category, T, Distance, Pointer, Reference>::operator--(void)
 	{
 		do
 			node = node->up;
-		while (node->type != rht)
+		while (node->type != rht);
 		node = node->up;
 	}
 	return (*this);

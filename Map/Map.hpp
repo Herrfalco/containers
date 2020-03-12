@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/11 18:13:52 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/12 19:34:47 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,41 +16,48 @@
 #include "../Iter/IterTypes.hpp"
 #include "../Iter/MapIter.hpp"
 #include "../Iter/RevIter.hpp"
+#include <functional>
 #include <memory>
 
 #include <iostream>
 
 namespace	ft {
 
-template <class T, class Alloc = std::allocator<T> >
+template <class Key, class T, class Compare = std::less<Key>,
+	class Alloc = std::allocator<std::pair<const Key, T> > >
 class	Map
 {
 	public:
 		//Member types :
-		typedef T												value_type;
-		typedef Alloc											allocator_type;
-		typedef typename allocator_type::reference				reference;
-		typedef typename allocator_type::const_reference		const_reference;
-		typedef typename allocator_type::pointer				pointer;
-		typedef typename allocator_type::const_pointer			const_pointer;
-		typedef MapIter<bidirectional_iterator_tag, T>			iterator;
-		typedef MapIter<bidirectional_iterator_tag, const T>	const_iterator;
-		typedef RevIter<iterator>								reverse_iterator;
-		typedef RevIter<const_iterator>							const_reverse_iterator;
-		typedef ptrdiff_t										difference_type;
-		typedef size_t											size_type;
+		typedef Key														key_type;
+		typedef T														mapped_type;
+		typedef std::pair<const key_type, mapped_type>					value_type;
+		typedef Compare													key_compare;
+		class															value_compare;
+		typedef Alloc													allocator_type;
+		typedef typename allocator_type::reference						reference;
+		typedef typename allocator_type::const_reference				const_reference;
+		typedef typename allocator_type::pointer						pointer;
+		typedef typename allocator_type::const_pointer					const_pointer;
+		typedef MapIter<bidirectional_iterator_tag, value_type>			iterator;
+		typedef MapIter<bidirectional_iterator_tag, const value_type>	const_iterator;
+		typedef RevIter<iterator>										reverse_iterator;
+		typedef RevIter<const_iterator>									const_reverse_iterator;
+		typedef ptrdiff_t												difference_type;
+		typedef size_t													size_type;
 
 		//Constructors, destructor and assignation :
-		explicit Map(const allocator_type &alloc = allocator_type());
-		explicit Map(size_type n, const value_type &val = value_type(),
+		explicit Map(const key_compare &comp = key_compare(),
 			const allocator_type &alloc = allocator_type());
 		template <class InputIterator>
 		Map(InputIterator first, InputIterator last,
+			const key_compare &comp = key_compare(),
 			const allocator_type &alloc = allocator_type());
-		Map(const Map &l);
+		Map(const Map &m);
 		~Map(void);
 		Map					&operator=(const Map &l);
 
+/*
 		//Iterators :
 		iterator				begin(void);
 		const_iterator			begin(void) const;
@@ -124,31 +131,58 @@ class	Map
 		template <class T2, class Alloc2>
 		friend void	swap(Map<T2, Alloc2> &x, Map<T2, Alloc2> &y);
 
+*/
 	private:
 		//Attibutes :
 		allocator_type	_alloc;
+		key_compare		_comp;
+		MapNode<T>		_root;
 		MapNode<T>		_front;
 		MapNode<T>		_back;
 		size_type		_size;
 
+/*
 		//Utils :
 		static bool				_equal(const_reference val, const_reference val2);
 		static bool				_less(const_reference val, const_reference val2);
 		void					_swap_it(iterator &it1, iterator &it2);
+*/
 };
 
-template <class T, class Alloc>
-Map<T, Alloc>::Map(const allocator_type &alloc) :
-	_alloc(alloc), _front(), _back(), _size(0)
+template <class Key, class T, class Compare, class Alloc>
+class	Map<Key, T, Compare, Alloc>::value_compare :
+	public std::binary_function<value_type, value_type, bool>
 {
+	friend class	Map;
+
+	public:
+		typedef bool		result_type;
+		typedef value_type	first_argument_type;
+		typedef value_type	second_argument_type;
+		bool	operator()(const value_type &x, const value_type &y) const
+		{
+			return comp(x.first, y.first);
+		}
+	protected:
+		Compare comp;
+		value_compare(Compare c) : comp(c) {}
+};
+
+template <class Key, class T, class Compare, class Alloc>
+Map<Key, T, Compare, Alloc>::Map(const key_compare &comp, const allocator_type &alloc) :
+	_alloc(alloc), _comp(comp), _root(), _front(), _back(), _size(0)
+{
+	//Working here
 	_back.prev = &_front;
 	_back.next = &_back;
 	_front.next = &_back;
 	_front.prev = &_front;
 }
 
-template <class T, class Alloc>
-Map<T, Alloc>::Map(size_type n, const value_type &val, const allocator_type &alloc) :
+template <class Key, class T, class Compare, class Alloc>
+template <class InputIterator>
+Map<Key, T, Compare, Alloc>::Map(InputIterator first, InputIterator last,
+	const key_compare &comp, const allocator_type &alloc) :
 	_alloc(alloc), _front(), _back(), _size(0)
 {
 	_back.prev = &_front;
@@ -158,44 +192,33 @@ Map<T, Alloc>::Map(size_type n, const value_type &val, const allocator_type &all
 	assign(n, val);
 }
 
-template <class T, class Alloc>
-template <class InputIterator>
-Map<T, Alloc>::Map(InputIterator first, InputIterator last, const allocator_type &alloc)
-	: _alloc(alloc), _front(), _back(), _size(0)
+template <class Key, class T, class Compare, class Alloc>
+Map<T, Alloc>::Map(const Map &m) : _alloc(m._alloc), _front(), _back(), _size(0)
 {
 	_back.prev = &_front;
 	_back.next = &_back;
 	_front.next = &_back;
 	_front.prev = &_front;
-	assign(first, last);
+	assign(m.begin(), m.end());
 }
 
-template <class T, class Alloc>
-Map<T, Alloc>::Map(const Map &l) : _alloc(l._alloc), _front(), _back(), _size(0)
-{
-	_back.prev = &_front;
-	_back.next = &_back;
-	_front.next = &_back;
-	_front.prev = &_front;
-	assign(l.begin(), l.end());
-}
-
-template <class T, class Alloc>
+template <class Key, class T, class Compare, class Alloc>
 Map<T, Alloc>::~Map(void)
 {
 	clear();
 }
 
-template <class T, class Alloc>
+template <class Key, class T, class Compare, class Alloc>
 Map<T, Alloc>
 &Map<T, Alloc>::operator=(const Map &l)
 {
 	if (&l == this)
 		return (*this);
-	assign(l.begin(), l.end());
+	//To do
 	return (*this);
 }
 
+/*
 template <class T, class Alloc>
 typename Map<T, Alloc>::iterator
 Map<T, Alloc>::begin(void)
@@ -740,6 +763,7 @@ Map<T, Alloc>::_swap_it(Map<T, Alloc>::iterator &it1, Map<T, Alloc>::iterator &i
 	it1 = it2;
 	it2 = tmp;
 }
+*/
 
 }
 
