@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/12 19:34:47 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/12 21:51:56 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "../Iter/IterTypes.hpp"
 #include "../Iter/MapIter.hpp"
 #include "../Iter/RevIter.hpp"
+#include "MapNode.hpp"
 #include <functional>
 #include <memory>
 
@@ -134,15 +135,16 @@ class	Map
 */
 	private:
 		//Attibutes :
-		allocator_type	_alloc;
-		key_compare		_comp;
-		MapNode<T>		_root;
-		MapNode<T>		_front;
-		MapNode<T>		_back;
-		size_type		_size;
+		allocator_type			_alloc;
+		key_compare				_comp;
+		MapNode<value_type>		_root;
+		MapNode<value_type>		_front;
+		MapNode<value_type>		_back;
+		size_type				_size;
 
-/*
 		//Utils :
+		void					rec_insert(const value_type *n);
+		/*
 		static bool				_equal(const_reference val, const_reference val2);
 		static bool				_less(const_reference val, const_reference val2);
 		void					_swap_it(iterator &it1, iterator &it2);
@@ -172,49 +174,54 @@ template <class Key, class T, class Compare, class Alloc>
 Map<Key, T, Compare, Alloc>::Map(const key_compare &comp, const allocator_type &alloc) :
 	_alloc(alloc), _comp(comp), _root(), _front(), _back(), _size(0)
 {
-	//Working here
-	_back.prev = &_front;
-	_back.next = &_back;
-	_front.next = &_back;
-	_front.prev = &_front;
+	_root.left = &_front;
+	_root.right = &_back;
+	_front.up = &_root;
+	_back.up = &_root;
 }
 
 template <class Key, class T, class Compare, class Alloc>
 template <class InputIterator>
 Map<Key, T, Compare, Alloc>::Map(InputIterator first, InputIterator last,
 	const key_compare &comp, const allocator_type &alloc) :
-	_alloc(alloc), _front(), _back(), _size(0)
+	_alloc(alloc), _comp(comp), _root(), _front(), _back(), _size(0)
 {
-	_back.prev = &_front;
-	_back.next = &_back;
-	_front.next = &_back;
-	_front.prev = &_front;
-	assign(n, val);
+	for (; first != last; ++first)
+		insert(*first);
 }
 
 template <class Key, class T, class Compare, class Alloc>
-Map<T, Alloc>::Map(const Map &m) : _alloc(m._alloc), _front(), _back(), _size(0)
+void
+Map<Key, T, Compare, Alloc>::rec_insert(const value_type *n)
 {
-	_back.prev = &_front;
-	_back.next = &_back;
-	_front.next = &_back;
-	_front.prev = &_front;
-	assign(m.begin(), m.end());
+	if (!n || !n->valptr)
+		return ;
+	insert(*(n->valptr));
+	rec_insert(n->left);
+	rec_insert(n->right);
 }
 
 template <class Key, class T, class Compare, class Alloc>
-Map<T, Alloc>::~Map(void)
+Map<Key, T, Compare, Alloc>::Map(const Map &m) : _alloc(m._alloc), _comp(m.comp),
+	_root(), _front(), _back(), _size(0)
+{
+	rec_insert(&m._root);
+}
+
+template <class Key, class T, class Compare, class Alloc>
+Map<Key, T, Compare, Alloc>::~Map(void)
 {
 	clear();
 }
 
 template <class Key, class T, class Compare, class Alloc>
-Map<T, Alloc>
-&Map<T, Alloc>::operator=(const Map &l)
+Map<Key, T, Compare, Alloc>
+&Map<Key, T, Compare, Alloc>::operator=(const Map &m)
 {
-	if (&l == this)
+	if (&m == this)
 		return (*this);
-	//To do
+	clear();
+	rec_insert(&m.root);
 	return (*this);
 }
 
