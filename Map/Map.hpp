@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/13 00:06:13 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/13 20:08:52 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,42 +59,35 @@ class	Map
 		Map					&operator=(const Map &l);
 
 		//Iterators :
-		iterator				begin(void);
-		const_iterator			begin(void) const;
-		iterator				end(void);
-		const_iterator			end(void) const;
-		reverse_iterator		rbegin(void);
-		const_reverse_iterator	rbegin(void) const;
-		reverse_iterator		rend(void);
-		const_reverse_iterator	rend(void) const;
+		iterator					begin(void);
+		const_iterator				begin(void) const;
+		iterator					end(void);
+		const_iterator				end(void) const;
+		reverse_iterator			rbegin(void);
+		const_reverse_iterator		rbegin(void) const;
+		reverse_iterator			rend(void);
+		const_reverse_iterator		rend(void) const;
 
 		//Capacity :
-		bool					empty() const;
-		size_type				size() const;
-		size_type				max_size() const;
+		bool						empty() const;
+		size_type					size() const;
+		size_type					max_size() const;
 
 		//Element access :
-		mapped_type				&operator[](const key_type &k);
+		mapped_type					&operator[](const key_type &k);
+
+		//Modifiers :
+		std::pair<iterator, bool>	insert(const value_type &val);
+		iterator					insert(iterator it, const value_type &val);
+		template <class InputIterator>
+		void						insert(InputIterator fst, InputIterator lst);
+		void						erase(iterator position);
+		size_type					erase(const key_type &k);
+		void						erase(iterator first, iterator last);
+		void						swap(Map &x);
+		void						clear();
 
 /*
-		//Modifiers :
-		template <class InputIterator>
-		void					assign(InputIterator first, InputIterator last);
-		void					assign(size_type n, const value_type &val);
-		void					push_front(const value_type &val);
-		void					pop_front();
-		void					push_back(const value_type &val);
-		void					pop_back();
-		iterator				insert(iterator it, const value_type &val);
-		void					insert(iterator it, size_type n, const value_type &val);
-		template <class InputIterator>
-		void					insert(iterator it, InputIterator fst, InputIterator lst);
-		iterator				erase(iterator position);
-		iterator				erase(iterator first, iterator last);
-		void					swap(Map &x);
-		void					resize(size_type n, value_type val = value_type());
-		void					clear();
-
 		//Operations :
 		void					splice(iterator position, Map &x);
 		void					splice(iterator position, Map &x, iterator i);
@@ -134,7 +127,7 @@ class	Map
 		//Attibutes :
 		allocator_type			_alloc;
 		key_compare				_comp;
-		MapNode<value_type>		_root;
+		MapNode<value_type>		*_root;
 		MapNode<value_type>		_front;
 		MapNode<value_type>		_back;
 		size_type				_size;
@@ -169,19 +162,15 @@ class	Map<Key, T, Compare, Alloc>::value_compare :
 
 template <class Key, class T, class Compare, class Alloc>
 Map<Key, T, Compare, Alloc>::Map(const key_compare &comp, const allocator_type &alloc) :
-	_alloc(alloc), _comp(comp), _root(), _front(), _back(), _size(0)
+	_alloc(alloc), _comp(comp), _root(0), _front(), _back(), _size(0)
 {
-	_root.left = &_front;
-	_root.right = &_back;
-	_front.up = &_root;
-	_back.up = &_root;
 }
 
 template <class Key, class T, class Compare, class Alloc>
 template <class InputIterator>
 Map<Key, T, Compare, Alloc>::Map(InputIterator first, InputIterator last,
 	const key_compare &comp, const allocator_type &alloc) :
-	_alloc(alloc), _comp(comp), _root(), _front(), _back(), _size(0)
+	_alloc(alloc), _comp(comp), _root(0), _front(), _back(), _size(0)
 {
 	for (; first != last; ++first)
 		insert(*first);
@@ -200,9 +189,9 @@ Map<Key, T, Compare, Alloc>::rec_insert(const value_type *n)
 
 template <class Key, class T, class Compare, class Alloc>
 Map<Key, T, Compare, Alloc>::Map(const Map &m) : _alloc(m._alloc), _comp(m.comp),
-	_root(), _front(), _back(), _size(0)
+	_root(0), _front(), _back(), _size(0)
 {
-	rec_insert(&m._root);
+	rec_insert(m._root);
 }
 
 template <class Key, class T, class Compare, class Alloc>
@@ -218,7 +207,7 @@ Map<Key, T, Compare, Alloc>
 	if (&m == this)
 		return (*this);
 	clear();
-	rec_insert(&m.root);
+	rec_insert(m._root);
 	return (*this);
 }
 
@@ -305,59 +294,111 @@ template <class Key, class T, class Compare, class Alloc>
 typename Map<Key, T, Compare, Alloc>::mapped_type
 &Map<Key, T, Compare, Alloc>::operator[](const key_type &k)
 {
-	return ((*((this->insert(make_pair(k, mapped_type()))).first)).second);
+	return ((*((insert(make_pair(k, mapped_type()))).first)).second);
+}
+
+template <class Key, class T, class Compare, class Alloc>
+pair<typename Map<Key, T, Compare, Alloc>::iterator, bool>
+Map<Key, T, Compare, Alloc>::insert(const value_type &val)
+{
+	MapNode<value_type>		*ptr = _root;
+	MapNode<value_type>		*tmp;
+
+	if (!_size)
+	{
+		_root = new MapNode<value_type>(val, no, this, &_front, &_back);
+		_back.up = _root;
+		_front.up = _root;
+		++_size;
+		return (make_pair(iterator(_root), true));
+	}
+	while (42)
+	{
+		if (Compare(val.first, *(ptr->valptr).first))
+		{
+			tmp = ptr->left;
+			if (!tmp || !tmp->valptr)
+			{
+				ptr->left = new MapNode<value_type>(val, lft, ptr);
+				if (tmp)
+				{
+					ptr->left->left = tmp;
+					tmp->up = ptr->left;
+				}
+				++_size;
+				return (make_pair(iterator(ptr.left), true));
+			}
+			ptr = tmp;
+		}
+		else if (Compare(*(ptr->valptr).first), val.first)
+		{
+			tmp = ptr->right;
+			if (!tmp || !tmp->valptr)
+			{
+				ptr->right = new MapNode<value_type>(val, rht, ptr);
+				if (tmp)
+				{
+					ptr->right->right = tmp;
+					tmp->up = ptr->right;
+				}
+				++_size;
+				return (make_pair(iterator(ptr.right), true));
+			}
+			ptr = tmp;
+		}
+		else
+			return (make_pair(iterator(ptr), false));
+	}
+}
+
+template <class Key, class T, class Compare, class Alloc>
+Map<Key, T, Compare, Alloc>::iterator
+Map<Key, T, Compare, Alloc>::insert(iterator it, const value_type &val)
+{
+	(void)it;
+	insert(val);
+}
+
+template <class Key, class T, class Compare, class Alloc>
+template <class InputIterator>
+void
+Map<Key, T, Compare, Alloc>::insert(InputIterator fst, InputIterator lst)
+{
+	for (; fst != lst; ++fst)
+		insert(*fst);
+}
+
+template <class Key, class T, class Compare, class Alloc>
+void
+Map<Key, T, Compare, Alloc>::erase(iterator position)
+{
+}
+
+template <class Key, class T, class Compare, class Alloc>
+size_type
+Map<Key, T, Compare, Alloc>::erase(const key_type &k)
+{
+}
+
+template <class Key, class T, class Compare, class Alloc>
+void
+Map<Key, T, Compare, Alloc>::erase(iterator first, iterator last)
+{
+}
+
+template <class Key, class T, class Compare, class Alloc>
+void
+Map<Key, T, Compare, Alloc>::swap(Map &x)
+{
+}
+
+template <class Key, class T, class Compare, class Alloc>
+void
+Map<Key, T, Compare, Alloc>::clear()
+{
 }
 
 /*
-template <class T, class Alloc>
-template <class InputIterator>
-void
-Map<T, Alloc>::assign(InputIterator first, InputIterator last)
-{
-	clear();
-	for (; first != last; ++first)
-		push_back(*first);
-}
-
-template <class T, class Alloc>
-void
-Map<T, Alloc>::assign(size_type n, const value_type &val)
-{
-	clear();
-	while (n--)
-		push_back(val);
-}
-
-template <class T, class Alloc>
-void
-Map<T, Alloc>::push_front(const value_type &val)
-{
-	insert(begin(), val);
-}
-
-template <class T, class Alloc>
-void
-Map<T, Alloc>::pop_front()
-{
-	erase(begin());
-}
-
-template <class T, class Alloc>
-void
-Map<T, Alloc>::push_back(const value_type &val)
-{
-	insert(end(), val);
-}
-
-template <class T, class Alloc>
-void
-Map<T, Alloc>::pop_back()
-{
-	iterator	it = end();
-
-	erase(--it);
-}
-
 template <class T, class Alloc>
 typename Map<T, Alloc>::iterator
 Map<T, Alloc>::insert(iterator it, const value_type &val)
