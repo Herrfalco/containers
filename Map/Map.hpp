@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/13 20:08:52 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/14 02:07:43 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,9 @@ class	Map
 
 		//Utils :
 		void					rec_insert(const value_type *n);
+		void					left_splice(iterator position);
+		void					right_splice(iterator position);
+		void					root_splice(iterator position);
 		/*
 		static bool				_equal(const_reference val, const_reference val2);
 		static bool				_less(const_reference val, const_reference val2);
@@ -370,26 +373,136 @@ Map<Key, T, Compare, Alloc>::insert(InputIterator fst, InputIterator lst)
 
 template <class Key, class T, class Compare, class Alloc>
 void
+Map<Key, T, Compare, Alloc>::left_splice(iterator position)
+{
+	MapNode<value_type>		*ptr = position.node;
+	MapNode<value_type>		*a;
+	MapNode<value_type>		*b;
+
+	if (ptr->right)
+	{
+		for (a = ptr->right, b = a; b->left; b = b->left);
+		a->up = ptr->up;
+		b->left = ptr->left;
+	}
+	else
+	{
+		a = ptr->left;
+		b = ptr->up;
+	}
+	ptr->up->left = a;
+	if (ptr->left)
+		ptr->left->up = b;
+	delete (ptr);
+}
+
+template <class Key, class T, class Compare, class Alloc>
+void
+Map<Key, T, Compare, Alloc>::right_splice(iterator position)
+{
+	MapNode<value_type>		*ptr = position.node;
+	MapNode<value_type>		*a;
+	MapNode<value_type>		*b;
+
+	if (ptr->left)
+	{
+		for (a = ptr->left, b = a; b->right; b = b->right);
+		a->up = ptr->up;
+		b->right = ptr->right;
+	}
+	else
+	{
+		a = ptr->right;
+		b = ptr->up;
+	}
+	ptr->up->right = a;
+	if (ptr->right)
+		ptr->right->up = b;
+	delete (ptr);
+}
+
+template <class Key, class T, class Compare, class Alloc>
+void
+Map<Key, T, Compare, Alloc>::root_splice(MapNode<value_type **ptr,
+	MapNode<value_type **a, MapNode<value_type **b)
+{
+	MapNode<value_type>		*ptr = position.node;
+	MapNode<value_type>		*a;
+	MapNode<value_type>		*b;
+
+	if (ptr->left && ptr->left->valptr)
+	{
+		for (a = ptr->left, b = a; b->right; b = b->right);
+		b->right = ptr->right;
+		ptr->right->up = b;
+	}
+	else if (ptr->right && ptr->right->valptr)
+	{
+		for (a = ptr->right, b = a; b->left; b = b->left);
+		b->left = ptr->left;
+		ptr->left->up = b;
+	}
+	else
+	{
+		_root = 0;
+		_front.up = &_front;
+		_back.up = &_back;
+		delete (ptr);
+		return ;
+	}
+	_root = a;
+	a->up = &a;
+	a->typ = no;
+	delete (ptr);
+}
+
+template <class Key, class T, class Compare, class Alloc>
+void
 Map<Key, T, Compare, Alloc>::erase(iterator position)
 {
+	if (ptr->typ == lft)
+		left_splice(position);
+	else if (ptr->typ == rht)
+		right_splice(position);
+	else
+		root_splice(position);
+	--_size;
 }
 
 template <class Key, class T, class Compare, class Alloc>
 size_type
 Map<Key, T, Compare, Alloc>::erase(const key_type &k)
 {
+	std::pair<iterator, bool>	ins_ret(insert(make_pair(k, mapped_type())));
+
+	erase(ins_ret.first);
+	return (ins_ret.second ? 0 : 1);
 }
 
 template <class Key, class T, class Compare, class Alloc>
 void
 Map<Key, T, Compare, Alloc>::erase(iterator first, iterator last)
 {
+	for (; first != last; ++first)
+		erase(first);
 }
 
 template <class Key, class T, class Compare, class Alloc>
 void
 Map<Key, T, Compare, Alloc>::swap(Map &x)
 {
+	MapNode<value_type>		*tmp = _root;
+	
+	_root = x._root;
+	x._root = tmp;
+
+	//working here
+	tmp = _front.up;
+	_front.up = x._front.up != &(x._front) ? x._front.up : &_front;
+	_x.front.up = tmp != &_front ? tmp : &(x._front);
+	tmp = _back_up;
+	_back.up = x._back.up != &(x._back) ? x._back.up : &_back;
+	_x.back.up = tmp != &_back ? tmp : &(x._back);
 }
 
 template <class Key, class T, class Compare, class Alloc>
