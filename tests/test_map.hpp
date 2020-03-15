@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 17:00:58 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/12 18:29:16 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/15 21:17:06 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,86 @@
 # define TEST_MAP_HPP
 
 # include "../Map/Map.hpp"
-# include "test_common.hpp"
+
+# include <iostream>
+# include <string>
+# include <sstream>
 
 namespace	nmap
 {
 
 void	test_map(void);
 
+template <class T>
+void	print_cont(const T &cont, const std::string &name, const std::string &msg)
+{
+	typename T::const_iterator		it_var;
+
+	if (msg.size())
+	{
+		std::cout << "      ";
+		for (int i = 0; i < (int)msg.size(); ++i)
+			std::cout << "\033[1;36m" << msg[i];
+		std::cout << std::endl;
+	}
+	std::cout << "         \033[0m" << name << " : [ ";
+	for (typename T::const_iterator it(cont.begin()); it != cont.end(); ++it)
+	{
+		it_var = it;
+		std::cout << it->first << ":" << it->second
+			<< (++it_var != cont.end() ? ", " : "");
+	}
+	std::cout << " ] (" << cont.size() << ")\n";
+}
+
+
+template <class T>
+void	rprint_cont(const T &cont, const std::string &name, const std::string &msg)
+{
+	typename T::const_reverse_iterator		rit_var;
+
+	std::cout << "      \033[1;36m" << msg << "\n";
+	std::cout << "         \033[0m" << name << " : [ ";
+
+	typename T::const_iterator				it(cont.end());
+	for (typename T::const_reverse_iterator rit(cont.rbegin()); rit != cont.rend(); ++rit)
+	{
+		rit_var = rit;
+		std::cout << rit->first << ":" << rit->second
+			<< (++rit_var != cont.rend() ? ", " : "");
+	}
+	std::cout << " ] (" << cont.size() << ")\n";
+}
+
+template <class Cont, class T>
+void	test_const(T *init, size_t size_init, std::string name)
+{
+	Cont				c1;
+	Cont				c2(init, init + size_init);
+	Cont				c3(c2);
+	std::stringstream	ss;
+
+	std::cout << "   \033[1;33m" << name << "\033[0m\n";
+	print_cont(c1, "I", "I()");
+	ss << "II(init, init + " << size_init << ")";
+	print_cont(c2, "II", ss.str());
+	print_cont(c3, "III", "III(II)");
+	c1 = c2;
+	print_cont(c1, "I", "I = II");
+}
+
+template <class Cont, class T>
+void	test_iter(T *init, size_t size_init, std::string name)
+{
+	Cont	c(init, init + size_init);
+
+	std::cout << "   \033[1;33m" << name << "\n\033[0m";
+	print_cont(c, "I", "I()");
+	print_cont(c, "I", "Regular");
+	rprint_cont(c, "I", "Reverse");
+}
+
+/*
 template <class Cont, class T>
 void	test_capacity(T *init, size_t size_init, std::string name)
 {
@@ -276,6 +349,7 @@ void	test_nmem(T *init, size_t size_init, T def, size_t size_def, std::string na
 	print_cont(c1, "I", "swap(I, IV)");
 	print_cont(c2, "IV", "");
 }
+*/
 
 }
 

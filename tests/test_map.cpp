@@ -6,32 +6,38 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 15:40:29 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/12 18:28:31 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/15 19:04:32 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test_map.hpp"
 
-/*
 void	nmap::test_map(void)
 {
-	int					int_init[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-	double				double_init[] = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7,
-										 0.8, 0.9 };
-	std::string			string_init[] = { "A", "B", "C", "D", "E", "F", "G",
-										  "H", "I" };
-
+	std::pair<std::string, int>		str_int_init[] = { std::make_pair("Bravo", 2),
+													   std::make_pair("Alpha", 1),
+													   std::make_pair("Delta", 4),
+													   std::make_pair("Echo", 5),
+													   std::make_pair("Golf", 7),
+													   std::make_pair("Charlie", 3),
+													   std::make_pair("Foxtrot", 6) };
+	std::pair<int, std::string>		int_str_init[] = { std::make_pair(2, "Bravo"),
+													   std::make_pair(1, "Alpha"),
+													   std::make_pair(4, "Delta"),
+													   std::make_pair(5, "Echo"),
+													   std::make_pair(7, "Golf"),
+													   std::make_pair(3, "Charlie"),
+													   std::make_pair(6, "Foxtrot") };
+													   
 	std::cout << "\033[1;32mCONSTRUCTORS & ASSIGNATION :\n";
-	test_const<ft::Map<int>, int>(int_init, 9, 0, 9, "ft::Map<int>");
-	test_const<ft::Map<double>, double>(double_init, 9, 0.0, 9, "ft::Map<double>");
-	test_const<ft::Map<std::string>, std::string>(string_init, 9, "?", 9,
-		"ft::Map<string>");
+	nmap::test_const<ft::Map<std::string, int> >(str_int_init, 7, "ft::Map<string, int>");
+	nmap::test_const<ft::Map<int, std::string> >(int_str_init, 7, "ft::Map<int, string>");
 
 	std::cout << "\n\033[1;32mITERATORS :\n";
-	test_iter<ft::Map<int>, int>(int_init, 9, "ft::Map<int>");
-	test_iter<ft::Map<double>, double>(double_init, 9, "ft::Map<double>");
-	test_iter<ft::Map<std::string>, std::string>(string_init, 9, "ft::Map<string>");
+	nmap::test_iter<ft::Map<std::string, int> >(str_int_init, 7, "ft::Map<string, int>");
+	nmap::test_iter<ft::Map<int, std::string> >(int_str_init, 7, "ft::Map<int, string>");
 
+/*
 	std::cout << "\n\033[1;32mCAPACITY :\n";
 	nmap::test_capacity<ft::Map<int>, int>(int_init, 9, "ft::Map<int>");
 	nmap::test_capacity<ft::Map<double>, double>(double_init, 9, "ft::Map<double>");
@@ -59,5 +65,5 @@ void	nmap::test_map(void)
 	nmap::test_nmem<ft::Map<double>, double>(double_init, 9, 0, 9, "ft::Map<double>");
 	nmap::test_nmem<ft::Map<std::string>, std::string>(string_init, 9, "?", 9,
 		"ft::Map<string>");
-}
 */
+}

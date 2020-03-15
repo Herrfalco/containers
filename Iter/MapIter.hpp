@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/13 17:56:59 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/15 21:17:59 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,10 @@ template <class Category, class T, class Distance, class Pointer, class Referenc
 MapIter<Category, T, Distance, Pointer, Reference>&
 MapIter<Category, T, Distance, Pointer, Reference>::operator++(void)
 {
-	if (node->right)
+	if (node->right && node->right != node)
 	{
 		node = node->right;
-		while (node->left && node->left != &node)
+		while (node->left && node->left != node)
 			node = node->left;
 	}
 	else if (node->type == lft)
@@ -141,10 +141,10 @@ template <class Category, class T, class Distance, class Pointer, class Referenc
 MapIter<Category, T, Distance, Pointer, Reference>&
 MapIter<Category, T, Distance, Pointer, Reference>::operator--(void)
 {
-	if (node->left)
+	if (node->left && node->left != node)
 	{
 		node = node->left;
-		while (node->right && node->right != &node)
+		while (node->right && node->right != node)
 			node = node->right;
 	}
 	else if (node->type == rht)

@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/14 19:20:25 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/15 21:15:05 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 #include "MapNode.hpp"
 #include <functional>
 #include <memory>
-
-#include <iostream>
 
 namespace	ft {
 
@@ -112,7 +110,7 @@ class	Map
 		size_type				_size;
 
 		//Utils :
-		void					rec_insert(const value_type *n);
+		void					rec_insert(const MapNode<value_type> *n);
 		void					left_splice(iterator position);
 		void					right_splice(iterator position);
 		void					root_splice(iterator position);
@@ -141,6 +139,8 @@ template <class Key, class T, class Compare, class Alloc>
 Map<Key, T, Compare, Alloc>::Map(const key_compare &comp, const allocator_type &alloc) :
 	_alloc(alloc), _comp(comp), _root(0), _front(), _back(), _size(0)
 {
+	_front.type = lft;
+	_back.type = rht;
 }
 
 template <class Key, class T, class Compare, class Alloc>
@@ -149,13 +149,15 @@ Map<Key, T, Compare, Alloc>::Map(InputIterator first, InputIterator last,
 	const key_compare &comp, const allocator_type &alloc) :
 	_alloc(alloc), _comp(comp), _root(0), _front(), _back(), _size(0)
 {
+	_front.type = lft;
+	_back.type = rht;
 	for (; first != last; ++first)
 		insert(*first);
 }
 
 template <class Key, class T, class Compare, class Alloc>
 void
-Map<Key, T, Compare, Alloc>::rec_insert(const value_type *n)
+Map<Key, T, Compare, Alloc>::rec_insert(const MapNode<value_type> *n)
 {
 	if (!n || !n->valptr)
 		return ;
@@ -165,9 +167,11 @@ Map<Key, T, Compare, Alloc>::rec_insert(const value_type *n)
 }
 
 template <class Key, class T, class Compare, class Alloc>
-Map<Key, T, Compare, Alloc>::Map(const Map &m) : _alloc(m._alloc), _comp(m.comp),
+Map<Key, T, Compare, Alloc>::Map(const Map &m) : _alloc(m._alloc), _comp(m._comp),
 	_root(0), _front(), _back(), _size(0)
 {
+	_front.type = lft;
+	_back.type = rht;
 	rec_insert(m._root);
 }
 
@@ -207,7 +211,7 @@ template <class Key, class T, class Compare, class Alloc>
 typename Map<Key, T, Compare, Alloc>::iterator
 Map<Key, T, Compare, Alloc>::end(void)
 {
-	return (Map<Key, T, Compare, Alloc>::iterator(&_back));
+	return (_size ? Map<Key, T, Compare, Alloc>::iterator(&_back) : begin());
 }
 
 template <class Key, class T, class Compare, class Alloc>
@@ -215,7 +219,8 @@ typename Map<Key, T, Compare, Alloc>::const_iterator
 Map<Key, T, Compare, Alloc>::end(void) const
 {
 	return (Map<Key, T, Compare, Alloc>::
-		const_iterator(reinterpret_cast<MapNode<const value_type> *>(_back.up->right)));
+		const_iterator(_size ?
+			reinterpret_cast<MapNode<const value_type> *>(_back.up->right) : begin()));
 }
 
 template <class Key, class T, class Compare, class Alloc>
@@ -236,14 +241,15 @@ template <class Key, class T, class Compare, class Alloc>
 typename Map<Key, T, Compare, Alloc>::reverse_iterator
 Map<Key, T, Compare, Alloc>::rend(void)
 {
-	return (Map<Key, T, Compare, Alloc>::reverse_iterator(begin()));
+	return (_size ? Map<Key, T, Compare, Alloc>::reverse_iterator(begin()) : rbegin());
 }
 
 template <class Key, class T, class Compare, class Alloc>
 typename Map<Key, T, Compare, Alloc>::const_reverse_iterator
 Map<Key, T, Compare, Alloc>::rend(void) const
 {
-	return (Map<Key, T, Compare, Alloc>::const_reverse_iterator(begin()));
+	return (_size ? Map<Key, T, Compare, Alloc>::const_reverse_iterator(begin()) :
+		rbegin());
 }
 
 template <class Key, class T, class Compare, class Alloc>
@@ -283,7 +289,8 @@ Map<Key, T, Compare, Alloc>::insert(const value_type &val)
 
 	if (!_size)
 	{
-		_root = new MapNode<value_type>(val, no, this, &_front, &_back);
+		_root = new MapNode<value_type>(val, no, 0, &_front, &_back);
+		_root->up = _root;
 		_back.up = _root;
 		_front.up = _root;
 		++_size;
@@ -291,7 +298,7 @@ Map<Key, T, Compare, Alloc>::insert(const value_type &val)
 	}
 	while (42)
 	{
-		if (Compare(val.first, *(ptr->valptr).first))
+		if (_comp(val.first, ptr->valptr->first))
 		{
 			tmp = ptr->left;
 			if (!tmp || !tmp->valptr)
@@ -307,7 +314,7 @@ Map<Key, T, Compare, Alloc>::insert(const value_type &val)
 			}
 			ptr = tmp;
 		}
-		else if (Compare(*(ptr->valptr).first), val.first)
+		else if (_comp(ptr->valptr->first, val.first))
 		{
 			tmp = ptr->right;
 			if (!tmp || !tmp->valptr)
@@ -424,8 +431,8 @@ Map<Key, T, Compare, Alloc>::root_splice(iterator position)
 		return ;
 	}
 	_root = a;
-	a->up = &a;
-	a->typ = no;
+	a->up = a;
+	a->type = no;
 	delete (ptr);
 }
 
@@ -435,9 +442,9 @@ Map<Key, T, Compare, Alloc>::erase(iterator position)
 {
 	MapNode<value_type>		*ptr = position.node;
 
-	if (ptr->typ == lft)
+	if (ptr->type == lft)
 		left_splice(position);
-	else if (ptr->typ == rht)
+	else if (ptr->type == rht)
 		right_splice(position);
 	else
 		root_splice(position);
