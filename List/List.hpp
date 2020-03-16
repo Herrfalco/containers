@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/12 23:21:42 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/16 18:10:02 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 #include "../Iter/RevIter.hpp"
 #include <memory>
 
-namespace	ft {
+namespace	ft
+{
 
 template <class T, class Alloc = std::allocator<T> >
 class	List
@@ -346,12 +347,12 @@ template <class T, class Alloc>
 typename List<T, Alloc>::iterator
 List<T, Alloc>::insert(iterator it, const value_type &val)
 {
-	ListNode<T>	*new_node = new ListNode<T>(val);
+	ListNode<T>	*new__node = new ListNode<T>(val);
 
-	new_node->next = it.node;
-	new_node->prev = it.node->prev;
-	it.node->prev->next = new_node;
-	it.node->prev = new_node;
+	new__node->next = it._node;
+	new__node->prev = it._node->prev;
+	it._node->prev->next = new__node;
+	it._node->prev = new__node;
 	_size++;
 	return (--it);
 }
@@ -377,7 +378,7 @@ template <class T, class Alloc>
 typename List<T, Alloc>::iterator
 List<T, Alloc>::erase(iterator position)
 {
-	ListNode<T> *tmp = position.node;
+	ListNode<T> *tmp = position._node;
 
 	++position;
 	tmp->prev->next = tmp->next;
@@ -463,13 +464,13 @@ template <class T, class Alloc>
 void
 List<T, Alloc>::splice(iterator position, List<T, Alloc> &x, iterator i)
 {
-	i.node->prev->next = i.node->next;
-	i.node->next->prev = i.node->prev;
+	i._node->prev->next = i._node->next;
+	i._node->next->prev = i._node->prev;
 	--(x._size);
-	position.node->prev->next = i.node;
-	i.node->prev = position.node->prev;
-	position.node->prev = i.node;
-	i.node->next = position.node;
+	position._node->prev->next = i._node;
+	i._node->prev = position._node->prev;
+	position._node->prev = i._node;
+	i._node->next = position._node;
 	++_size;
 }
 
@@ -559,12 +560,12 @@ List<T, Alloc>::merge(List &x, Compare comp)
 	{
 		while (to != end() && !comp(*tmp, *to))
 			++to;
-		tmp.node->prev->next = tmp.node->next;
-		tmp.node->next->prev = tmp.node->prev;
-		tmp.node->prev = to.node->prev;
-		tmp.node->next = to.node;
-		to.node->prev->next = tmp.node;
-		to.node->prev = tmp.node;
+		tmp._node->prev->next = tmp._node->next;
+		tmp._node->next->prev = tmp._node->prev;
+		tmp._node->prev = to._node->prev;
+		tmp._node->next = to._node;
+		to._node->prev->next = tmp._node;
+		to._node->prev = tmp._node;
 		--(x._size);
 		_size++;
 	}
@@ -594,12 +595,12 @@ List<T, Alloc>::sort(Compare comp)
 			if (comp(*it2, *it1))
 			{
 				sorted = false;
-				it1.node->prev->next = it2.node;
-				it2.node->next->prev = it1.node;
-				it1.node->next = it2.node->next;
-				it2.node->prev = it1.node->prev;
-				it1.node->prev = it2.node;
-				it2.node->next = it1.node;
+				it1._node->prev->next = it2._node;
+				it2._node->next->prev = it1._node;
+				it1._node->next = it2._node->next;
+				it2._node->prev = it1._node->prev;
+				it1._node->prev = it2._node;
+				it2._node->next = it1._node;
 				_swap_it(it1, it2);
 			}
 		}
@@ -617,25 +618,25 @@ List<T, Alloc>::reverse(void)
 	
 	for (; it_beg != it_end-- && it_beg != it_end; ++it_beg)
 	{
-		it_beg.node->prev->next = it_end.node;
-		it_end.node->next->prev = it_beg.node;
-		if (it_beg.node->next == it_end.node)
+		it_beg._node->prev->next = it_end._node;
+		it_end._node->next->prev = it_beg._node;
+		if (it_beg._node->next == it_end._node)
 		{
-			it_beg.node->next = it_end.node->next;
-			it_end.node->prev = it_beg.node->prev;
-			it_beg.node->prev = it_end.node;
-			it_end.node->next = it_beg.node;
+			it_beg._node->next = it_end._node->next;
+			it_end._node->prev = it_beg._node->prev;
+			it_beg._node->prev = it_end._node;
+			it_end._node->next = it_beg._node;
 		}
 		else
 		{
-			it_beg.node->next->prev = it_end.node;
-			it_end.node->prev->next = it_beg.node;
-			tmp_next = it_beg.node->next;
-			tmp_prev = it_beg.node->prev;
-			it_beg.node->next = it_end.node->next;
-			it_beg.node->prev = it_end.node->prev;
-			it_end.node->next = tmp_next;
-			it_end.node->prev = tmp_prev;
+			it_beg._node->next->prev = it_end._node;
+			it_end._node->prev->next = it_beg._node;
+			tmp_next = it_beg._node->next;
+			tmp_prev = it_beg._node->prev;
+			it_beg._node->next = it_end._node->next;
+			it_beg._node->prev = it_end._node->prev;
+			it_end._node->next = tmp_next;
+			it_end._node->prev = tmp_prev;
 		}
 		_swap_it(it_beg, it_end);
 	}

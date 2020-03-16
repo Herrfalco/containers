@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/15 21:17:59 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/16 21:03:32 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,14 @@
 # include <cstddef>
 # include "../Map/MapNode.hpp"
 
+namespace	ft
+{
+
 template <class Category, class T, class Distance = std::ptrdiff_t,
 	class Pointer = T*, class Reference = T&>
-struct	MapIter
+class	MapIter
 {
+	public:
 		//Member types :
 		typedef T			value_type;
 		typedef Distance	difference_type;
@@ -45,18 +49,23 @@ struct	MapIter
 		MapIter			&operator--(void);
 		MapIter			operator--(int valptr);
 
+	private:
+		//Friendship :
+		template <class Key2, class T2, class Compare2, class Alloc2>
+		friend class			Map;
+
 		//Attibutes :
-		MapNode<value_type>		*node;
+		MapNode<value_type>		*_node;
 };
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-MapIter<Category, T, Distance, Pointer, Reference>::MapIter(MapNode<T> *n) : node(n)
+MapIter<Category, T, Distance, Pointer, Reference>::MapIter(MapNode<T> *n) : _node(n)
 {
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 MapIter<Category, T, Distance, Pointer, Reference>::MapIter(const MapIter<Category,
-	T, Distance, Pointer, Reference> &l) : node(l.node)
+	T, Distance, Pointer, Reference> &l) : _node(l._node)
 {
 }
 
@@ -71,7 +80,7 @@ MapIter<Category, T, Distance, Pointer, Reference>::operator=(const MapIter &l)
 {
 	if (&l == this)
 		return (*this);
-	node = l.node;
+	_node = l._node;
 	return (*this);
 }
 
@@ -79,7 +88,7 @@ template <class Category, class T, class Distance, class Pointer, class Referenc
 bool
 MapIter<Category, T, Distance, Pointer, Reference>::operator==(const MapIter &l) const
 {
-	return (node == l.node);
+	return (_node == l._node);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
@@ -93,34 +102,34 @@ template <class Category, class T, class Distance, class Pointer, class Referenc
 Reference
 MapIter<Category, T, Distance, Pointer, Reference>::operator*(void)
 {
-	return (*(node->valptr));
+	return (*(_node->valptr));
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 Pointer
 MapIter<Category, T, Distance, Pointer, Reference>::operator->(void)
 {
-	return (node->valptr);
+	return (_node->valptr);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 MapIter<Category, T, Distance, Pointer, Reference>&
 MapIter<Category, T, Distance, Pointer, Reference>::operator++(void)
 {
-	if (node->right && node->right != node)
+	if (_node->right && _node->right != _node)
 	{
-		node = node->right;
-		while (node->left && node->left != node)
-			node = node->left;
+		_node = _node->right;
+		while (_node->left && _node->left != _node)
+			_node = _node->left;
 	}
-	else if (node->type == lft)
-		node = node->up;
-	else if (node->type == rht)
+	else if (_node->type == lft)
+		_node = _node->up;
+	else if (_node->type == rht && _node->valptr)
 	{
 		do
-			node = node->up;
-		while (node->type != lft);
-		node = node->up;
+			_node = _node->up;
+		while (_node->type != lft);
+		_node = _node->up;
 	}
 	return (*this);
 }
@@ -141,20 +150,20 @@ template <class Category, class T, class Distance, class Pointer, class Referenc
 MapIter<Category, T, Distance, Pointer, Reference>&
 MapIter<Category, T, Distance, Pointer, Reference>::operator--(void)
 {
-	if (node->left && node->left != node)
+	if (_node->left && _node->left != _node)
 	{
-		node = node->left;
-		while (node->right && node->right != node)
-			node = node->right;
+		_node = _node->left;
+		while (_node->right && _node->right != _node)
+			_node = _node->right;
 	}
-	else if (node->type == rht)
-		node = node->up;
-	else if (node->type == lft)
+	else if (_node->type == rht)
+		_node = _node->up;
+	else if (_node->type == lft && _node->valptr)
 	{
 		do
-			node = node->up;
-		while (node->type != rht);
-		node = node->up;
+			_node = _node->up;
+		while (_node->type != rht);
+		_node = _node->up;
 	}
 	return (*this);
 }
@@ -169,6 +178,8 @@ MapIter<Category, T, Distance, Pointer, Reference>::operator--(int dummy)
 	tmp = *this;
 	--(*this);
 	return (tmp);
+}
+
 }
 
 #endif //MAPITER_HPP

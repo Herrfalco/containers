@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/15 21:15:05 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/16 18:10:15 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 #include <functional>
 #include <memory>
 
-namespace	ft {
+namespace	ft
+{
 
 template <class Key, class T, class Compare = std::less<Key>,
 	class Alloc = std::allocator<std::pair<const Key, T> > >
@@ -356,7 +357,7 @@ template <class Key, class T, class Compare, class Alloc>
 void
 Map<Key, T, Compare, Alloc>::left_splice(iterator position)
 {
-	MapNode<value_type>		*ptr = position.node;
+	MapNode<value_type>		*ptr = position._node;
 	MapNode<value_type>		*a;
 	MapNode<value_type>		*b;
 
@@ -381,7 +382,7 @@ template <class Key, class T, class Compare, class Alloc>
 void
 Map<Key, T, Compare, Alloc>::right_splice(iterator position)
 {
-	MapNode<value_type>		*ptr = position.node;
+	MapNode<value_type>		*ptr = position._node;
 	MapNode<value_type>		*a;
 	MapNode<value_type>		*b;
 
@@ -406,7 +407,7 @@ template <class Key, class T, class Compare, class Alloc>
 void
 Map<Key, T, Compare, Alloc>::root_splice(iterator position)
 {
-	MapNode<value_type>		*ptr = position.node;
+	MapNode<value_type>		*ptr = position._node;
 	MapNode<value_type>		*a;
 	MapNode<value_type>		*b;
 
@@ -440,7 +441,7 @@ template <class Key, class T, class Compare, class Alloc>
 void
 Map<Key, T, Compare, Alloc>::erase(iterator position)
 {
-	MapNode<value_type>		*ptr = position.node;
+	MapNode<value_type>		*ptr = position._node;
 
 	if (ptr->type == lft)
 		left_splice(position);
@@ -465,8 +466,10 @@ template <class Key, class T, class Compare, class Alloc>
 void
 Map<Key, T, Compare, Alloc>::erase(iterator first, iterator last)
 {
-	for (; first != last; ++first)
-		erase(first);
+	iterator		tmp(first++);
+
+	for (; tmp != last; tmp = first++)
+		erase(tmp);
 }
 
 template <class Key, class T, class Compare, class Alloc>
@@ -485,8 +488,8 @@ Map<Key, T, Compare, Alloc>::swap(Map &x)
 	}
 	if (x._size)
 	{
-		x._front->up->left = &_front;
-		x._back->up->right = &_back;
+		x._front.up->left = &_front;
+		x._back.up->right = &_back;
 	}
 	tmp = _front.up;
 	_front.up = x._size ? x._front.up : &_front;
@@ -517,7 +520,7 @@ template <class Key, class T, class Compare, class Alloc>
 typename Map<Key, T, Compare, Alloc>::value_compare
 Map<Key, T, Compare, Alloc>::value_comp(void) const
 {
-	return (value_compare());
+	return (value_compare(Compare()));
 }
 
 template <class Key, class T, class Compare, class Alloc>
@@ -526,7 +529,7 @@ Map<Key, T, Compare, Alloc>::find(const key_type &k)
 {
 	iterator	it(begin());
 
-	for (; it != end() && (key_compare(k, it->first) || key_compare(it->first, k)); ++it);
+	for (; it != end() && (key_comp()(k, it->first) || key_comp()(it->first, k)); ++it);
 	return (it);
 }
 
@@ -536,7 +539,7 @@ Map<Key, T, Compare, Alloc>::find(const key_type &k) const
 {
 	const_iterator		it(begin());
 
-	for (; it != end() && (key_compare(k, it->first) || key_compare(it->first, k)); ++it);
+	for (; it != end() && (key_comp()(k, it->first) || key_comp()(it->first, k)); ++it);
 	return (it);
 }
 
@@ -544,9 +547,9 @@ template <class Key, class T, class Compare, class Alloc>
 typename Map<Key, T, Compare, Alloc>::size_type
 Map<Key, T, Compare, Alloc>::count(const key_type &k) const
 {
-	iterator	it(begin());
+	const_iterator		it(begin());
 
-	for (; it != end() && (key_compare(k, it->first) || key_compare(it->first, k)); ++it);
+	for (; it != end() && (key_comp()(k, it->first) || key_comp()(it->first, k)); ++it);
 	return (it == end() ? 0 : 1);
 }
 
@@ -556,7 +559,7 @@ Map<Key, T, Compare, Alloc>::lower_bound(const key_type &k)
 {
 	iterator	it(begin());
 
-	for (; it != end() && key_compare(it->first, k); ++it);
+	for (; it != end() && key_comp()(it->first, k); ++it);
 	return (it);
 }
 
@@ -566,7 +569,7 @@ Map<Key, T, Compare, Alloc>::lower_bound(const key_type &k) const
 {
 	const_iterator	it(begin());
 
-	for (; it != end() && key_compare(it->first, k); ++it);
+	for (; it != end() && key_comp()(it->first, k); ++it);
 	return (it);
 }
 
@@ -576,7 +579,7 @@ Map<Key, T, Compare, Alloc>::upper_bound(const key_type &k)
 {
 	iterator	it(begin());
 
-	for (; it != end() && !key_compare(k, it->first); ++it);
+	for (; it != end() && !key_comp()(k, it->first); ++it);
 	return (it);
 }
 
@@ -586,7 +589,7 @@ Map<Key, T, Compare, Alloc>::upper_bound(const key_type &k) const
 {
 	const_iterator	it(begin());
 
-	for (; it != end() && !key_compare(k, it->first); ++it);
+	for (; it != end() && !key_comp()(k, it->first); ++it);
 	return (it);
 }
 
@@ -595,7 +598,7 @@ std::pair<typename Map<Key, T, Compare, Alloc>::const_iterator,
 	typename Map<Key, T, Compare, Alloc>::const_iterator>
 Map<Key, T, Compare, Alloc>::equal_range(const key_type &k) const
 {
-	return (make_pair(lower_bound(k), upper_boud(k)));
+	return (make_pair(lower_bound(k), upper_bound(k)));
 }
 
 template <class Key, class T, class Compare, class Alloc>
@@ -603,7 +606,7 @@ std::pair<typename Map<Key, T, Compare, Alloc>::iterator,
 	typename Map<Key, T, Compare, Alloc>::iterator>
 Map<Key, T, Compare, Alloc>::equal_range(const key_type &k)
 {
-	return (make_pair(lower_bound(k), upper_boud(k)));
+	return (make_pair(lower_bound(k), upper_bound(k)));
 }
 
 }

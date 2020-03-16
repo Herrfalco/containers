@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/12 17:13:24 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/16 21:03:07 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,14 @@
 # include <cstddef>
 # include "../List/ListNode.hpp"
 
+namespace	ft
+{
+
 template <class Category, class T, class Distance = std::ptrdiff_t,
 	class Pointer = T*, class Reference = T&>
-struct	ListIter
+class	ListIter
 {
+	public:
 		//Member types :
 		typedef T			value_type;
 		typedef Distance	difference_type;
@@ -45,18 +49,23 @@ struct	ListIter
 		ListIter		&operator--(void);
 		ListIter		operator--(int valptr);
 
-		//Attibutes :
-		ListNode<value_type>		*node;
+	private:
+		//Friendship :
+		template <class T2, class Alloc2>
+		friend class				List;
+
+		//Attributes :
+		ListNode<value_type>		*_node;
 };
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-ListIter<Category, T, Distance, Pointer, Reference>::ListIter(ListNode<T> *n) : node(n)
+ListIter<Category, T, Distance, Pointer, Reference>::ListIter(ListNode<T> *n) : _node(n)
 {
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 ListIter<Category, T, Distance, Pointer, Reference>::ListIter(const ListIter<Category,
-	T, Distance, Pointer, Reference> &l) : node(l.node)
+	T, Distance, Pointer, Reference> &l) : _node(l._node)
 {
 }
 
@@ -71,7 +80,7 @@ ListIter<Category, T, Distance, Pointer, Reference>::operator=(const ListIter &l
 {
 	if (&l == this)
 		return (*this);
-	node = l.node;
+	_node = l._node;
 	return (*this);
 }
 
@@ -79,7 +88,7 @@ template <class Category, class T, class Distance, class Pointer, class Referenc
 bool
 ListIter<Category, T, Distance, Pointer, Reference>::operator==(const ListIter &l) const
 {
-	return (node == l.node);
+	return (_node == l._node);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
@@ -93,21 +102,21 @@ template <class Category, class T, class Distance, class Pointer, class Referenc
 Reference
 ListIter<Category, T, Distance, Pointer, Reference>::operator*(void)
 {
-	return (*(node->valptr));
+	return (*(_node->valptr));
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 Pointer
 ListIter<Category, T, Distance, Pointer, Reference>::operator->(void)
 {
-	return (node->valptr);
+	return (_node->valptr);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 ListIter<Category, T, Distance, Pointer, Reference>&
 ListIter<Category, T, Distance, Pointer, Reference>::operator++(void)
 {
-	node = node->next;
+	_node = _node->next;
 	return (*this);
 }
 
@@ -119,7 +128,7 @@ ListIter<Category, T, Distance, Pointer, Reference>::operator++(int dummy)
 
 	(void)dummy;
 	tmp = *this;
-	node = node->next;
+	_node = _node->next;
 	return (tmp);
 }
 
@@ -127,7 +136,7 @@ template <class Category, class T, class Distance, class Pointer, class Referenc
 ListIter<Category, T, Distance, Pointer, Reference>&
 ListIter<Category, T, Distance, Pointer, Reference>::operator--(void)
 {
-	node = node->prev;
+	_node = _node->prev;
 	return (*this);
 }
 
@@ -139,8 +148,10 @@ ListIter<Category, T, Distance, Pointer, Reference>::operator--(int dummy)
 
 	(void)dummy;
 	tmp = *this;
-	node = node->prev;
+	_node = _node->prev;
 	return (tmp);
+}
+
 }
 
 #endif //LISTITER_HPP

@@ -6,20 +6,21 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/12 23:39:58 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/16 20:51:45 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-#include "../Iter/IterTypes.hpp"
-#include "../Iter/VectIter.hpp"
-#include "../Iter/RevIter.hpp"
-#include <memory>
-#include <cmath>
+# include "../Iter/IterTypes.hpp"
+# include "../Iter/VectIter.hpp"
+# include "../Iter/RevIter.hpp"
+# include <memory>
+# include <cmath>
 
-namespace	ft {
+namespace	ft
+{
 
 template <class T, class Alloc = std::allocator<T> >
 class	Vector
@@ -241,14 +242,14 @@ Vector<T, Alloc>::resize(size_type n, value_type val)
 	if (n < _size)
 	{
 		for (iterator it = end() - (_size - n); it != end(); ++it)
-			_alloc.destroy(it.ptr);
+			_alloc.destroy(it._ptr);
 	}
 	else if (n > _size)
 	{
 		reserve(n);
 		nb = n - _size;
 		for (iterator it = end(); nb; --nb, ++it)
-			_alloc.construct(it.ptr, val);
+			_alloc.construct(it._ptr, val);
 	}
 	_size = n;
 }
@@ -399,14 +400,14 @@ Vector<T, Alloc>::insert(iterator it, size_type n, const value_type &val)
 	for (iterator b(end() - 1), a(b - n); a >= it; --a, --b)
 	{
 		if (b >= old_end)
-			_alloc.construct(b.ptr, *a);
+			_alloc.construct(b._ptr, *a);
 		else
 			*b = *a;
 	}
 	for (; n; --n, ++it)
 	{
 		if (it >= old_end)
-			_alloc.construct(it.ptr, val);
+			_alloc.construct(it._ptr, val);
 		else
 			*it = val;
 	}
@@ -424,14 +425,14 @@ Vector<T, Alloc>::insert(iterator it, InputIterator fst, InputIterator lst)
 	for (iterator b(end() - 1), a(b - (lst - fst)); a >= it; --a, --b)
 	{
 		if (b >= old_end)
-			_alloc.construct(b.ptr, *a);
+			_alloc.construct(b._ptr, *a);
 		else
 			*b = *a;
 	}
 	for (; fst != lst; ++fst, ++it)
 	{
 		if (it >= old_end)
-			_alloc.construct(it.ptr, *fst);
+			_alloc.construct(it._ptr, *fst);
 		else
 			*it = *fst;
 	}

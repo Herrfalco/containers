@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 15:40:29 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/15 19:04:32 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/16 17:11:48 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,29 +37,31 @@ void	nmap::test_map(void)
 	nmap::test_iter<ft::Map<std::string, int> >(str_int_init, 7, "ft::Map<string, int>");
 	nmap::test_iter<ft::Map<int, std::string> >(int_str_init, 7, "ft::Map<int, string>");
 
-/*
 	std::cout << "\n\033[1;32mCAPACITY :\n";
-	nmap::test_capacity<ft::Map<int>, int>(int_init, 9, "ft::Map<int>");
-	nmap::test_capacity<ft::Map<double>, double>(double_init, 9, "ft::Map<double>");
-	nmap::test_capacity<ft::Map<std::string>, std::string>(string_init, 9, "ft::Map<string>");
+	nmap::test_capacity<ft::Map<std::string, int> >(str_int_init, 7,
+		"ft::Map<string, int>");
+	nmap::test_capacity<ft::Map<int, std::string> >(int_str_init, 7,
+		"ft::Map<int, string>");
 
 	std::cout << "\n\033[1;32mACCESS :\n";
-	nmap::test_access<ft::Map<int>, int>(int_init, 9, "ft::Map<int>");
-	nmap::test_access<ft::Map<double>, double>(double_init, 9, "ft::Map<double>");
-	nmap::test_access<ft::Map<std::string>, std::string>(string_init, 9, "ft::Map<string>");
+	nmap::test_access<ft::Map<std::string, int> >(str_int_init, 7,
+		"ft::Map<string, int>");
+	nmap::test_access<ft::Map<int, std::string> >(int_str_init, 7,
+		"ft::Map<int, string>");
 
 	std::cout << "\n\033[1;32mMODIFIERS :\n";
-	nmap::test_mod<ft::Map<int>, int>(int_init, 9, 0, 9, "ft::Map<int>");
-	nmap::test_mod<ft::Map<double>, double>(double_init, 9, 0, 9, "ft::Map<double>");
-	nmap::test_mod<ft::Map<std::string>, std::string>(string_init, 9, "?", 9,
-		"ft::Map<string>");
+	nmap::test_mod<ft::Map<std::string, int> >(str_int_init, 7, "ft::Map<string, int>");
+	nmap::test_mod<ft::Map<int, std::string> >(int_str_init, 7, "ft::Map<int, string>");
+
+	std::cout << "\n\033[1;32mOBSERVERS :\n";
+	nmap::test_obs<ft::Map<std::string, int> >(str_int_init, 7, "ft::Map<string, int>");
+	nmap::test_obs<ft::Map<int, std::string> >(int_str_init, 7, "ft::Map<int, string>");
 
 	std::cout << "\n\033[1;32mOPERATIONS :\n";
-	nmap::test_op<ft::Map<int>, int>(int_init, 9, 0, 9, "ft::Map<int>");
-	nmap::test_op<ft::Map<double>, double>(double_init, 9, 0, 9, "ft::Map<double>");
-	nmap::test_op<ft::Map<std::string>, std::string>(string_init, 9, "?", 9,
-		"ft::Map<string>");
+	nmap::test_op<ft::Map<std::string, int> >(str_int_init, 7, "ft::Map<string, int>");
+	nmap::test_op<ft::Map<int, std::string> >(int_str_init, 7, "ft::Map<int, string>");
 
+/*
 	std::cout << "\n\033[1;32mNON-MEMBER :\n";
 	nmap::test_nmem<ft::Map<int>, int>(int_init, 9, 0, 9, "ft::Map<int>");
 	nmap::test_nmem<ft::Map<double>, double>(double_init, 9, 0, 9, "ft::Map<double>");
