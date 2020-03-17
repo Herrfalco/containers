@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/17 16:17:42 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/17 21:27:20 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ namespace	ft
 
 template <class Category, class T, class Distance = std::ptrdiff_t,
 	class Pointer = T*, class Reference = T&>
-struct	VectIter
+class	VectIter
 {
 	public:
 		//Member types :
@@ -53,9 +53,10 @@ struct	VectIter
 		VectIter		&operator+=(difference_type n);
 		VectIter		&operator-=(difference_type n);
 
+	private:
 		//Non-member overloads :
 		template <class Cat, class T2, class Dist, class Point, class Refer>
-		friend difference_type
+		friend Dist
 		operator-(const VectIter<Cat, T2, Dist, Point, Refer> &lhs,
 			const VectIter<Cat, T2, Dist, Point, Refer> &rhs);
 		template <class Cat, class T2, class Dist, class Point, class Refer>
@@ -63,7 +64,6 @@ struct	VectIter
 		operator<(const VectIter<Cat, T2, Dist, Point, Refer> &lhs,
 			const VectIter<Cat, T2, Dist, Point, Refer> &rhs);
 
-	private:
 		//Friendship :
 		template <class T2, class Alloc2>
 		friend class	Vector;
@@ -216,7 +216,7 @@ operator+(typename VectIter<Category, T, Distance, Pointer, Reference>::differen
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-typename VectIter<Category, T, Distance, Pointer, Reference>::difference_type
+Distance
 operator-(const VectIter<Category, T, Distance, Pointer, Reference> &lhs,
 	const VectIter<Category, T, Distance, Pointer, Reference> &rhs)
 {

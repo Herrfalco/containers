@@ -6,12 +6,15 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/02 20:10:41 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/17 16:18:37 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/17 21:17:18 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REVITER_HPP
 # define REVITER_HPP
+
+namespace	ft
+{
 
 template <class Iter>
 class	RevIter
@@ -45,6 +48,10 @@ class	RevIter
 		pointer			operator->(void) const;
 		reference		operator[](difference_type n) const;
 
+	private:
+		//Attibutes :
+		iterator_type	_base;
+
 	 	//Relational operators :
 		template <class Iter2>
 		friend bool	operator==(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
@@ -61,12 +68,8 @@ class	RevIter
 
 		//Non-member overloads :
 		template <class Iter2>
-		friend difference_type
-			operator-(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
-
-	private:
-		//Attibutes :
-		iterator_type	_base;
+		friend typename Iter2::difference_type
+		operator-(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
 };
 
 template <class Iter>
@@ -239,10 +242,12 @@ operator+(typename RevIter<Iter>::difference_type n, const RevIter<Iter> &rev_it
 }
 
 template <class Iter>
-typename RevIter<Iter>::difference_type
+typename Iter::difference_type
 operator-(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs)
 {
 	return (rhs._base - lhs._base);
+}
+
 }
 
 #endif //REVITER_HPP

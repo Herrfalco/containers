@@ -6,19 +6,19 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/16 18:10:15 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/17 21:25:46 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_HPP
 # define MAP_HPP
 
-#include "../Iter/IterTypes.hpp"
-#include "../Iter/MapIter.hpp"
-#include "../Iter/RevIter.hpp"
-#include "MapNode.hpp"
-#include <functional>
-#include <memory>
+# include "../Iter/IterTypes.hpp"
+# include "../Iter/MapIter.hpp"
+# include "../Iter/RevIter.hpp"
+# include "MapNode.hpp"
+# include <functional>
+# include <memory>
 
 namespace	ft
 {
@@ -375,6 +375,8 @@ Map<Key, T, Compare, Alloc>::left_splice(iterator position)
 	ptr->up->left = a;
 	if (ptr->left)
 		ptr->left->up = b;
+	if (a)
+		a->type = lft;
 	delete (ptr);
 }
 
@@ -400,6 +402,8 @@ Map<Key, T, Compare, Alloc>::right_splice(iterator position)
 	ptr->up->right = a;
 	if (ptr->right)
 		ptr->right->up = b;
+	if (a)
+		a->type = rht;
 	delete (ptr);
 }
 
@@ -506,7 +510,9 @@ void
 Map<Key, T, Compare, Alloc>::clear(void)
 {
 	while (_size)
+	{
 		erase(begin());
+	}
 }
 
 template <class Key, class T, class Compare, class Alloc>

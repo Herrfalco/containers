@@ -6,17 +6,17 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/16 18:10:02 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/17 20:33:51 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIST_HPP
 # define LIST_HPP
 
-#include "../Iter/IterTypes.hpp"
-#include "../Iter/ListIter.hpp"
-#include "../Iter/RevIter.hpp"
-#include <memory>
+# include "../Iter/IterTypes.hpp"
+# include "../Iter/ListIter.hpp"
+# include "../Iter/RevIter.hpp"
+# include <memory>
 
 namespace	ft
 {
