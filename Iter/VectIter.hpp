@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/16 20:52:38 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/17 16:17:42 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,14 @@
 
 # include <cstddef>
 
+namespace	ft
+{
+
 template <class Category, class T, class Distance = std::ptrdiff_t,
 	class Pointer = T*, class Reference = T&>
 struct	VectIter
 {
-//	public:
+	public:
 		//Member types :
 		typedef T			value_type;
 		typedef Distance	difference_type;
@@ -52,22 +55,18 @@ struct	VectIter
 
 		//Non-member overloads :
 		template <class Cat, class T2, class Dist, class Point, class Refer>
-		friend VectIter			operator+(difference_type n, const VectIter &v);
+		friend difference_type
+		operator-(const VectIter<Cat, T2, Dist, Point, Refer> &lhs,
+			const VectIter<Cat, T2, Dist, Point, Refer> &rhs);
 		template <class Cat, class T2, class Dist, class Point, class Refer>
-		friend difference_type	operator-(const VectIter &lhs, const VectIter &rhs);
-		template <class Cat, class T2, class Dist, class Point, class Refer>
-		friend bool				operator<(const VectIter &lhs, const VectIter &rhs);
-		template <class Cat, class T2, class Dist, class Point, class Refer>
-		friend bool				operator<=(const VectIter &lhs, const VectIter &rhs);
-		template <class Cat, class T2, class Dist, class Point, class Refer>
-		friend bool				operator>(const VectIter &lhs, const VectIter &rhs);
-		template <class Cat, class T2, class Dist, class Point, class Refer>
-		friend bool				operator>=(const VectIter &lhs, const VectIter &rhs);
+		friend bool
+		operator<(const VectIter<Cat, T2, Dist, Point, Refer> &lhs,
+			const VectIter<Cat, T2, Dist, Point, Refer> &rhs);
 
-//	private:
+	private:
 		//Friendship :
-//		template <class T2, class Alloc2>
-//		friend class	Vector;
+		template <class T2, class Alloc2>
+		friend class	Vector;
 
 		//Attibutes :
 		value_type		*_ptr;
@@ -254,6 +253,8 @@ operator>=(const VectIter<Category, T, Distance, Pointer, Reference> &lhs,
 	const VectIter<Category, T, Distance, Pointer, Reference> &rhs)
 {
 	return (!(lhs < rhs));
+}
+
 }
 
 #endif //VECTITER_HPP

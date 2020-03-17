@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/02 20:10:41 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/15 19:39:25 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/17 16:18:37 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,6 @@ class	RevIter
 		friend bool	operator>=(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
 
 		//Non-member overloads :
-		template <class Iter2>
-		friend RevIter<Iter2>
-			operator+(difference_type n, const RevIter<Iter2> &rev_it);
 		template <class Iter2>
 		friend difference_type
 			operator-(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
