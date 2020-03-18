@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/18 16:32:14 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/18 18:35:17 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,13 @@
 # include "../Iter/RevIter.hpp"
 # include "../Utils/Pair.hpp"
 # include "MapNode.hpp"
+# include <limits>
 # include <functional>
-# include <memory>
 
 namespace	ft
 {
 
-template <class Key, class T, class Compare = std::less<Key>,
-	class Alloc = std::allocator<ft::Pair<const Key, T> > >
+template <class Key, class T, class Compare = std::less<Key> >
 class	Map
 {
 	public:
@@ -35,11 +34,10 @@ class	Map
 		typedef ft::Pair<const key_type, mapped_type>					value_type;
 		typedef Compare													key_compare;
 		class															value_compare;
-		typedef Alloc													allocator_type;
-		typedef typename allocator_type::reference						reference;
-		typedef typename allocator_type::const_reference				const_reference;
-		typedef typename allocator_type::pointer						pointer;
-		typedef typename allocator_type::const_pointer					const_pointer;
+		typedef value_type&												reference;
+		typedef const value_type&										const_reference;
+		typedef value_type*												pointer;
+		typedef const value_type*										const_pointer;
 		typedef MapIter<bidirectional_iterator_tag, value_type>			iterator;
 		typedef MapIter<bidirectional_iterator_tag, const value_type>	const_iterator;
 		typedef RevIter<iterator>										reverse_iterator;
@@ -48,12 +46,10 @@ class	Map
 		typedef size_t													size_type;
 
 		//Constructors, destructor and assignation :
-		explicit Map(const key_compare &comp = key_compare(),
-			const allocator_type &alloc = allocator_type());
+		explicit Map(const key_compare &comp = key_compare());
 		template <class InputIterator>
 		Map(InputIterator first, InputIterator last,
-			const key_compare &comp = key_compare(),
-			const allocator_type &alloc = allocator_type());
+			const key_compare &comp = key_compare());
 		Map(const Map &m);
 		~Map(void);
 		Map					&operator=(const Map &l);
@@ -104,7 +100,6 @@ class	Map
 
 	private:
 		//Attibutes :
-		allocator_type			_alloc;
 		key_compare				_comp;
 		MapNode<value_type>		*_root;
 		MapNode<value_type>		_front;
@@ -118,8 +113,8 @@ class	Map
 		void					root_splice(iterator position);
 };
 
-template <class Key, class T, class Compare, class Alloc>
-class	Map<Key, T, Compare, Alloc>::value_compare :
+template <class Key, class T, class Compare>
+class	Map<Key, T, Compare>::value_compare :
 	public std::binary_function<value_type, value_type, bool>
 {
 	friend class	Map;
@@ -137,19 +132,19 @@ class	Map<Key, T, Compare, Alloc>::value_compare :
 		value_compare(Compare c) : comp(c) {}
 };
 
-template <class Key, class T, class Compare, class Alloc>
-Map<Key, T, Compare, Alloc>::Map(const key_compare &comp, const allocator_type &alloc) :
-	_alloc(alloc), _comp(comp), _root(0), _front(), _back(), _size(0)
+template <class Key, class T, class Compare>
+Map<Key, T, Compare>::Map(const key_compare &comp) : _comp(comp), _root(0), _front(),
+	_back(), _size(0)
 {
 	_front.type = lft;
 	_back.type = rht;
 }
 
-template <class Key, class T, class Compare, class Alloc>
+template <class Key, class T, class Compare>
 template <class InputIterator>
-Map<Key, T, Compare, Alloc>::Map(InputIterator first, InputIterator last,
-	const key_compare &comp, const allocator_type &alloc) :
-	_alloc(alloc), _comp(comp), _root(0), _front(), _back(), _size(0)
+Map<Key, T, Compare>::Map(InputIterator first, InputIterator last,
+	const key_compare &comp) : _comp(comp), _root(0),
+	_front(), _back(), _size(0)
 {
 	_front.type = lft;
 	_back.type = rht;
@@ -157,9 +152,9 @@ Map<Key, T, Compare, Alloc>::Map(InputIterator first, InputIterator last,
 		insert(*first);
 }
 
-template <class Key, class T, class Compare, class Alloc>
+template <class Key, class T, class Compare>
 void
-Map<Key, T, Compare, Alloc>::rec_insert(const MapNode<value_type> *n)
+Map<Key, T, Compare>::rec_insert(const MapNode<value_type> *n)
 {
 	if (!n || !n->valptr)
 		return ;
@@ -168,24 +163,24 @@ Map<Key, T, Compare, Alloc>::rec_insert(const MapNode<value_type> *n)
 	rec_insert(n->right);
 }
 
-template <class Key, class T, class Compare, class Alloc>
-Map<Key, T, Compare, Alloc>::Map(const Map &m) : _alloc(m._alloc), _comp(m._comp),
-	_root(0), _front(), _back(), _size(0)
+template <class Key, class T, class Compare>
+Map<Key, T, Compare>::Map(const Map &m) : _comp(m._comp), _root(0), _front(), _back(),
+	_size(0)
 {
 	_front.type = lft;
 	_back.type = rht;
 	rec_insert(m._root);
 }
 
-template <class Key, class T, class Compare, class Alloc>
-Map<Key, T, Compare, Alloc>::~Map(void)
+template <class Key, class T, class Compare>
+Map<Key, T, Compare>::~Map(void)
 {
 	clear();
 }
 
-template <class Key, class T, class Compare, class Alloc>
-Map<Key, T, Compare, Alloc>
-&Map<Key, T, Compare, Alloc>::operator=(const Map &m)
+template <class Key, class T, class Compare>
+Map<Key, T, Compare>
+&Map<Key, T, Compare>::operator=(const Map &m)
 {
 	if (&m == this)
 		return (*this);
@@ -194,97 +189,97 @@ Map<Key, T, Compare, Alloc>
 	return (*this);
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::iterator
-Map<Key, T, Compare, Alloc>::begin(void)
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::iterator
+Map<Key, T, Compare>::begin(void)
 {
-	return (Map<Key, T, Compare, Alloc>::iterator(_front.up));
+	return (Map<Key, T, Compare>::iterator(_front.up));
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::const_iterator
-Map<Key, T, Compare, Alloc>::begin(void) const
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::const_iterator
+Map<Key, T, Compare>::begin(void) const
 {
-	return (Map<Key, T, Compare, Alloc>::
+	return (Map<Key, T, Compare>::
 		const_iterator(reinterpret_cast<MapNode<const value_type> *>(_front.up)));
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::iterator
-Map<Key, T, Compare, Alloc>::end(void)
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::iterator
+Map<Key, T, Compare>::end(void)
 {
-	return (_size ? Map<Key, T, Compare, Alloc>::iterator(&_back) : begin());
+	return (_size ? Map<Key, T, Compare>::iterator(&_back) : begin());
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::const_iterator
-Map<Key, T, Compare, Alloc>::end(void) const
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::const_iterator
+Map<Key, T, Compare>::end(void) const
 {
-	return (Map<Key, T, Compare, Alloc>::
+	return (Map<Key, T, Compare>::
 		const_iterator(_size ?
 			reinterpret_cast<MapNode<const value_type> *>(_back.up->right) : begin()));
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::reverse_iterator
-Map<Key, T, Compare, Alloc>::rbegin(void)
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::reverse_iterator
+Map<Key, T, Compare>::rbegin(void)
 {
-	return (Map<Key, T, Compare, Alloc>::reverse_iterator(end()));
+	return (Map<Key, T, Compare>::reverse_iterator(end()));
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::const_reverse_iterator
-Map<Key, T, Compare, Alloc>::rbegin(void) const
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::const_reverse_iterator
+Map<Key, T, Compare>::rbegin(void) const
 {
-	return (Map<Key, T, Compare, Alloc>::const_reverse_iterator(end()));
+	return (Map<Key, T, Compare>::const_reverse_iterator(end()));
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::reverse_iterator
-Map<Key, T, Compare, Alloc>::rend(void)
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::reverse_iterator
+Map<Key, T, Compare>::rend(void)
 {
-	return (_size ? Map<Key, T, Compare, Alloc>::reverse_iterator(begin()) : rbegin());
+	return (_size ? Map<Key, T, Compare>::reverse_iterator(begin()) : rbegin());
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::const_reverse_iterator
-Map<Key, T, Compare, Alloc>::rend(void) const
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::const_reverse_iterator
+Map<Key, T, Compare>::rend(void) const
 {
-	return (_size ? Map<Key, T, Compare, Alloc>::const_reverse_iterator(begin()) :
+	return (_size ? Map<Key, T, Compare>::const_reverse_iterator(begin()) :
 		rbegin());
 }
 
-template <class Key, class T, class Compare, class Alloc>
+template <class Key, class T, class Compare>
 bool
-Map<Key, T, Compare, Alloc>::empty(void) const
+Map<Key, T, Compare>::empty(void) const
 {
 	return (_size ? false : true);
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::size_type
-Map<Key, T, Compare, Alloc>::size(void) const
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::size_type
+Map<Key, T, Compare>::size(void) const
 {
 	return (_size);
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::size_type
-Map<Key, T, Compare, Alloc>::max_size(void) const
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::size_type
+Map<Key, T, Compare>::max_size(void) const
 {
-	return (std::allocator<MapNode<value_type> >().max_size() + _size);
+	return (std::numeric_limits<size_type>::max());
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::mapped_type
-&Map<Key, T, Compare, Alloc>::operator[](const key_type &k)
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::mapped_type
+&Map<Key, T, Compare>::operator[](const key_type &k)
 {
 	return ((*((insert(ft::make_pair(k, mapped_type()))).first)).second);
 }
 
-template <class Key, class T, class Compare, class Alloc>
-ft::Pair<typename Map<Key, T, Compare, Alloc>::iterator, bool>
-Map<Key, T, Compare, Alloc>::insert(const value_type &val)
+template <class Key, class T, class Compare>
+ft::Pair<typename Map<Key, T, Compare>::iterator, bool>
+Map<Key, T, Compare>::insert(const value_type &val)
 {
 	MapNode<value_type>		*ptr = _root;
 	MapNode<value_type>		*tmp;
@@ -337,26 +332,26 @@ Map<Key, T, Compare, Alloc>::insert(const value_type &val)
 	}
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::iterator
-Map<Key, T, Compare, Alloc>::insert(iterator it, const value_type &val)
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::iterator
+Map<Key, T, Compare>::insert(iterator it, const value_type &val)
 {
 	(void)it;
 	insert(val);
 }
 
-template <class Key, class T, class Compare, class Alloc>
+template <class Key, class T, class Compare>
 template <class InputIterator>
 void
-Map<Key, T, Compare, Alloc>::insert(InputIterator fst, InputIterator lst)
+Map<Key, T, Compare>::insert(InputIterator fst, InputIterator lst)
 {
 	for (; fst != lst; ++fst)
 		insert(*fst);
 }
 
-template <class Key, class T, class Compare, class Alloc>
+template <class Key, class T, class Compare>
 void
-Map<Key, T, Compare, Alloc>::left_splice(iterator position)
+Map<Key, T, Compare>::left_splice(iterator position)
 {
 	MapNode<value_type>		*ptr = position._node;
 	MapNode<value_type>		*a;
@@ -381,9 +376,9 @@ Map<Key, T, Compare, Alloc>::left_splice(iterator position)
 	delete (ptr);
 }
 
-template <class Key, class T, class Compare, class Alloc>
+template <class Key, class T, class Compare>
 void
-Map<Key, T, Compare, Alloc>::right_splice(iterator position)
+Map<Key, T, Compare>::right_splice(iterator position)
 {
 	MapNode<value_type>		*ptr = position._node;
 	MapNode<value_type>		*a;
@@ -408,9 +403,9 @@ Map<Key, T, Compare, Alloc>::right_splice(iterator position)
 	delete (ptr);
 }
 
-template <class Key, class T, class Compare, class Alloc>
+template <class Key, class T, class Compare>
 void
-Map<Key, T, Compare, Alloc>::root_splice(iterator position)
+Map<Key, T, Compare>::root_splice(iterator position)
 {
 	MapNode<value_type>		*ptr = position._node;
 	MapNode<value_type>		*a;
@@ -442,9 +437,9 @@ Map<Key, T, Compare, Alloc>::root_splice(iterator position)
 	delete (ptr);
 }
 
-template <class Key, class T, class Compare, class Alloc>
+template <class Key, class T, class Compare>
 void
-Map<Key, T, Compare, Alloc>::erase(iterator position)
+Map<Key, T, Compare>::erase(iterator position)
 {
 	MapNode<value_type>		*ptr = position._node;
 
@@ -457,9 +452,9 @@ Map<Key, T, Compare, Alloc>::erase(iterator position)
 	--_size;
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::size_type
-Map<Key, T, Compare, Alloc>::erase(const key_type &k)
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::size_type
+Map<Key, T, Compare>::erase(const key_type &k)
 {
 	ft::Pair<iterator, bool>	ins_ret(insert(ft::make_pair(k, mapped_type())));
 
@@ -467,9 +462,9 @@ Map<Key, T, Compare, Alloc>::erase(const key_type &k)
 	return (ins_ret.second ? 0 : 1);
 }
 
-template <class Key, class T, class Compare, class Alloc>
+template <class Key, class T, class Compare>
 void
-Map<Key, T, Compare, Alloc>::erase(iterator first, iterator last)
+Map<Key, T, Compare>::erase(iterator first, iterator last)
 {
 	iterator		tmp(first++);
 
@@ -477,9 +472,9 @@ Map<Key, T, Compare, Alloc>::erase(iterator first, iterator last)
 		erase(tmp);
 }
 
-template <class Key, class T, class Compare, class Alloc>
+template <class Key, class T, class Compare>
 void
-Map<Key, T, Compare, Alloc>::swap(Map &x)
+Map<Key, T, Compare>::swap(Map &x)
 {
 	MapNode<value_type>		*tmp = _root;
 	size_type				size_tmp = _size;;
@@ -506,9 +501,9 @@ Map<Key, T, Compare, Alloc>::swap(Map &x)
 	x._size = size_tmp;
 }
 
-template <class Key, class T, class Compare, class Alloc>
+template <class Key, class T, class Compare>
 void
-Map<Key, T, Compare, Alloc>::clear(void)
+Map<Key, T, Compare>::clear(void)
 {
 	while (_size)
 	{
@@ -516,23 +511,23 @@ Map<Key, T, Compare, Alloc>::clear(void)
 	}
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::key_compare
-Map<Key, T, Compare, Alloc>::key_comp(void) const
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::key_compare
+Map<Key, T, Compare>::key_comp(void) const
 {
 	return (key_compare());
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::value_compare
-Map<Key, T, Compare, Alloc>::value_comp(void) const
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::value_compare
+Map<Key, T, Compare>::value_comp(void) const
 {
 	return (value_compare(Compare()));
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::iterator
-Map<Key, T, Compare, Alloc>::find(const key_type &k)
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::iterator
+Map<Key, T, Compare>::find(const key_type &k)
 {
 	iterator	it(begin());
 
@@ -540,9 +535,9 @@ Map<Key, T, Compare, Alloc>::find(const key_type &k)
 	return (it);
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::const_iterator
-Map<Key, T, Compare, Alloc>::find(const key_type &k) const
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::const_iterator
+Map<Key, T, Compare>::find(const key_type &k) const
 {
 	const_iterator		it(begin());
 
@@ -550,9 +545,9 @@ Map<Key, T, Compare, Alloc>::find(const key_type &k) const
 	return (it);
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::size_type
-Map<Key, T, Compare, Alloc>::count(const key_type &k) const
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::size_type
+Map<Key, T, Compare>::count(const key_type &k) const
 {
 	const_iterator		it(begin());
 
@@ -560,9 +555,9 @@ Map<Key, T, Compare, Alloc>::count(const key_type &k) const
 	return (it == end() ? 0 : 1);
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::iterator
-Map<Key, T, Compare, Alloc>::lower_bound(const key_type &k)
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::iterator
+Map<Key, T, Compare>::lower_bound(const key_type &k)
 {
 	iterator	it(begin());
 
@@ -570,9 +565,9 @@ Map<Key, T, Compare, Alloc>::lower_bound(const key_type &k)
 	return (it);
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::const_iterator
-Map<Key, T, Compare, Alloc>::lower_bound(const key_type &k) const
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::const_iterator
+Map<Key, T, Compare>::lower_bound(const key_type &k) const
 {
 	const_iterator	it(begin());
 
@@ -580,9 +575,9 @@ Map<Key, T, Compare, Alloc>::lower_bound(const key_type &k) const
 	return (it);
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::iterator
-Map<Key, T, Compare, Alloc>::upper_bound(const key_type &k)
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::iterator
+Map<Key, T, Compare>::upper_bound(const key_type &k)
 {
 	iterator	it(begin());
 
@@ -590,9 +585,9 @@ Map<Key, T, Compare, Alloc>::upper_bound(const key_type &k)
 	return (it);
 }
 
-template <class Key, class T, class Compare, class Alloc>
-typename Map<Key, T, Compare, Alloc>::const_iterator
-Map<Key, T, Compare, Alloc>::upper_bound(const key_type &k) const
+template <class Key, class T, class Compare>
+typename Map<Key, T, Compare>::const_iterator
+Map<Key, T, Compare>::upper_bound(const key_type &k) const
 {
 	const_iterator	it(begin());
 
@@ -600,18 +595,18 @@ Map<Key, T, Compare, Alloc>::upper_bound(const key_type &k) const
 	return (it);
 }
 
-template <class Key, class T, class Compare, class Alloc>
-ft::Pair<typename Map<Key, T, Compare, Alloc>::const_iterator,
-	typename Map<Key, T, Compare, Alloc>::const_iterator>
-Map<Key, T, Compare, Alloc>::equal_range(const key_type &k) const
+template <class Key, class T, class Compare>
+ft::Pair<typename Map<Key, T, Compare>::const_iterator,
+	typename Map<Key, T, Compare>::const_iterator>
+Map<Key, T, Compare>::equal_range(const key_type &k) const
 {
 	return (ft::make_pair(lower_bound(k), upper_bound(k)));
 }
 
-template <class Key, class T, class Compare, class Alloc>
-ft::Pair<typename Map<Key, T, Compare, Alloc>::iterator,
-	typename Map<Key, T, Compare, Alloc>::iterator>
-Map<Key, T, Compare, Alloc>::equal_range(const key_type &k)
+template <class Key, class T, class Compare>
+ft::Pair<typename Map<Key, T, Compare>::iterator,
+	typename Map<Key, T, Compare>::iterator>
+Map<Key, T, Compare>::equal_range(const key_type &k)
 {
 	return (ft::make_pair(lower_bound(k), upper_bound(k)));
 }

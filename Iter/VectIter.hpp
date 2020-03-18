@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/17 21:27:20 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/18 17:53:22 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ class	VectIter
 			const VectIter<Cat, T2, Dist, Point, Refer> &rhs);
 
 		//Friendship :
-		template <class T2, class Alloc2>
+		template <class T2>
 		friend class	Vector;
 
 		//Attibutes :

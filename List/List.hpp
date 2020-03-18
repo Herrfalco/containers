@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/18 14:58:24 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/18 18:32:15 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 # include "../Iter/IterTypes.hpp"
 # include "../Iter/ListIter.hpp"
 # include "../Iter/RevIter.hpp"
-# include <memory>
-# include <cmath>
+# include <limits>
 
 namespace	ft
 {
@@ -104,7 +103,8 @@ class	List
 		template <class Compare>
 		void					sort(Compare comp);
 		void					reverse();
-	
+
+	private:
 		//Non member functions :
 		template <class T2>
 		friend bool	operator==(const List<T2> &lhs, const List<T2> &rhs);
@@ -121,7 +121,6 @@ class	List
 		template <class T2>
 		friend void	swap(List<T2> &x, List<T2> &y);
 
-	private:
 		//Attibutes :
 		ListNode<T>		_front;
 		ListNode<T>		_back;
@@ -257,7 +256,7 @@ template <class T>
 typename List<T>::size_type
 List<T>::max_size() const
 {
-	return (powl(2, sizeof(size_type) * 8));
+	return (std::numeric_limits<size_type>::max());
 }
 
 template <class T>

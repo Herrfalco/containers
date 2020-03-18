@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/16 21:03:32 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/18 17:02:16 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ class	MapIter
 
 	private:
 		//Friendship :
-		template <class Key2, class T2, class Compare2, class Alloc2>
+		template <class Key2, class T2, class Compare2>
 		friend class			Map;
 
 		//Attibutes :
