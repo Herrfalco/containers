@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/16 21:03:07 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/18 14:57:52 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ class	ListIter
 
 	private:
 		//Friendship :
-		template <class T2, class Alloc2>
+		template <class T2>
 		friend class				List;
 
 		//Attributes :

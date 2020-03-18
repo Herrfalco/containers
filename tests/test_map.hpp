@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 17:00:58 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/16 17:44:09 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/18 16:43:48 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ void	test_op(T *init, size_t size_init, std::string name)
 	std::stringstream							ss;
 	Cont										c(init + 1, init + size_init);
 	typename Cont::iterator						it;
-	std::pair<typename Cont::iterator,
+	ft::Pair<typename Cont::iterator,
 		typename Cont::iterator>				p_ret;
 	size_t										ret;
 

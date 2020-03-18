@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/17 21:25:46 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/18 16:32:14 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../Iter/IterTypes.hpp"
 # include "../Iter/MapIter.hpp"
 # include "../Iter/RevIter.hpp"
+# include "../Utils/Pair.hpp"
 # include "MapNode.hpp"
 # include <functional>
 # include <memory>
@@ -24,14 +25,14 @@ namespace	ft
 {
 
 template <class Key, class T, class Compare = std::less<Key>,
-	class Alloc = std::allocator<std::pair<const Key, T> > >
+	class Alloc = std::allocator<ft::Pair<const Key, T> > >
 class	Map
 {
 	public:
 		//Member types :
 		typedef Key														key_type;
 		typedef T														mapped_type;
-		typedef std::pair<const key_type, mapped_type>					value_type;
+		typedef ft::Pair<const key_type, mapped_type>					value_type;
 		typedef Compare													key_compare;
 		class															value_compare;
 		typedef Alloc													allocator_type;
@@ -76,7 +77,7 @@ class	Map
 		mapped_type					&operator[](const key_type &k);
 
 		//Modifiers :
-		std::pair<iterator, bool>	insert(const value_type &val);
+		ft::Pair<iterator, bool>	insert(const value_type &val);
 		iterator					insert(iterator it, const value_type &val);
 		template <class InputIterator>
 		void						insert(InputIterator fst, InputIterator lst);
@@ -98,8 +99,8 @@ class	Map
 		const_iterator								lower_bound(const key_type &k) const;
 		iterator									upper_bound(const key_type &k);
 		const_iterator								upper_bound(const key_type &k) const;
-		std::pair<const_iterator, const_iterator>	equal_range(const key_type &k) const;
-		std::pair<iterator, iterator>				equal_range(const key_type &k);
+		ft::Pair<const_iterator, const_iterator>	equal_range(const key_type &k) const;
+		ft::Pair<iterator, iterator>				equal_range(const key_type &k);
 
 	private:
 		//Attibutes :
@@ -278,11 +279,11 @@ template <class Key, class T, class Compare, class Alloc>
 typename Map<Key, T, Compare, Alloc>::mapped_type
 &Map<Key, T, Compare, Alloc>::operator[](const key_type &k)
 {
-	return ((*((insert(make_pair(k, mapped_type()))).first)).second);
+	return ((*((insert(ft::make_pair(k, mapped_type()))).first)).second);
 }
 
 template <class Key, class T, class Compare, class Alloc>
-std::pair<typename Map<Key, T, Compare, Alloc>::iterator, bool>
+ft::Pair<typename Map<Key, T, Compare, Alloc>::iterator, bool>
 Map<Key, T, Compare, Alloc>::insert(const value_type &val)
 {
 	MapNode<value_type>		*ptr = _root;
@@ -295,7 +296,7 @@ Map<Key, T, Compare, Alloc>::insert(const value_type &val)
 		_back.up = _root;
 		_front.up = _root;
 		++_size;
-		return (make_pair(iterator(_root), true));
+		return (ft::make_pair(iterator(_root), true));
 	}
 	while (42)
 	{
@@ -311,7 +312,7 @@ Map<Key, T, Compare, Alloc>::insert(const value_type &val)
 					tmp->up = ptr->left;
 				}
 				++_size;
-				return (make_pair(iterator(ptr->left), true));
+				return (ft::make_pair(iterator(ptr->left), true));
 			}
 			ptr = tmp;
 		}
@@ -327,12 +328,12 @@ Map<Key, T, Compare, Alloc>::insert(const value_type &val)
 					tmp->up = ptr->right;
 				}
 				++_size;
-				return (make_pair(iterator(ptr->right), true));
+				return (ft::make_pair(iterator(ptr->right), true));
 			}
 			ptr = tmp;
 		}
 		else
-			return (make_pair(iterator(ptr), false));
+			return (ft::make_pair(iterator(ptr), false));
 	}
 }
 
@@ -460,7 +461,7 @@ template <class Key, class T, class Compare, class Alloc>
 typename Map<Key, T, Compare, Alloc>::size_type
 Map<Key, T, Compare, Alloc>::erase(const key_type &k)
 {
-	std::pair<iterator, bool>	ins_ret(insert(make_pair(k, mapped_type())));
+	ft::Pair<iterator, bool>	ins_ret(insert(ft::make_pair(k, mapped_type())));
 
 	erase(ins_ret.first);
 	return (ins_ret.second ? 0 : 1);
@@ -600,19 +601,19 @@ Map<Key, T, Compare, Alloc>::upper_bound(const key_type &k) const
 }
 
 template <class Key, class T, class Compare, class Alloc>
-std::pair<typename Map<Key, T, Compare, Alloc>::const_iterator,
+ft::Pair<typename Map<Key, T, Compare, Alloc>::const_iterator,
 	typename Map<Key, T, Compare, Alloc>::const_iterator>
 Map<Key, T, Compare, Alloc>::equal_range(const key_type &k) const
 {
-	return (make_pair(lower_bound(k), upper_bound(k)));
+	return (ft::make_pair(lower_bound(k), upper_bound(k)));
 }
 
 template <class Key, class T, class Compare, class Alloc>
-std::pair<typename Map<Key, T, Compare, Alloc>::iterator,
+ft::Pair<typename Map<Key, T, Compare, Alloc>::iterator,
 	typename Map<Key, T, Compare, Alloc>::iterator>
 Map<Key, T, Compare, Alloc>::equal_range(const key_type &k)
 {
-	return (make_pair(lower_bound(k), upper_bound(k)));
+	return (ft::make_pair(lower_bound(k), upper_bound(k)));
 }
 
 }
