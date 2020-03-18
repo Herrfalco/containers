@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/18 18:35:17 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/18 19:52:08 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,15 @@
 # include "../Iter/MapIter.hpp"
 # include "../Iter/RevIter.hpp"
 # include "../Utils/Pair.hpp"
+# include "../Utils/Less.hpp"
+# include "../Utils/Binary_Function.hpp"
 # include "MapNode.hpp"
 # include <limits>
-# include <functional>
 
 namespace	ft
 {
 
-template <class Key, class T, class Compare = std::less<Key> >
+template <class Key, class T, class Compare = ft::Less<Key> >
 class	Map
 {
 	public:
@@ -113,9 +114,10 @@ class	Map
 		void					root_splice(iterator position);
 };
 
+///value_compare definition
 template <class Key, class T, class Compare>
 class	Map<Key, T, Compare>::value_compare :
-	public std::binary_function<value_type, value_type, bool>
+	public ft::Binary_Function<value_type, value_type, bool>
 {
 	friend class	Map;
 
@@ -123,15 +125,26 @@ class	Map<Key, T, Compare>::value_compare :
 		typedef bool		result_type;
 		typedef value_type	first_argument_type;
 		typedef value_type	second_argument_type;
-		bool	operator()(const value_type &x, const value_type &y) const
-		{
-			return comp(x.first, y.first);
-		}
+		bool	operator()(const value_type &x, const value_type &y) const;
 	protected:
 		Compare comp;
-		value_compare(Compare c) : comp(c) {}
+		value_compare(Compare c);
 };
 
+template <class Key, class T, class Compare>
+bool
+Map<Key, T, Compare>::value_compare::operator()(const value_type &x,
+	const value_type &y) const
+{
+	return comp(x.first, y.first);
+}
+
+template <class Key, class T, class Compare>
+Map<Key, T, Compare>::value_compare::value_compare(Compare c) : comp(c)
+{
+}
+
+///Map functions definitions
 template <class Key, class T, class Compare>
 Map<Key, T, Compare>::Map(const key_compare &comp) : _comp(comp), _root(0), _front(),
 	_back(), _size(0)
