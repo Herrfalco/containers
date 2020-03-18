@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/18 14:57:52 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/19 00:45:45 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ class	ListIter
 	private:
 		//Friendship :
 		template <class T2>
-		friend class				List;
+		friend class			List;
 
 		//Attributes :
-		ListNode<value_type>		*_node;
+		ListNode<value_type>	*_node;
 };
 
 template <class Category, class T, class Distance, class Pointer, class Reference>

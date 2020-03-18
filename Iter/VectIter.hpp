@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/18 17:53:22 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/19 00:44:55 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,13 @@ class	VectIter
 		VectIter		&operator-=(difference_type n);
 
 	private:
-		//Non-member overloads :
-		template <class Cat, class T2, class Dist, class Point, class Refer>
-		friend Dist
-		operator-(const VectIter<Cat, T2, Dist, Point, Refer> &lhs,
-			const VectIter<Cat, T2, Dist, Point, Refer> &rhs);
-		template <class Cat, class T2, class Dist, class Point, class Refer>
-		friend bool
-		operator<(const VectIter<Cat, T2, Dist, Point, Refer> &lhs,
-			const VectIter<Cat, T2, Dist, Point, Refer> &rhs);
-
 		//Friendship :
+		template <class Cat, class T2, class Dist, class Point, class Refer>
+		friend Dist		operator-(const VectIter<Cat, T2, Dist, Point, Refer> &lhs,
+			const VectIter<Cat, T2, Dist, Point, Refer> &rhs);
+		template <class Cat, class T2, class Dist, class Point, class Refer>
+		friend bool		operator<(const VectIter<Cat, T2, Dist, Point, Refer> &lhs,
+			const VectIter<Cat, T2, Dist, Point, Refer> &rhs);
 		template <class T2>
 		friend class	Vector;
 

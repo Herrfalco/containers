@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 17:00:58 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/11 15:55:06 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/19 00:48:37 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,7 +274,7 @@ void	test_nmem(T *init, size_t size_init, T def, size_t size_def, std::string na
 		<< (c3 >= c4 ? "true" : "false") << "\n\033[0m";
 	swap(c1, c4);
 	print_cont(c1, "I", "swap(I, IV)");
-	print_cont(c2, "IV", "");
+	print_cont(c4, "IV", "");
 }
 
 }

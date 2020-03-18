@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/18 18:32:15 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/19 00:26:42 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,22 +105,6 @@ class	List
 		void					reverse();
 
 	private:
-		//Non member functions :
-		template <class T2>
-		friend bool	operator==(const List<T2> &lhs, const List<T2> &rhs);
-		template <class T2>
-		friend bool	operator!=(const List<T2> &lhs, const List<T2> &rhs);
-		template <class T2>
-		friend bool	operator<(const List<T2> &lhs, const List<T2> &rhs);
-		template <class T2>
-		friend bool	operator<=(const List<T2> &lhs, const List<T2> &rhs);
-		template <class T2>
-		friend bool	operator>(const List<T2> &lhs, const List<T2> &rhs);
-		template <class T2>
-		friend bool	operator>=(const List<T2> &lhs, const List<T2> &rhs);
-		template <class T2>
-		friend void	swap(List<T2> &x, List<T2> &y);
-
 		//Attibutes :
 		ListNode<T>		_front;
 		ListNode<T>		_back;
@@ -642,7 +626,7 @@ operator==(const List<T> &lhs, const List<T> &rhs)
 	typename List<T>::const_iterator		lhs_it(lhs.begin());
 	typename List<T>::const_iterator		rhs_it(rhs.begin());
 
-	if (lhs._size != rhs._size)
+	if (lhs.size() != rhs.size())
 		return (false);
 	for (; lhs_it != lhs.end(); ++lhs_it, ++rhs_it)
 		if (*lhs_it != *rhs_it)

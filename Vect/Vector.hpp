@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/18 18:36:52 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/19 00:25:09 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,22 +92,6 @@ class	Vector
 		void					clear();
 
 	private:
-		//Non member functions :
-		template <class T2>
-		friend bool	operator==(const Vector<T2> &lhs, const Vector<T2> &rhs);
-		template <class T2>
-		friend bool	operator!=(const Vector<T2> &lhs, const Vector<T2> &rhs);
-		template <class T2>
-		friend bool	operator<(const Vector<T2> &lhs, const Vector<T2> &rhs);
-		template <class T2>
-		friend bool	operator<=(const Vector<T2> &lhs, const Vector<T2> &rhs);
-		template <class T2>
-		friend bool	operator>(const Vector<T2> &lhs, const Vector<T2> &rhs);
-		template <class T2>
-		friend bool	operator>=(const Vector<T2> &lhs, const Vector<T2> &rhs);
-		template <class T2>
-		friend void	swap(Vector<T2> &x, Vector<T2> &y);
-
 		//Attibutes :
 		size_type			_size;
 		size_type			_cap_level;
@@ -451,7 +435,7 @@ operator==(const Vector<T> &lhs, const Vector<T> &rhs)
 	typename Vector<T>::const_iterator		lhs_it(lhs.begin());
 	typename Vector<T>::const_iterator		rhs_it(rhs.begin());
 
-	if (lhs._size != rhs._size)
+	if (lhs.size() != rhs.size())
 		return (false);
 	for (; lhs_it != lhs.end(); ++lhs_it, ++rhs_it)
 		if (*lhs_it != *rhs_it)

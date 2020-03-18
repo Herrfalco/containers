@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/02 20:10:41 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/17 21:17:18 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/19 00:46:25 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,24 +52,14 @@ class	RevIter
 		//Attibutes :
 		iterator_type	_base;
 
-	 	//Relational operators :
-		template <class Iter2>
-		friend bool	operator==(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
-		template <class Iter2>
-		friend bool	operator!=(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
-		template <class Iter2>
-		friend bool	operator<(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
-		template <class Iter2>
-		friend bool	operator<=(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
-		template <class Iter2>
-		friend bool	operator>(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
-		template <class Iter2>
-		friend bool	operator>=(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
-
 		//Non-member overloads :
 		template <class Iter2>
-		friend typename Iter2::difference_type
-		operator-(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
+		friend bool		operator==(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
+		template <class Iter2>
+		friend bool		operator<(const RevIter<Iter2> &lhs, const RevIter<Iter2> &rhs);
+		template <class Iter2>
+		friend typename Iter2::difference_type	operator-(const RevIter<Iter2> &lhs,
+			const RevIter<Iter2> &rhs);
 };
 
 template <class Iter>
@@ -203,7 +193,7 @@ template <class Iter>
 bool
 operator!=(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs)
 {
-	return (lhs._base != rhs._base);
+	return (!(lhs == rhs));
 }
 
 template <class Iter>
@@ -217,21 +207,21 @@ template <class Iter>
 bool
 operator<=(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs)
 {
-	return (lhs._base >= rhs._base);
+	return (!(lhs > rhs));
 }
 
 template <class Iter>
 bool
 operator>(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs)
 {
-	return (lhs._base < rhs._base);
+	return (rhs < lhs);
 }
 
 template <class Iter>
 bool
 operator>=(const RevIter<Iter> &lhs, const RevIter<Iter> &rhs)
 {
-	return (lhs._base <= rhs._base);
+	return (!(lhs < rhs));
 }
 
 template <class Iter>
