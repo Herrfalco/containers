@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/19 00:25:09 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/19 21:01:11 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 # include "../Iter/RevIter.hpp"
 # include <cmath>
 # include <limits>
+# include <memory>
+
+//A supprimer
+# include <iostream>
 
 namespace	ft
 {
@@ -107,7 +111,7 @@ template <class T>
 Vector<T>::Vector(size_type n, const value_type &val) : _size(0), _cap_level(0),
 	_sequence(0)
 {
-	assign(n, val);
+	insert(begin(), n, val);
 }
 
 template <class T>
@@ -115,19 +119,22 @@ template <class InputIterator>
 Vector<T>::Vector(InputIterator fst, InputIterator lst) : _size(0), _cap_level(0),
 	_sequence(0)
 {
-	assign(fst, lst);
+	insert(begin(), fst, lst);
 }
 
 template <class T>
 Vector<T>::Vector(const Vector &v) : _size(0), _cap_level(0), _sequence(0)
 {
-	assign(v.begin(), v.end());
+	insert(begin(), v.begin(), v.end());
 }
 
 template <class T>
 Vector<T>::~Vector(void)
 {
-	delete[] (_sequence);
+	std::allocator<T>	alloc;
+
+	clear();
+	alloc.deallocate(_sequence, capacity());
 }
 
 template <class T>
@@ -214,14 +221,20 @@ template <class T>
 void
 Vector<T>::resize(size_type n, value_type val)
 {
-	size_type	nb;
+	size_type			nb;
+	std::allocator<T>	alloc;
 
-	if (n > _size)
+	if (n < _size)
+	{
+		for (iterator it = end() - (_size - n); it != end(); ++it)
+			alloc.destroy(it._ptr);	
+	}
+	else if (n > _size)
 	{
 		reserve(n);
 		nb = n - _size;
 		for (iterator it = end(); nb; --nb, ++it)
-			*it = val;
+			alloc.construct(it._ptr, val);
 	}
 	_size = n;
 }
@@ -244,17 +257,22 @@ template <class T>
 void
 Vector<T>::reserve(size_type n)
 {
-	size_type	new_cap;
-	T			*new_space;
+	std::allocator<T>	alloc;
+	size_type			old_cap = capacity();
+	size_type			new_cap;
+	T		 			*new_space;
 
-	if (n <= capacity())
+	if (n <= old_cap)
 		return ;
 	while (n > (new_cap = capacity()))
 		++_cap_level;
-	new_space = new T[new_cap];
+	new_space = alloc.allocate(new_cap);
 	for (size_type i = 0; i < _size; ++i)
-		new_space[i] = _sequence[i];
-	delete[] (_sequence);
+	{
+		alloc.construct(new_space + i, _sequence[i]);
+		alloc.destroy(_sequence + i);
+	}
+	alloc.deallocate(_sequence, old_cap);
 	_sequence = new_space;
 }
 
@@ -320,8 +338,7 @@ void
 Vector<T>::assign(InputIterator first, InputIterator last)
 {
 	clear();
-	for (; first != last; ++first)
-		push_back(*first);
+	insert(end(), first, last);
 }
 
 template <class T>
@@ -329,8 +346,7 @@ void
 Vector<T>::assign(size_type n, const value_type &val)
 {
 	clear();
-	while (n--)
-		push_back(val);
+	insert(end(), n, val);
 }
 
 template <class T>
@@ -359,16 +375,27 @@ template <class T>
 void
 Vector<T>::insert(iterator it, size_type n, const value_type &val)
 {
+	std::allocator<T>	alloc;
 	iterator			old_end(end());
 	difference_type		it_id = it - begin();
 
 	reserve(_size + n);
-	it = _sequence + it_id;
+	it = begin() + it_id;
 	_size += n; 
 	for (iterator b(end() - 1), a(b - n); a >= it; --a, --b)
-		*b = *a;
+	{
+		if (b >= old_end)
+			alloc.construct(b._ptr, *a);
+		else
+			*b = *a;
+	}
 	for (; n; --n, ++it)
-		*it = val;
+	{
+		if (it >= old_end)
+			alloc.construct(it._ptr, val);
+		else
+			*it = val;
+	}
 }
 
 template <class T>
@@ -376,14 +403,27 @@ template <class InputIterator>
 void
 Vector<T>::insert(iterator it, InputIterator fst, InputIterator lst)
 {
-	iterator	old_end(end());
+	std::allocator<T>	alloc;
+	iterator			old_end(end());
+	difference_type		it_id = it - begin();
 
 	reserve(_size + (lst - fst));
+	it = begin() + it_id;
 	_size += lst - fst;
 	for (iterator b(end() - 1), a(b - (lst - fst)); a >= it; --a, --b)
-		*b = *a;
+	{
+		if (b >= old_end)
+			alloc.construct(b._ptr, *a);
+		else
+			*b = *a;
+	}
 	for (; fst != lst; ++fst, ++it)
-		*it = *fst;
+	{
+		if (it >= old_end)
+			alloc.construct(it._ptr, *fst);
+		else
+			*it = *fst;
+	}
 }
 
 template <class T>

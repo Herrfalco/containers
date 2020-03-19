@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/19 00:26:42 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/19 16:52:16 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,12 +324,12 @@ template <class T>
 typename List<T>::iterator
 List<T>::insert(iterator it, const value_type &val)
 {
-	ListNode<T>	*new__node = new ListNode<T>(val);
+	ListNode<T>	*new_node = new ListNode<T>(val);
 
-	new__node->next = it._node;
-	new__node->prev = it._node->prev;
-	it._node->prev->next = new__node;
-	it._node->prev = new__node;
+	new_node->next = it._node;
+	new_node->prev = it._node->prev;
+	it._node->prev->next = new_node;
+	it._node->prev = new_node;
 	_size++;
 	return (--it);
 }
