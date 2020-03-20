@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 16:19:42 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/10 23:07:09 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/20 21:15:01 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	test_const(T *init, size_t size_init, T def, size_t size_def, std::string n
 	Cont				c2(size_def, def);
 	Cont				c3(init, init + size_init);
 	Cont				c4(c3);
+
 	std::stringstream	ss;
 
 	std::cout << "   \033[1;33m" << name << "\033[0m\n";

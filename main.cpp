@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 17:04:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/20 18:32:55 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/20 21:05:21 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ int		error(std::string msg, int ret)
 
 int		main(int ac, char **av)
 {
-	std::ofstream	out(".tmp");
+//	std::ofstream	out(".tmp");
 	std::string		par;
-	std::streambuf	*out_sav;
+//	std::streambuf	*out_sav;
 
 	if (ac != 2)
 		return (error("tester needs a container type as parameter", 1));
 	par = *(++av);
-	out_sav = std::cout.rdbuf();
-	std::cout.rdbuf(out.rdbuf());
+//	out_sav = std::cout.rdbuf();
+//	std::cout.rdbuf(out.rdbuf());
 	if (!par.compare("List") || !par.compare("list"))
 		nlist::test_list();
 	else if (!par.compare("Vector") || !par.compare("vector"))
@@ -43,11 +43,11 @@ int		main(int ac, char **av)
 		ndeque::test_deque();
 	else
 	{
-		std::cout.rdbuf(out_sav);
+		//std::cout.rdbuf(out_sav);
 		return (error("unknown container type", 2));
 	}
 	std::cout << std::endl;
-	std::cout.rdbuf(out_sav);
-	return (system("cat .tmp | less"));
+//	std::cout.rdbuf(out_sav);
+//	return (system("cat .tmp | less"));
 	return (0);
 }

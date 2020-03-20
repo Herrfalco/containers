@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/20 17:15:54 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/20 21:14:09 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,8 @@ Vector<T>::Vector(InputIterator fst, InputIterator lst) : _size(0), _cap_level(0
 template <class T>
 Vector<T>::Vector(const Vector &v) : _size(0), _cap_level(0), _sequence(0)
 {
-	insert(begin(), v.begin(), v.end());
+	if (v.size())
+		insert(begin(), v.begin(), v.end());
 }
 
 template <class T>
@@ -377,6 +378,8 @@ Vector<T>::insert(iterator it, size_type n, const value_type &val)
 	iterator			old_end(end());
 	difference_type		it_id = it - begin();
 
+	if (!n)
+		return ;
 	reserve(_size + n);
 	it = begin() + it_id;
 	_size += n; 
@@ -405,6 +408,8 @@ Vector<T>::insert(iterator it, InputIterator fst, InputIterator lst)
 	iterator			old_end(end());
 	difference_type		it_id = it - begin();
 
+	if (fst == lst)
+		return ;
 	reserve(_size + (lst - fst));
 	it = begin() + it_id;
 	_size += lst - fst;

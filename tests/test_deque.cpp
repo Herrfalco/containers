@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 15:40:29 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/20 18:33:47 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/20 21:06:37 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,16 @@ void	ndeque::test_deque(void)
 	std::string			string_init[] = { "A", "B", "C", "D", "E", "F", "G",
 										  "H", "I" };
 
+	(void)double_init;
+	(void)string_init;
+
 	std::cout << "\033[1;32mCONSTRUCTORS & ASSIGNATION :\n";
 	test_const<ft::Deque<int>, int>(int_init, 9, 0, 9, "ft::Deque<int>");
+/*
 	test_const<ft::Deque<double>, double>(double_init, 9, 0.0, 9, "ft::Deque<double>");
 	test_const<ft::Deque<std::string>, std::string>(string_init, 9, "?", 9,
 		"ft::Deque<string>");
+*/
 
 /*
 	std::cout << "\n\033[1;32mITERATORS :\n";
