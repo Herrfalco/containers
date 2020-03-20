@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/19 21:01:11 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/20 17:15:54 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,6 @@
 # include <cmath>
 # include <limits>
 # include <memory>
-
-//A supprimer
-# include <iostream>
 
 namespace	ft
 {
@@ -360,7 +357,8 @@ template <class T>
 void
 Vector<T>::pop_back()
 {
-	erase(end() - 1);
+	if (_size)
+		erase(end() - 1);
 }
 
 template <class T>

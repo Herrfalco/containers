@@ -6,13 +6,14 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 17:04:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/16 17:48:05 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/20 18:32:55 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tests/test_list.hpp"
 #include "tests/test_vect.hpp"
 #include "tests/test_map.hpp"
+#include "tests/test_deque.hpp"
 #include <fstream>
 
 int		error(std::string msg, int ret)
@@ -38,6 +39,8 @@ int		main(int ac, char **av)
 		nvect::test_vect();
 	else if (!par.compare("Map") || !par.compare("map"))
 		nmap::test_map();
+	else if (!par.compare("Deque") || !par.compare("deque"))
+		ndeque::test_deque();
 	else
 	{
 		std::cout.rdbuf(out_sav);
