@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/20 19:48:34 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/21 16:42:27 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,7 @@ DequeIter<Category, T, Distance, Pointer, Reference>
 {
 	if (_side == up)
 		_id += n;
-	else if (_id - n < 0)
+	else if (_id < (size_t)n)
 	{
 		_side = up;
 		_id = (_id - n + 1) * -1;
@@ -222,7 +222,7 @@ DequeIter<Category, T, Distance, Pointer, Reference>
 {
 	if (_side == down)
 		_id += n;
-	else if (_id - n < 0)
+	else if (_id < (size_t)n)
 	{
 		_side = down;
 		_id = (_id - n + 1) * -1;

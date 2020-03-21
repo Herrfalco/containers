@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/20 19:32:27 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/21 18:21:07 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,7 +222,7 @@ Deque<T>::resize(size_type n, value_type val)
 	if (n < _down.size())
 	{
 		_up.clear();
-		_down.erase(_down.begin(), _down.being() + (_down.size() - n));
+		_down.erase(_down.begin(), _down.begin() + (_down.size() - n));
 	}
 	else
 		_up.resize(n - _down.size(), val);
@@ -347,9 +347,15 @@ typename Deque<T>::iterator
 Deque<T>::insert(iterator it, const value_type &val)
 {
 	if (it._side == up)
+	{
 		_up.insert(&_up[it._id], val);
+		return (it);
+	}
 	else
+	{
 		_down.insert(&_down[it._id + 1], val);
+		return (it - 1);
+	}
 }
 
 template <class T>
@@ -365,7 +371,7 @@ template <class InputIterator>
 void
 Deque<T>::insert(iterator it, InputIterator fst, InputIterator lst)
 {
-	for (; fst != lst; ++fst)
+	for (; fst != lst; ++fst, (it._side == up ? ++it : 0))
 		insert(it, *fst);
 }
 
@@ -374,9 +380,15 @@ typename Deque<T>::iterator
 Deque<T>::erase(iterator position)
 {
 	if (position._side == up)
+	{
 		_up.erase(&_up[position._id]);
+		return (position);
+	}
 	else
+	{
 		_down.erase(&_down[position._id]);
+		return (position + 1);
+	}
 }
 
 template <class T>
@@ -386,14 +398,21 @@ Deque<T>::erase(iterator first, iterator last)
 	if (first._side == last._side)
 	{
 		if (first._side == up)
+		{
 			_up.erase(&_up[first._id], &_up[last._id]);
+			return (first);
+		}
 		else
+		{
 			_down.erase(&_down[last._id + 1], &_down[first._id + 1]);
+			return (last - 1);
+		}
 	}
 	else
 	{
 		_down.erase(&_down[0], &_down[first._id + 1]);
 		_up.erase(&_up[0], &_up[last._id]);
+		return (iterator(0, &_down, &_up, up));
 	}
 }
 

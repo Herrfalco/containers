@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 17:00:58 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/19 00:49:42 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/21 18:28:34 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,30 +119,6 @@ void	test_mod(T *init, size_t size_init, T def, size_t size_def, std::string nam
 	print_cont(c2, "II", "");
 	c1.clear();
 	print_cont(c1, "I", "I.clear()");
-}
-
-template <class T>
-bool	one_on_two(const T &elem)
-{
-	static bool		odd = true;
-
-	(void)elem;
-	if (odd)
-		return ((odd = false));
-	else
-		return ((odd = true));
-}
-
-template <class T>
-bool	equal(const T &a, const T &b)
-{
-	return (a == b);
-}
-
-template <class T>
-bool	less(const T &a, const T &b)
-{
-	return (a < b);
 }
 
 template <class Cont, class T>

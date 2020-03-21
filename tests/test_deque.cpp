@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 15:40:29 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/20 21:06:37 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/21 18:31:40 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,10 @@ void	ndeque::test_deque(void)
 
 	std::cout << "\033[1;32mCONSTRUCTORS & ASSIGNATION :\n";
 	test_const<ft::Deque<int>, int>(int_init, 9, 0, 9, "ft::Deque<int>");
-/*
 	test_const<ft::Deque<double>, double>(double_init, 9, 0.0, 9, "ft::Deque<double>");
 	test_const<ft::Deque<std::string>, std::string>(string_init, 9, "?", 9,
 		"ft::Deque<string>");
-*/
 
-/*
 	std::cout << "\n\033[1;32mITERATORS :\n";
 	test_iter<ft::Deque<int>, int>(int_init, 9, "ft::Deque<int>");
 	test_iter<ft::Deque<double>, double>(double_init, 9, "ft::Deque<double>");
@@ -58,5 +55,4 @@ void	ndeque::test_deque(void)
 	test_nmem<ft::Deque<double>, double>(double_init, 9, 0, 9, "ft::Deque<double>");
 	test_nmem<ft::Deque<std::string>, std::string>(string_init, 9, "?", 9,
 		"ft::Deque<string>");
-*/
 }

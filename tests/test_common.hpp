@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 16:19:42 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/20 21:15:01 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/21 15:52:49 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,12 @@ void	test_const(T *init, size_t size_init, T def, size_t size_def, std::string n
 template <class Cont, class T>
 void	test_iter(T *init, size_t size_init, std::string name)
 {
-	Cont	c(init, init + size_init);
+	Cont				c(init, init + size_init);
+	std::stringstream		ss;
 
 	std::cout << "   \033[1;33m" << name << "\n\033[0m";
-	print_cont(c, "I", "I()");
+	ss << "I(init, init + " << size_init << ")";
+	print_cont(c, "I", ss.str());
 	print_cont(c, "I", "Regular");
 	rprint_cont(c, "I", "Reverse");
 }

@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 17:00:58 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/20 18:13:54 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/21 18:33:32 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ namespace	ndeque
 
 void	test_deque(void);
 
-/*
 template <class Cont, class T>
 void	test_capacity(T def, size_t size_def, std::string name)
 {
@@ -39,22 +38,10 @@ void	test_capacity(T def, size_t size_def, std::string name)
 	c1.resize(size_def, def);
 	ss << "resize(" << size_def << ")";
 	print_cont(c1, "I", ss.str());
-	std::cout << "\033[1;36m      I.capacity()\033[0m\n         result : "
-		<< c1.capacity() << "\n\033[0m";
 	std::cout << "\033[1;36m      I.empty()\033[0m\n         result : "
 		<< (c1.empty() ? "true" : "false") << "\n\033[0m";
 	c1.resize(5);
 	print_cont(c1, "I", "resize(5)");
-	std::cout << "\033[1;36m      I.capacity()\033[0m\n         result : "
-		<< c1.capacity() << "\n\033[0m";
-	c1.reserve(11);
-	std::cout << "\033[1;36m      I.reserve(11) & I.capacity()\033[0m\
-\n         result : "
-		<< c1.capacity() << "\n\033[0m";
-	c1.reserve(17);
-	std::cout << "\033[1;36m      I.reserve(17) & I.capacity()\033[0m\
-\n         result : "
-		<< c1.capacity() << "\n\033[0m";
 }
 
 template <class Cont, class T>
@@ -94,8 +81,14 @@ void	test_mod(T *init, size_t size_init, T def, size_t size_def, std::string nam
 	ss.str("");
 	ss << "I.push_back(" << def << ")";
 	print_cont(c1, "I", ss.str());
+	c1.push_front(def);
+	ss.str("");
+	ss << "I.push_front(" << def << ")";
+	print_cont(c1, "I", ss.str());
 	c1.pop_back();
 	print_cont(c1, "I", "I.pop_back()");
+	c1.pop_front();
+	print_cont(c1, "I", "I.pop_front()");
 	c1.insert(c1.end(), def);
 	ss.str("");
 	ss << "I.insert(I.end(), " << def << ")";
@@ -122,35 +115,12 @@ void	test_mod(T *init, size_t size_init, T def, size_t size_def, std::string nam
 	print_cont(c1, "I", "I.clear()");
 }
 
-template <class T>
-bool	one_on_two(const T &elem)
-{
-	static bool		odd = true;
-
-	(void)elem;
-	if (odd)
-		return ((odd = false));
-	else
-		return ((odd = true));
-}
-
-template <class T>
-bool	equal(const T &a, const T &b)
-{
-	return (a == b);
-}
-
-template <class T>
-bool	less(const T &a, const T &b)
-{
-	return (a < b);
-}
-
 template <class Cont, class T>
 void	test_nmem(T *init, size_t size_init, T def, size_t size_def, std::string name)
 {
 	Cont				c1(size_def, def);
 	Cont				c2(init, init + size_init);
+	c2.push_front(init[1]);
 	Cont				c3(c2);
 	Cont				c4(c2);
 	std::stringstream	ss;
@@ -159,7 +129,7 @@ void	test_nmem(T *init, size_t size_init, T def, size_t size_def, std::string na
 	ss << "I(" << size_def << ", " << def << ")";
 	print_cont(c1, "I", ss.str());
 	ss.str("");
-	ss << "II(init, init + " << size_init << ")";
+	ss << "II(init, init + " << size_init << ") & II.push_front(" << init[1] << ")";
 	print_cont(c2, "II", ss.str());
 	print_cont(c3, "III", "III(II)");
 	c4.push_back(def);
@@ -206,7 +176,6 @@ void	test_nmem(T *init, size_t size_init, T def, size_t size_def, std::string na
 	print_cont(c1, "I", "swap(I, IV)");
 	print_cont(c4, "IV", "");
 }
-*/
 
 }
 

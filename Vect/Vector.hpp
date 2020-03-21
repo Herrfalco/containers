@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/20 21:14:09 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/21 17:59:58 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -366,8 +366,10 @@ template <class T>
 typename Vector<T>::iterator
 Vector<T>::insert(iterator it, const value_type &val)
 {
+	difference_type		it_id = it - begin();
+
 	insert(it, (size_type)1, val);
-	return (it);
+	return (begin() + it_id);
 }
 
 template <class T>
