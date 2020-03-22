@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 17:04:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/21 18:35:27 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/22 16:30:34 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "tests/test_vect.hpp"
 #include "tests/test_map.hpp"
 #include "tests/test_deque.hpp"
+#include "tests/test_stack.hpp"
 #include <fstream>
 
 int		error(std::string msg, int ret)
@@ -41,6 +42,8 @@ int		main(int ac, char **av)
 		nmap::test_map();
 	else if (!par.compare("Deque") || !par.compare("deque"))
 		ndeque::test_deque();
+	else if (!par.compare("Stack") || !par.compare("stack"))
+		nstack::test_stack();
 	else
 	{
 		std::cout.rdbuf(out_sav);
