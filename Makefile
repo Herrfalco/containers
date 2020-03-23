@@ -4,6 +4,7 @@ SRCS	=	tests/test_list.cpp \
 			tests/test_map.cpp \
 			tests/test_deque.cpp \
 			tests/test_stack.cpp \
+			tests/test_queue.cpp \
 			main.cpp
 OBJS	=	$(SRCS:.cpp=.opp)
 CC		=	clang++-8 -std=c++98
