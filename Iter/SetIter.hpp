@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   MapIter.hpp                                        :+:      :+:    :+:   */
+/*   SetIter.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/24 16:18:51 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/24 16:25:59 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAPITER_HPP
-# define MAPITER_HPP
+#ifndef SETITER_HPP
+# define SETITER_HPP
 
 # include <cstddef>
-# include "../Map/MapNode.hpp"
+# include "../Set/SetNode.hpp"
 
 namespace	ft
 {
 
 template <class Category, class T, class Distance = std::ptrdiff_t,
 	class Pointer = T*, class Reference = T&>
-class	MapIter
+class	SetIter
 {
 	public:
 		//Member types :
@@ -32,89 +32,89 @@ class	MapIter
 		typedef Category	iterator_category;
 
 		//Constructors, destructor and assignation :
-		MapIter(MapNode<value_type> *n = 0);
-		MapIter(const MapIter &l);
-		~MapIter(void);
-		MapIter		&operator=(const MapIter &l);
+		SetIter(SetNode<value_type> *n = 0);
+		SetIter(const SetIter &s);
+		~SetIter(void);
+		SetIter		&operator=(const SetIter &s);
 
 		//Relational operators :
-		bool			operator==(const MapIter &l) const;
-		bool			operator!=(const MapIter &l) const;
+		bool			operator==(const SetIter &s) const;
+		bool			operator!=(const SetIter &s) const;
 
 		//Access operators :
 		reference		operator*(void);
 		pointer			operator->(void);
-		MapIter			&operator++(void);
-		MapIter			operator++(int valptr);
-		MapIter			&operator--(void);
-		MapIter			operator--(int valptr);
+		SetIter			&operator++(void);
+		SetIter			operator++(int valptr);
+		SetIter			&operator--(void);
+		SetIter			operator--(int valptr);
 
 	private:
 		//Friendship :
-		template <class Key2, class T2, class Compare2>
-		friend class			Map;
+		template <class T2, class Compare2>
+		friend class			Set;
 
 		//Attibutes :
-		MapNode<value_type>		*_node;
+		SetNode<value_type>		*_node;
 };
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-MapIter<Category, T, Distance, Pointer, Reference>::MapIter(MapNode<T> *n) : _node(n)
+SetIter<Category, T, Distance, Pointer, Reference>::SetIter(SetNode<T> *n) : _node(n)
 {
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-MapIter<Category, T, Distance, Pointer, Reference>::MapIter(const MapIter<Category,
-	T, Distance, Pointer, Reference> &l) : _node(l._node)
+SetIter<Category, T, Distance, Pointer, Reference>::SetIter(const SetIter<Category,
+	T, Distance, Pointer, Reference> &s) : _node(s._node)
 {
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-MapIter<Category, T, Distance, Pointer, Reference>::~MapIter(void)
+SetIter<Category, T, Distance, Pointer, Reference>::~SetIter(void)
 {
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-MapIter<Category, T, Distance, Pointer, Reference>&
-MapIter<Category, T, Distance, Pointer, Reference>::operator=(const MapIter &l)
+SetIter<Category, T, Distance, Pointer, Reference>&
+SetIter<Category, T, Distance, Pointer, Reference>::operator=(const SetIter &s)
 {
-	if (&l == this)
+	if (&s == this)
 		return (*this);
-	_node = l._node;
+	_node = s._node;
 	return (*this);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 bool
-MapIter<Category, T, Distance, Pointer, Reference>::operator==(const MapIter &l) const
+SetIter<Category, T, Distance, Pointer, Reference>::operator==(const SetIter &s) const
 {
-	return (_node == l._node);
+	return (_node == s._node);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 bool
-MapIter<Category, T, Distance, Pointer, Reference>::operator!=(const MapIter &l) const
+SetIter<Category, T, Distance, Pointer, Reference>::operator!=(const SetIter &s) const
 {
-	return (!(*this == l));
+	return (!(*this == s));
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 Reference
-MapIter<Category, T, Distance, Pointer, Reference>::operator*(void)
+SetIter<Category, T, Distance, Pointer, Reference>::operator*(void)
 {
 	return (*(_node->valptr));
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 Pointer
-MapIter<Category, T, Distance, Pointer, Reference>::operator->(void)
+SetIter<Category, T, Distance, Pointer, Reference>::operator->(void)
 {
 	return (_node->valptr);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-MapIter<Category, T, Distance, Pointer, Reference>&
-MapIter<Category, T, Distance, Pointer, Reference>::operator++(void)
+SetIter<Category, T, Distance, Pointer, Reference>&
+SetIter<Category, T, Distance, Pointer, Reference>::operator++(void)
 {
 	if (_node->right && _node->right != _node)
 	{
@@ -135,10 +135,10 @@ MapIter<Category, T, Distance, Pointer, Reference>::operator++(void)
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-MapIter<Category, T, Distance, Pointer, Reference>
-MapIter<Category, T, Distance, Pointer, Reference>::operator++(int dummy)
+SetIter<Category, T, Distance, Pointer, Reference>
+SetIter<Category, T, Distance, Pointer, Reference>::operator++(int dummy)
 {
-	MapIter<Category, T, Distance, Pointer, Reference>	tmp;
+	SetIter<Category, T, Distance, Pointer, Reference>	tmp;
 
 	(void)dummy;
 	tmp = *this;
@@ -147,8 +147,8 @@ MapIter<Category, T, Distance, Pointer, Reference>::operator++(int dummy)
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-MapIter<Category, T, Distance, Pointer, Reference>&
-MapIter<Category, T, Distance, Pointer, Reference>::operator--(void)
+SetIter<Category, T, Distance, Pointer, Reference>&
+SetIter<Category, T, Distance, Pointer, Reference>::operator--(void)
 {
 	if (_node->left && _node->left != _node)
 	{
@@ -169,10 +169,10 @@ MapIter<Category, T, Distance, Pointer, Reference>::operator--(void)
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-MapIter<Category, T, Distance, Pointer, Reference>
-MapIter<Category, T, Distance, Pointer, Reference>::operator--(int dummy)
+SetIter<Category, T, Distance, Pointer, Reference>
+SetIter<Category, T, Distance, Pointer, Reference>::operator--(int dummy)
 {
-	MapIter<Category, T, Distance, Pointer, Reference>	tmp;
+	SetIter<Category, T, Distance, Pointer, Reference>	tmp;
 
 	(void)dummy;
 	tmp = *this;
@@ -182,4 +182,4 @@ MapIter<Category, T, Distance, Pointer, Reference>::operator--(int dummy)
 
 }
 
-#endif //MAPITER_HPP
+#endif //SETITER_HPP

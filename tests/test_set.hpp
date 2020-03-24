@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_map.hpp                                       :+:      :+:    :+:   */
+/*   test_set.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 17:00:58 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/24 18:05:02 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/24 18:28:20 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEST_MAP_HPP
-# define TEST_MAP_HPP
+#ifndef TEST_SET_HPP
+# define TEST_SET_HPP
 
-# include "../Map/Map.hpp"
+# include "../Set/Set.hpp"
 
 # include <iostream>
 # include <string>
 # include <sstream>
 
-namespace	nmap
+namespace	nset
 {
 
-void	test_map(void);
+void	test_set(void);
 
 template <class T>
 void	print_cont(const T &cont, const std::string &name, const std::string &msg)
@@ -35,8 +35,7 @@ void	print_cont(const T &cont, const std::string &name, const std::string &msg)
 	for (typename T::const_iterator it(cont.begin()); it != cont.end(); ++it)
 	{
 		it_var = it;
-		std::cout << it->first << ":" << it->second
-			<< (++it_var != cont.end() ? ", " : "");
+		std::cout << *it << (++it_var != cont.end() ? ", " : "");
 	}
 	std::cout << " ] (" << cont.size() << ")\n";
 }
@@ -50,12 +49,10 @@ void	rprint_cont(const T &cont, const std::string &name, const std::string &msg)
 	if (msg.size())
 		std::cout << "      \033[1;36m" << msg << "\n";
 	std::cout << "         \033[0m" << name << " : [ ";
-	typename T::const_iterator				it(cont.end());
 	for (typename T::const_reverse_iterator rit(cont.rbegin()); rit != cont.rend(); ++rit)
 	{
 		rit_var = rit;
-		std::cout << rit->first << ":" << rit->second
-			<< (++rit_var != cont.rend() ? ", " : "");
+		std::cout << *rit << (++rit_var != cont.rend() ? ", " : "");
 	}
 	std::cout << " ] (" << cont.size() << ")\n";
 }
@@ -114,28 +111,6 @@ void	test_capacity(T *init, size_t size_init, std::string name)
 }
 
 template <class Cont, class T>
-void	test_access(T *init, size_t size_init, std::string name)
-{
-	Cont				c;
-	std::stringstream	ss;
-	
-	(void)size_init;
-	std::cout << "   \033[1;33m" << name << "\033[0m\n";
-	print_cont(c, "I", "I()");
-	c[init[0].first] = init[0].second;
-	ss << "I[" << init[0].first << "] = " << init[0].second;
-	print_cont(c, "I", ss.str());
-	c[init[1].first] = init[1].second;
-	ss.str("");
-	ss << "I[" << init[1].first << "] = " << init[1].second;
-	print_cont(c, "I", ss.str());
-	c[init[0].first] = init[2].second;
-	ss.str("");
-	ss << "I[" << init[0].first << "] = " << init[2].second;
-	print_cont(c, "I", ss.str());
-}
-
-template <class Cont, class T>
 void	test_mod(T *init, size_t size_init, std::string name)
 {
 	std::stringstream				ss;
@@ -147,16 +122,17 @@ void	test_mod(T *init, size_t size_init, std::string name)
 	std::cout << "   \033[1;33m" << name << "\033[0m\n";
 	print_cont(c1, "I", "I()");
 	c1.insert(init[0]);
-	print_cont(c1, "I", "I.insert(init[0])");
+	ss << "I.insert(" << init[0] << ")";
+	print_cont(c1, "I", ss.str());
 	c1.insert(init + 1, init + size_init);
 	ss.str("");
 	ss << "I.insert(init + 1, init + " << size_init << ")";
 	print_cont(c1, "I", ss.str());
 	c1.erase(c1.begin());
 	print_cont(c1, "I", "I.erase(I.begin())");
-	c1.erase(init[3].first);
+	c1.erase(init[3]);
 	ss.str("");
-	ss << "I.erase(" << init[3].first << ")";
+	ss << "I.erase(" << init[3] << ")";
 	print_cont(c1, "I", ss.str());
 	it1 = c1.begin();
 	it2 = c1.end();
@@ -181,21 +157,19 @@ void	test_obs(T *init, size_t size_init, std::string name)
 
 	std::cout << "   \033[1;33m" << name << "\n\033[0m";
 	std::cout
-		<< "\033[1;36m      I.key_comp()(" << init[0].first	<< ", " << init[1].first
+		<< "\033[1;36m      I.key_comp()(" << init[0] << ", " << init[1]
 		<< ")\033[0m\n         result : "
-		<< (c.key_comp()(init[0].first, init[1].first) ? true : false) << "\n\033[0m";
+		<< (c.key_comp()(init[0], init[1]) ? true : false) << "\n\033[0m";
 	std::cout
-		<< "\033[1;36m      I.key_comp()(" << init[1].first	<< ", " << init[0].first
+		<< "\033[1;36m      I.key_comp()(" << init[1] << ", " << init[0]
 		<< ")\033[0m\n         result : "
-		<< (c.key_comp()(init[1].first, init[0].first) ? true : false) << "\n\033[0m";
+		<< (c.key_comp()(init[1], init[0]) ? true : false) << "\n\033[0m";
 	std::cout
-		<< "\033[1;36m      I.value_comp()(" << init[0].first << ":" << init[0].second
-		<< ", " << init[1].first << ":" << init[1].second
+		<< "\033[1;36m      I.value_comp()(" << init[0] << ", " << init[1]
 		<< ")\033[0m\n         result : "
 		<< (c.value_comp()(init[0], init[1]) ? true : false) << "\n\033[0m";
 	std::cout
-		<< "\033[1;36m      I.value_comp()(" << init[1].first << ":" << init[1].second
-		<< ", " << init[0].first << ":" << init[0].second
+		<< "\033[1;36m      I.value_comp()(" << init[1] << ", " << init[0]
 		<< ")\033[0m\n         result : "
 		<< (c.value_comp()(init[1], init[0]) ? true : false) << "\n\033[0m";
 }
@@ -213,31 +187,27 @@ void	test_op(T *init, size_t size_init, std::string name)
 	std::cout << "   \033[1;33m" << name << "\033[0m\n";
 	ss << "I(init + 1, init + " << size_init << ")";
 	print_cont(c, "I", ss.str());
-	it = c.find(init[2].first);
-	std::cout << "\033[1;36m      I.find(" << init[2].first
-		<< ")\033[0m\n         result : " << it->first << ":"
-		<< it->second << "\n\033[0m";
-	ret = c.count(init[4].first);
-	std::cout << "\033[1;36m      I.count(" << init[4].first
+	it = c.find(init[2]);
+	std::cout << "\033[1;36m      I.find(" << init[2]
+		<< ")\033[0m\n         result : " << *it << "\n\033[0m";
+	ret = c.count(init[4]);
+	std::cout << "\033[1;36m      I.count(" << init[4]
 		<< ")\033[0m\n         result : " << ret << "\n\033[0m";
-	ret = c.count(init[0].first);
-	std::cout << "\033[1;36m      I.count(" << init[0].first
+	ret = c.count(init[0]);
+	std::cout << "\033[1;36m      I.count(" << init[0]
 		<< ")\033[0m\n         result : " << ret << "\n\033[0m";
-	it = c.lower_bound(init[2].first);
-	std::cout << "\033[1;36m      I.lower_bound(" << init[2].first
-		<< ")\033[0m\n         result : " << it->first << ":"
-		<< it->second << "\n\033[0m";
-	it = c.upper_bound(init[2].first);
-	std::cout << "\033[1;36m      I.upper_bound(" << init[2].first
-		<< ")\033[0m\n         result : " << it->first << ":"
-		<< it->second << "\n\033[0m";
-	p_ret = c.equal_range(init[2].first);
-	std::cout << "\033[1;36m      I.equal_range(" << init[2].first
-		<< ")\033[0m\n         result : [ " << p_ret.first->first << ":"
-		<< p_ret.first->second << ", " << p_ret.second->first << ":"
-		<< p_ret.second->second << " ]\n\033[0m";
+	it = c.lower_bound(init[2]);
+	std::cout << "\033[1;36m      I.lower_bound(" << init[2]
+		<< ")\033[0m\n         result : " << *it << "\n\033[0m";
+	it = c.upper_bound(init[2]);
+	std::cout << "\033[1;36m      I.upper_bound(" << init[2]
+		<< ")\033[0m\n         result : " << *it << "\n\033[0m";
+	p_ret = c.equal_range(init[2]);
+	std::cout << "\033[1;36m      I.equal_range(" << init[2]
+		<< ")\033[0m\n         result : [ " << *p_ret.first << ", " << *p_ret.second
+		<< " ]\n\033[0m";
 }
 
 }
 
-#endif	//TEST_MAP_HPP
+#endif	//TEST_SET_HPP
