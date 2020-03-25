@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/21 16:42:27 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/25 13:52:52 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define DEQUEITER_HPP
 
 # include <cstddef>
-# include "../Vect/Vector.hpp"
+# include "../Vector/Vector.hpp"
 
 namespace	ft
 {

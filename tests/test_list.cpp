@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 15:40:29 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/10 23:08:53 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/25 14:25:42 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,30 +32,30 @@ void	nlist::test_list(void)
 	test_iter<ft::List<std::string>, std::string>(string_init, 9, "ft::List<string>");
 
 	std::cout << "\n\033[1;32mCAPACITY :\n";
-	nlist::test_capacity<ft::List<int>, int>(int_init, 9, "ft::List<int>");
-	nlist::test_capacity<ft::List<double>, double>(double_init, 9, "ft::List<double>");
-	nlist::test_capacity<ft::List<std::string>, std::string>(string_init, 9, "ft::List<string>");
+	test_capacity<ft::List<int>, int>(int_init, 9, "ft::List<int>");
+	test_capacity<ft::List<double>, double>(double_init, 9, "ft::List<double>");
+	test_capacity<ft::List<std::string>, std::string>(string_init, 9, "ft::List<string>");
 
 	std::cout << "\n\033[1;32mACCESS :\n";
-	nlist::test_access<ft::List<int>, int>(int_init, 9, "ft::List<int>");
-	nlist::test_access<ft::List<double>, double>(double_init, 9, "ft::List<double>");
-	nlist::test_access<ft::List<std::string>, std::string>(string_init, 9, "ft::List<string>");
+	test_access<ft::List<int>, int>(int_init, 9, "ft::List<int>");
+	test_access<ft::List<double>, double>(double_init, 9, "ft::List<double>");
+	test_access<ft::List<std::string>, std::string>(string_init, 9, "ft::List<string>");
 
 	std::cout << "\n\033[1;32mMODIFIERS :\n";
-	nlist::test_mod<ft::List<int>, int>(int_init, 9, 0, 9, "ft::List<int>");
-	nlist::test_mod<ft::List<double>, double>(double_init, 9, 0, 9, "ft::List<double>");
-	nlist::test_mod<ft::List<std::string>, std::string>(string_init, 9, "?", 9,
+	test_mod<ft::List<int>, int>(int_init, 9, 0, 9, "ft::List<int>");
+	test_mod<ft::List<double>, double>(double_init, 9, 0, 9, "ft::List<double>");
+	test_mod<ft::List<std::string>, std::string>(string_init, 9, "?", 9,
 		"ft::List<string>");
 
 	std::cout << "\n\033[1;32mOPERATIONS :\n";
-	nlist::test_op<ft::List<int>, int>(int_init, 9, 0, 9, "ft::List<int>");
-	nlist::test_op<ft::List<double>, double>(double_init, 9, 0, 9, "ft::List<double>");
-	nlist::test_op<ft::List<std::string>, std::string>(string_init, 9, "?", 9,
+	test_op<ft::List<int>, int>(int_init, 9, 0, 9, "ft::List<int>");
+	test_op<ft::List<double>, double>(double_init, 9, 0, 9, "ft::List<double>");
+	test_op<ft::List<std::string>, std::string>(string_init, 9, "?", 9,
 		"ft::List<string>");
 
 	std::cout << "\n\033[1;32mNON-MEMBER :\n";
-	nlist::test_nmem<ft::List<int>, int>(int_init, 9, 0, 9, "ft::List<int>");
-	nlist::test_nmem<ft::List<double>, double>(double_init, 9, 0, 9, "ft::List<double>");
-	nlist::test_nmem<ft::List<std::string>, std::string>(string_init, 9, "?", 9,
+	test_nmem<ft::List<int>, int>(int_init, 9, 0, 9, "ft::List<int>");
+	test_nmem<ft::List<double>, double>(double_init, 9, 0, 9, "ft::List<double>");
+	test_nmem<ft::List<std::string>, std::string>(string_init, 9, "?", 9,
 		"ft::List<string>");
 }

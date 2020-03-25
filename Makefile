@@ -1,11 +1,12 @@
 NAME	=	test
 SRCS	=	tests/test_list.cpp \
-			tests/test_vect.cpp \
+			tests/test_vector.cpp \
 			tests/test_map.cpp \
 			tests/test_deque.cpp \
 			tests/test_stack.cpp \
 			tests/test_queue.cpp \
 			tests/test_set.cpp \
+			tests/test_multiset.cpp \
 			main.cpp
 OBJS	=	$(SRCS:.cpp=.opp)
 CC		=	clang++-8 -std=c++98

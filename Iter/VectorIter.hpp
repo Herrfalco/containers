@@ -6,12 +6,12 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/19 20:32:17 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/25 13:46:36 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VECTITER_HPP
-# define VECTITER_HPP
+#ifndef VECTORITER_HPP
+# define VECTORITER_HPP
 
 # include <cstddef>
 
@@ -20,7 +20,7 @@ namespace	ft
 
 template <class Category, class T, class Distance = std::ptrdiff_t,
 	class Pointer = T*, class Reference = T&>
-class	VectIter
+class	VectorIter
 {
 	public:
 		//Member types :
@@ -31,36 +31,36 @@ class	VectIter
 		typedef Category	iterator_category;
 
 		//Constructors, destructor and assignation :
-		VectIter(value_type *p = 0);
-		VectIter(const VectIter &v);
-		~VectIter(void);
-		VectIter		&operator=(const VectIter &v);
+		VectorIter(value_type *p = 0);
+		VectorIter(const VectorIter &v);
+		~VectorIter(void);
+		VectorIter		&operator=(const VectorIter &v);
 
 		//Relational operators :
-		bool			operator==(const VectIter &v) const;
-		bool			operator!=(const VectIter &v) const;
+		bool			operator==(const VectorIter &v) const;
+		bool			operator!=(const VectorIter &v) const;
 
 		//Access operators :
 		reference		operator*(void);
 		pointer			operator->(void);
 		reference		operator[](difference_type n) const;
-		VectIter		&operator++(void);
-		VectIter		operator++(int valptr);
-		VectIter		&operator--(void);
-		VectIter		operator--(int valptr);
-		VectIter		operator+(difference_type n) const;
-		VectIter		operator-(difference_type n) const;
-		VectIter		&operator+=(difference_type n);
-		VectIter		&operator-=(difference_type n);
+		VectorIter		&operator++(void);
+		VectorIter		operator++(int valptr);
+		VectorIter		&operator--(void);
+		VectorIter		operator--(int valptr);
+		VectorIter		operator+(difference_type n) const;
+		VectorIter		operator-(difference_type n) const;
+		VectorIter		&operator+=(difference_type n);
+		VectorIter		&operator-=(difference_type n);
 
 	private:
 		//Friendship :
 		template <class Cat, class T2, class Dist, class Point, class Refer>
-		friend Dist		operator-(const VectIter<Cat, T2, Dist, Point, Refer> &lhs,
-			const VectIter<Cat, T2, Dist, Point, Refer> &rhs);
+		friend Dist		operator-(const VectorIter<Cat, T2, Dist, Point, Refer> &lhs,
+			const VectorIter<Cat, T2, Dist, Point, Refer> &rhs);
 		template <class Cat, class T2, class Dist, class Point, class Refer>
-		friend bool		operator<(const VectIter<Cat, T2, Dist, Point, Refer> &lhs,
-			const VectIter<Cat, T2, Dist, Point, Refer> &rhs);
+		friend bool		operator<(const VectorIter<Cat, T2, Dist, Point, Refer> &lhs,
+			const VectorIter<Cat, T2, Dist, Point, Refer> &rhs);
 		template <class T2>
 		friend class	Vector;
 
@@ -69,24 +69,24 @@ class	VectIter
 };
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-VectIter<Category, T, Distance, Pointer, Reference>::VectIter(value_type *p) : _ptr(p)
+VectorIter<Category, T, Distance, Pointer, Reference>::VectorIter(value_type *p) : _ptr(p)
 {
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-VectIter<Category, T, Distance, Pointer, Reference>::VectIter(const VectIter<Category,
+VectorIter<Category, T, Distance, Pointer, Reference>::VectorIter(const VectorIter<Category,
 	T, Distance, Pointer, Reference> &v) : _ptr(v._ptr)
 {
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-VectIter<Category, T, Distance, Pointer, Reference>::~VectIter(void)
+VectorIter<Category, T, Distance, Pointer, Reference>::~VectorIter(void)
 {
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-VectIter<Category, T, Distance, Pointer, Reference>&
-VectIter<Category, T, Distance, Pointer, Reference>::operator=(const VectIter &v)
+VectorIter<Category, T, Distance, Pointer, Reference>&
+VectorIter<Category, T, Distance, Pointer, Reference>::operator=(const VectorIter &v)
 {
 	if (&v == this)
 		return (*this);
@@ -96,52 +96,52 @@ VectIter<Category, T, Distance, Pointer, Reference>::operator=(const VectIter &v
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 bool
-VectIter<Category, T, Distance, Pointer, Reference>::operator==(const VectIter &v) const
+VectorIter<Category, T, Distance, Pointer, Reference>::operator==(const VectorIter &v) const
 {
 	return (_ptr == v._ptr);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 bool
-VectIter<Category, T, Distance, Pointer, Reference>::operator!=(const VectIter &v) const
+VectorIter<Category, T, Distance, Pointer, Reference>::operator!=(const VectorIter &v) const
 {
 	return (!(*this == v));
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 Reference
-VectIter<Category, T, Distance, Pointer, Reference>::operator*(void)
+VectorIter<Category, T, Distance, Pointer, Reference>::operator*(void)
 {
 	return (*_ptr);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 Pointer
-VectIter<Category, T, Distance, Pointer, Reference>::operator->(void)
+VectorIter<Category, T, Distance, Pointer, Reference>::operator->(void)
 {
 	return (_ptr);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 Reference
-VectIter<Category, T, Distance, Pointer, Reference>::operator[](difference_type n) const
+VectorIter<Category, T, Distance, Pointer, Reference>::operator[](difference_type n) const
 {
 	return (*(_ptr + n));
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-VectIter<Category, T, Distance, Pointer, Reference>&
-VectIter<Category, T, Distance, Pointer, Reference>::operator++(void)
+VectorIter<Category, T, Distance, Pointer, Reference>&
+VectorIter<Category, T, Distance, Pointer, Reference>::operator++(void)
 {
 	++_ptr;
 	return (*this);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-VectIter<Category, T, Distance, Pointer, Reference>
-VectIter<Category, T, Distance, Pointer, Reference>::operator++(int dummy)
+VectorIter<Category, T, Distance, Pointer, Reference>
+VectorIter<Category, T, Distance, Pointer, Reference>::operator++(int dummy)
 {
-	VectIter<Category, T, Distance, Pointer, Reference>	tmp(*this);
+	VectorIter<Category, T, Distance, Pointer, Reference>	tmp(*this);
 
 	(void)dummy;
 	++_ptr;
@@ -149,18 +149,18 @@ VectIter<Category, T, Distance, Pointer, Reference>::operator++(int dummy)
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-VectIter<Category, T, Distance, Pointer, Reference>&
-VectIter<Category, T, Distance, Pointer, Reference>::operator--(void)
+VectorIter<Category, T, Distance, Pointer, Reference>&
+VectorIter<Category, T, Distance, Pointer, Reference>::operator--(void)
 {
 	--_ptr;
 	return (*this);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-VectIter<Category, T, Distance, Pointer, Reference>
-VectIter<Category, T, Distance, Pointer, Reference>::operator--(int dummy)
+VectorIter<Category, T, Distance, Pointer, Reference>
+VectorIter<Category, T, Distance, Pointer, Reference>::operator--(int dummy)
 {
-	VectIter<Category, T, Distance, Pointer, Reference>	tmp(*this);
+	VectorIter<Category, T, Distance, Pointer, Reference>	tmp(*this);
 
 	(void)dummy;
 	--_ptr;
@@ -168,89 +168,89 @@ VectIter<Category, T, Distance, Pointer, Reference>::operator--(int dummy)
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-VectIter<Category, T, Distance, Pointer, Reference>
-VectIter<Category, T, Distance, Pointer, Reference>::operator+(difference_type n) const
+VectorIter<Category, T, Distance, Pointer, Reference>
+VectorIter<Category, T, Distance, Pointer, Reference>::operator+(difference_type n) const
 {
-	VectIter<Category, T, Distance, Pointer, Reference>	tmp(*this);
+	VectorIter<Category, T, Distance, Pointer, Reference>	tmp(*this);
 	
 	tmp._ptr += n;
 	return (tmp);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-VectIter<Category, T, Distance, Pointer, Reference>
-VectIter<Category, T, Distance, Pointer, Reference>::operator-(difference_type n) const
+VectorIter<Category, T, Distance, Pointer, Reference>
+VectorIter<Category, T, Distance, Pointer, Reference>::operator-(difference_type n) const
 {
-	VectIter<Category, T, Distance, Pointer, Reference>	tmp(*this);
+	VectorIter<Category, T, Distance, Pointer, Reference>	tmp(*this);
 	
 	tmp._ptr -= n;
 	return (tmp);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-VectIter<Category, T, Distance, Pointer, Reference>
-&VectIter<Category, T, Distance, Pointer, Reference>::operator+=(difference_type n)
+VectorIter<Category, T, Distance, Pointer, Reference>
+&VectorIter<Category, T, Distance, Pointer, Reference>::operator+=(difference_type n)
 {
 	_ptr += n;
 	return (*this);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-VectIter<Category, T, Distance, Pointer, Reference>
-&VectIter<Category, T, Distance, Pointer, Reference>::operator-=(difference_type n)
+VectorIter<Category, T, Distance, Pointer, Reference>
+&VectorIter<Category, T, Distance, Pointer, Reference>::operator-=(difference_type n)
 {
 	_ptr -= n;
 	return (*this);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-VectIter<Category, T, Distance, Pointer, Reference>
-operator+(typename VectIter<Category, T, Distance, Pointer, Reference>::difference_type n,
-	const VectIter<Category, T, Distance, Pointer, Reference> &v)
+VectorIter<Category, T, Distance, Pointer, Reference>
+operator+(typename VectorIter<Category, T, Distance, Pointer, Reference>::difference_type n,
+	const VectorIter<Category, T, Distance, Pointer, Reference> &v)
 {
 	return (v + n);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 Distance
-operator-(const VectIter<Category, T, Distance, Pointer, Reference> &lhs,
-	const VectIter<Category, T, Distance, Pointer, Reference> &rhs)
+operator-(const VectorIter<Category, T, Distance, Pointer, Reference> &lhs,
+	const VectorIter<Category, T, Distance, Pointer, Reference> &rhs)
 {
 	return (lhs._ptr - rhs._ptr);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 bool	
-operator<(const VectIter<Category, T, Distance, Pointer, Reference> &lhs,
-	const VectIter<Category, T, Distance, Pointer, Reference> &rhs)
+operator<(const VectorIter<Category, T, Distance, Pointer, Reference> &lhs,
+	const VectorIter<Category, T, Distance, Pointer, Reference> &rhs)
 {
 	return (lhs._ptr < rhs._ptr);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 bool	
-operator<=(const VectIter<Category, T, Distance, Pointer, Reference> &lhs,
-	const VectIter<Category, T, Distance, Pointer, Reference> &rhs)
+operator<=(const VectorIter<Category, T, Distance, Pointer, Reference> &lhs,
+	const VectorIter<Category, T, Distance, Pointer, Reference> &rhs)
 {
 	return (!(lhs > rhs));
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 bool	
-operator>(const VectIter<Category, T, Distance, Pointer, Reference> &lhs,
-	const VectIter<Category, T, Distance, Pointer, Reference> &rhs)
+operator>(const VectorIter<Category, T, Distance, Pointer, Reference> &lhs,
+	const VectorIter<Category, T, Distance, Pointer, Reference> &rhs)
 {
 	return (rhs < lhs);
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 bool	
-operator>=(const VectIter<Category, T, Distance, Pointer, Reference> &lhs,
-	const VectIter<Category, T, Distance, Pointer, Reference> &rhs)
+operator>=(const VectorIter<Category, T, Distance, Pointer, Reference> &lhs,
+	const VectorIter<Category, T, Distance, Pointer, Reference> &rhs)
 {
 	return (!(lhs < rhs));
 }
 
 }
 
-#endif //VECTITER_HPP
+#endif //VECTORITER_HPP

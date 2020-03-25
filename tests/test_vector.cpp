@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_vect.cpp                                      :+:      :+:    :+:   */
+/*   test_vector.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 15:40:29 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/11 15:55:50 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/25 13:51:54 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "test_vect.hpp"
+#include "test_vector.hpp"
 
-void	nvect::test_vect(void)
+void	nvector::test_vector(void)
 {
 	int					int_init[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 	double				double_init[] = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7,

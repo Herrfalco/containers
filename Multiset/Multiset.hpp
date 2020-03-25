@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Set.hpp                                            :+:      :+:    :+:   */
+/*   Multiset.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/25 16:58:08 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/25 16:57:07 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SET_HPP
-# define SET_HPP
+#ifndef MULTISET_HPP
+# define MULTISET_HPP
 
 # include "../Iter/IterTypes.hpp"
 # include "../Iter/SetIter.hpp"
 # include "../Iter/RevIter.hpp"
 # include "../Utils/Pair.hpp"
 # include "../Utils/Less.hpp"
-# include "SetNode.hpp"
+# include "../Set/SetNode.hpp"
 # include <limits>
 
 namespace	ft
 {
 
 template <class T, class Compare = ft::Less<T> >
-class	Set
+class	Multiset
 {
 	public:
 		//Member types :
@@ -40,18 +40,19 @@ class	Set
 		typedef SetIter<bidirectional_iterator_tag, value_type>			iterator;
 		typedef SetIter<bidirectional_iterator_tag, const value_type>	const_iterator;
 		typedef RevIter<iterator>										reverse_iterator;
-		typedef RevIter<const_iterator>									const_reverse_iterator;
+		typedef RevIter<const_iterator>
+			const_reverse_iterator;
 		typedef ptrdiff_t												difference_type;
 		typedef size_t													size_type;
 
 		//Constructors, destructor and assignation :
-		explicit Set(const key_compare &comp = key_compare());
+		explicit Multiset(const key_compare &comp = key_compare());
 		template <class InputIterator>
-		Set(InputIterator first, InputIterator last,
+		Multiset(InputIterator first, InputIterator last,
 			const key_compare &comp = key_compare());
-		Set(const Set &s);
-		~Set(void);
-		Set					&operator=(const Set &s);
+		Multiset(const Multiset &m);
+		~Multiset(void);
+		Multiset					&operator=(const Multiset &m);
 
 		//Iterators :
 		iterator					begin(void);
@@ -69,14 +70,14 @@ class	Set
 		size_type					max_size() const;
 
 		//Modifiers :
-		ft::Pair<iterator, bool>	insert(const value_type &val);
+		iterator					insert(const value_type &val);
 		iterator					insert(iterator it, const value_type &val);
 		template <class InputIterator>
 		void						insert(InputIterator fst, InputIterator lst);
 		void						erase(iterator position);
 		size_type					erase(const value_type &v);
 		void						erase(iterator first, iterator last);
-		void						swap(Set &x);
+		void						swap(Multiset &x);
 		void						clear(void);
 
 		//Observers :
@@ -92,11 +93,11 @@ class	Set
 
 	private:
 		//Attibutes :
-		key_compare				_comp;
-		SetNode<value_type>		*_root;
-		SetNode<value_type>		_front;
-		SetNode<value_type>		_back;
-		size_type				_size;
+		key_compare					_comp;
+		SetNode<value_type>	*_root;
+		SetNode<value_type>	_front;
+		SetNode<value_type>	_back;
+		size_type					_size;
 
 		//Utils :
 		void					rec_insert(const SetNode<value_type> *n);
@@ -106,7 +107,7 @@ class	Set
 };
 
 template <class T, class Compare>
-Set<T, Compare>::Set(const key_compare &comp) : _comp(comp), _root(0), _front(),
+Multiset<T, Compare>::Multiset(const key_compare &comp) : _comp(comp), _root(0), _front(),
 	_back(), _size(0)
 {
 	_front.type = lft;
@@ -115,9 +116,8 @@ Set<T, Compare>::Set(const key_compare &comp) : _comp(comp), _root(0), _front(),
 
 template <class T, class Compare>
 template <class InputIterator>
-Set<T, Compare>::Set(InputIterator first, InputIterator last,
-	const key_compare &comp) : _comp(comp), _root(0),
-	_front(), _back(), _size(0)
+Multiset<T, Compare>::Multiset(InputIterator first, InputIterator last,
+	const key_compare &comp) : _comp(comp), _root(0), _front(), _back(), _size(0)
 {
 	_front.type = lft;
 	_back.type = rht;
@@ -127,7 +127,7 @@ Set<T, Compare>::Set(InputIterator first, InputIterator last,
 
 template <class T, class Compare>
 void
-Set<T, Compare>::rec_insert(const SetNode<value_type> *n)
+Multiset<T, Compare>::rec_insert(const SetNode<value_type> *n)
 {
 	if (!n || !n->valptr)
 		return ;
@@ -137,8 +137,8 @@ Set<T, Compare>::rec_insert(const SetNode<value_type> *n)
 }
 
 template <class T, class Compare>
-Set<T, Compare>::Set(const Set &m) : _comp(m._comp), _root(0), _front(), _back(),
-	_size(0)
+Multiset<T, Compare>::Multiset(const Multiset &m) : _comp(m._comp), _root(0), _front(),
+	_back(), _size(0)
 {
 	_front.type = lft;
 	_back.type = rht;
@@ -146,14 +146,14 @@ Set<T, Compare>::Set(const Set &m) : _comp(m._comp), _root(0), _front(), _back()
 }
 
 template <class T, class Compare>
-Set<T, Compare>::~Set(void)
+Multiset<T, Compare>::~Multiset(void)
 {
 	clear();
 }
 
 template <class T, class Compare>
-Set<T, Compare>
-&Set<T, Compare>::operator=(const Set &m)
+Multiset<T, Compare>
+&Multiset<T, Compare>::operator=(const Multiset &m)
 {
 	if (&m == this)
 		return (*this);
@@ -163,90 +163,90 @@ Set<T, Compare>
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::iterator
-Set<T, Compare>::begin(void)
+typename Multiset<T, Compare>::iterator
+Multiset<T, Compare>::begin(void)
 {
-	return (Set<T, Compare>::iterator(_front.up));
+	return (Multiset<T, Compare>::iterator(_front.up));
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::const_iterator
-Set<T, Compare>::begin(void) const
+typename Multiset<T, Compare>::const_iterator
+Multiset<T, Compare>::begin(void) const
 {
-	return (Set<T, Compare>::
+	return (Multiset<T, Compare>::
 		const_iterator(reinterpret_cast<SetNode<const value_type> *>(_front.up)));
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::iterator
-Set<T, Compare>::end(void)
+typename Multiset<T, Compare>::iterator
+Multiset<T, Compare>::end(void)
 {
-	return (_size ? Set<T, Compare>::iterator(&_back) : begin());
+	return (_size ? Multiset<T, Compare>::iterator(&_back) : begin());
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::const_iterator
-Set<T, Compare>::end(void) const
+typename Multiset<T, Compare>::const_iterator
+Multiset<T, Compare>::end(void) const
 {
-	return (Set<T, Compare>::
+	return (Multiset<T, Compare>::
 		const_iterator(_size ?
-			reinterpret_cast<SetNode<const value_type> *>(_back.up->right) : begin()));
+		reinterpret_cast<SetNode<const value_type> *>(_back.up->right) : begin()));
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::reverse_iterator
-Set<T, Compare>::rbegin(void)
+typename Multiset<T, Compare>::reverse_iterator
+Multiset<T, Compare>::rbegin(void)
 {
-	return (Set<T, Compare>::reverse_iterator(end()));
+	return (Multiset<T, Compare>::reverse_iterator(end()));
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::const_reverse_iterator
-Set<T, Compare>::rbegin(void) const
+typename Multiset<T, Compare>::const_reverse_iterator
+Multiset<T, Compare>::rbegin(void) const
 {
-	return (Set<T, Compare>::const_reverse_iterator(end()));
+	return (Multiset<T, Compare>::const_reverse_iterator(end()));
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::reverse_iterator
-Set<T, Compare>::rend(void)
+typename Multiset<T, Compare>::reverse_iterator
+Multiset<T, Compare>::rend(void)
 {
-	return (_size ? Set<T, Compare>::reverse_iterator(begin()) : rbegin());
+	return (_size ? Multiset<T, Compare>::reverse_iterator(begin()) : rbegin());
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::const_reverse_iterator
-Set<T, Compare>::rend(void) const
+typename Multiset<T, Compare>::const_reverse_iterator
+Multiset<T, Compare>::rend(void) const
 {
-	return (_size ? Set<T, Compare>::const_reverse_iterator(begin()) :
+	return (_size ? Multiset<T, Compare>::const_reverse_iterator(begin()) :
 		rbegin());
 }
 
 template <class T, class Compare>
 bool
-Set<T, Compare>::empty(void) const
+Multiset<T, Compare>::empty(void) const
 {
 	return (_size ? false : true);
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::size_type
-Set<T, Compare>::size(void) const
+typename Multiset<T, Compare>::size_type
+Multiset<T, Compare>::size(void) const
 {
 	return (_size);
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::size_type
-Set<T, Compare>::max_size(void) const
+typename Multiset<T, Compare>::size_type
+Multiset<T, Compare>::max_size(void) const
 {
 	return (std::numeric_limits<size_type>::max());
 }
 
 
 template <class T, class Compare>
-ft::Pair<typename Set<T, Compare>::iterator, bool>
-Set<T, Compare>::insert(const value_type &val)
+typename Multiset<T, Compare>::iterator
+Multiset<T, Compare>::insert(const value_type &val)
 {
 	SetNode<value_type>		*ptr = _root;
 	SetNode<value_type>		*tmp;
@@ -258,7 +258,7 @@ Set<T, Compare>::insert(const value_type &val)
 		_back.up = _root;
 		_front.up = _root;
 		++_size;
-		return (ft::make_pair(iterator(_root), true));
+		return (_root);
 	}
 	while (42)
 	{
@@ -274,11 +274,11 @@ Set<T, Compare>::insert(const value_type &val)
 					tmp->up = ptr->left;
 				}
 				++_size;
-				return (ft::make_pair(iterator(ptr->left), true));
+				return (tmp);
 			}
 			ptr = tmp;
 		}
-		else if (_comp(*(ptr->valptr), val))
+		else
 		{
 			tmp = ptr->right;
 			if (!tmp || !tmp->valptr)
@@ -290,27 +290,25 @@ Set<T, Compare>::insert(const value_type &val)
 					tmp->up = ptr->right;
 				}
 				++_size;
-				return (ft::make_pair(iterator(ptr->right), true));
+				return (tmp);
 			}
 			ptr = tmp;
 		}
-		else
-			return (ft::make_pair(iterator(ptr), false));
 	}
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::iterator
-Set<T, Compare>::insert(iterator it, const value_type &val)
+typename Multiset<T, Compare>::iterator
+Multiset<T, Compare>::insert(iterator it, const value_type &val)
 {
 	(void)it;
-	insert(val);
+	return (insert(val));
 }
 
 template <class T, class Compare>
 template <class InputIterator>
 void
-Set<T, Compare>::insert(InputIterator fst, InputIterator lst)
+Multiset<T, Compare>::insert(InputIterator fst, InputIterator lst)
 {
 	for (; fst != lst; ++fst)
 		insert(*fst);
@@ -318,7 +316,7 @@ Set<T, Compare>::insert(InputIterator fst, InputIterator lst)
 
 template <class T, class Compare>
 void
-Set<T, Compare>::left_splice(iterator position)
+Multiset<T, Compare>::left_splice(iterator position)
 {
 	SetNode<value_type>		*ptr = position._node;
 	SetNode<value_type>		*a;
@@ -345,7 +343,7 @@ Set<T, Compare>::left_splice(iterator position)
 
 template <class T, class Compare>
 void
-Set<T, Compare>::right_splice(iterator position)
+Multiset<T, Compare>::right_splice(iterator position)
 {
 	SetNode<value_type>		*ptr = position._node;
 	SetNode<value_type>		*a;
@@ -372,7 +370,7 @@ Set<T, Compare>::right_splice(iterator position)
 
 template <class T, class Compare>
 void
-Set<T, Compare>::root_splice(iterator position)
+Multiset<T, Compare>::root_splice(iterator position)
 {
 	SetNode<value_type>		*ptr = position._node;
 	SetNode<value_type>		*a;
@@ -406,7 +404,7 @@ Set<T, Compare>::root_splice(iterator position)
 
 template <class T, class Compare>
 void
-Set<T, Compare>::erase(iterator position)
+Multiset<T, Compare>::erase(iterator position)
 {
 	SetNode<value_type>		*ptr = position._node;
 
@@ -420,18 +418,20 @@ Set<T, Compare>::erase(iterator position)
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::size_type
-Set<T, Compare>::erase(const value_type &v)
+typename Multiset<T, Compare>::size_type
+Multiset<T, Compare>::erase(const value_type &v)
 {
-	ft::Pair<iterator, bool>	ins_ret(insert(v));
+	iterator	it;
+	size_type	count;
 
-	erase(ins_ret.first);
-	return (ins_ret.second ? 0 : 1);
+	for (count = 0; (it = lower_bound(v)) != upper_bound(v); ++count)
+		erase(it);
+	return (count);
 }
 
 template <class T, class Compare>
 void
-Set<T, Compare>::erase(iterator first, iterator last)
+Multiset<T, Compare>::erase(iterator first, iterator last)
 {
 	iterator		tmp(first++);
 
@@ -441,7 +441,7 @@ Set<T, Compare>::erase(iterator first, iterator last)
 
 template <class T, class Compare>
 void
-Set<T, Compare>::swap(Set &x)
+Multiset<T, Compare>::swap(Multiset &x)
 {
 	SetNode<value_type>		*tmp = _root;
 	size_type				size_tmp = _size;;
@@ -470,31 +470,29 @@ Set<T, Compare>::swap(Set &x)
 
 template <class T, class Compare>
 void
-Set<T, Compare>::clear(void)
+Multiset<T, Compare>::clear(void)
 {
 	while (_size)
-	{
 		erase(begin());
-	}
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::key_compare
-Set<T, Compare>::key_comp(void) const
+typename Multiset<T, Compare>::key_compare
+Multiset<T, Compare>::key_comp(void) const
 {
 	return (key_compare());
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::value_compare
-Set<T, Compare>::value_comp(void) const
+typename Multiset<T, Compare>::value_compare
+Multiset<T, Compare>::value_comp(void) const
 {
 	return (value_compare());
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::iterator
-Set<T, Compare>::find(const value_type &v) const
+typename Multiset<T, Compare>::iterator
+Multiset<T, Compare>::find(const value_type &v) const
 {
 	iterator	it(_front.up);
 	iterator	it_end(_size ? iterator(_back.up->right) : it);
@@ -504,18 +502,23 @@ Set<T, Compare>::find(const value_type &v) const
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::size_type
-Set<T, Compare>::count(const value_type &v) const
+typename Multiset<T, Compare>::size_type
+Multiset<T, Compare>::count(const value_type &v) const
 {
 	const_iterator		it(begin());
+	size_type			count;
 
-	for (; it != end() && (key_comp()(v, *it) || key_comp()(*it, v)); ++it);
-	return (it == end() ? 0 : 1);
+	for (count = 0; it != end(); ++it)
+	{
+		if (!key_comp()(v, *it) && !key_comp()(*it, v))
+			++count;
+	}
+	return (count);
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::iterator
-Set<T, Compare>::lower_bound(const value_type &v) const
+typename Multiset<T, Compare>::iterator
+Multiset<T, Compare>::lower_bound(const value_type &v) const
 {
 	iterator	it(_front.up);
 	iterator	it_end(_size ? iterator(_back.up->right) : it);
@@ -525,8 +528,8 @@ Set<T, Compare>::lower_bound(const value_type &v) const
 }
 
 template <class T, class Compare>
-typename Set<T, Compare>::iterator
-Set<T, Compare>::upper_bound(const value_type &v) const
+typename Multiset<T, Compare>::iterator
+Multiset<T, Compare>::upper_bound(const value_type &v) const
 {
 	iterator	it(lower_bound(v));
 	iterator	it_end(_size ? iterator(_back.up->right) : it);
@@ -536,12 +539,12 @@ Set<T, Compare>::upper_bound(const value_type &v) const
 }
 
 template <class T, class Compare>
-ft::Pair<typename Set<T, Compare>::iterator, typename Set<T, Compare>::iterator>
-Set<T, Compare>::equal_range(const value_type &v) const
+ft::Pair<typename Multiset<T, Compare>::iterator, typename Multiset<T, Compare>::iterator>
+Multiset<T, Compare>::equal_range(const value_type &v) const
 {
 	return (ft::make_pair(lower_bound(v), upper_bound(v)));
 }
 
 }
 
-#endif //SET_HPP
+#endif //MULTISET_HPP

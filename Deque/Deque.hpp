@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/21 18:21:07 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/25 13:53:32 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "../Iter/IterTypes.hpp"
 # include "../Iter/DequeIter.hpp"
 # include "../Iter/RevIter.hpp"
-# include "../Vect/Vector.hpp"
+# include "../Vector/Vector.hpp"
 
 namespace	ft
 {

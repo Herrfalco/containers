@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/24 16:25:59 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/25 16:43:00 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ class	SetIter
 		//Friendship :
 		template <class T2, class Compare2>
 		friend class			Set;
+		template <class T2, class Compare2>
+		friend class			Multiset;
 
 		//Attibutes :
 		SetNode<value_type>		*_node;

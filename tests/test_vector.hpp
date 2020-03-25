@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_vect.hpp                                      :+:      :+:    :+:   */
+/*   test_vector.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 17:00:58 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/21 18:28:34 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/25 13:51:14 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TEST_VECT_HPP
 # define TEST_VECT_HPP
 
-# include "../Vect/Vector.hpp"
+# include "../Vector/Vector.hpp"
 # include "test_common.hpp"
 
-namespace	nvect
+namespace	nvector
 {
 
-void	test_vect(void);
+void	test_vector(void);
 
 template <class Cont, class T>
 void	test_capacity(T def, size_t size_def, std::string name)

@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/21 17:59:58 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/25 13:52:37 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define VECTOR_HPP
 
 # include "../Iter/IterTypes.hpp"
-# include "../Iter/VectIter.hpp"
+# include "../Iter/VectorIter.hpp"
 # include "../Iter/RevIter.hpp"
 # include <cmath>
 # include <limits>
@@ -33,8 +33,8 @@ class	Vector
 		typedef const T&										const_reference;
 		typedef T*												pointer;
 		typedef const T*										const_pointer;
-		typedef VectIter<random_access_iterator_tag, T>			iterator;
-		typedef VectIter<random_access_iterator_tag, const T>	const_iterator;
+		typedef VectorIter<random_access_iterator_tag, T>		iterator;
+		typedef VectorIter<random_access_iterator_tag, const T>	const_iterator;
 		typedef RevIter<iterator>								reverse_iterator;
 		typedef RevIter<const_iterator>							const_reverse_iterator;
 		typedef std::ptrdiff_t									difference_type;
