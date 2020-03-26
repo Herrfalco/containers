@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/25 16:57:07 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/26 14:16:25 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,7 +274,7 @@ Multiset<T, Compare>::insert(const value_type &val)
 					tmp->up = ptr->left;
 				}
 				++_size;
-				return (tmp);
+				return (ptr->left);
 			}
 			ptr = tmp;
 		}
@@ -290,7 +290,7 @@ Multiset<T, Compare>::insert(const value_type &val)
 					tmp->up = ptr->right;
 				}
 				++_size;
-				return (tmp);
+				return (ptr->right);
 			}
 			ptr = tmp;
 		}
@@ -509,10 +509,8 @@ Multiset<T, Compare>::count(const value_type &v) const
 	size_type			count;
 
 	for (count = 0; it != end(); ++it)
-	{
 		if (!key_comp()(v, *it) && !key_comp()(*it, v))
 			++count;
-	}
 	return (count);
 }
 

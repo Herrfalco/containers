@@ -6,18 +6,19 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 17:04:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/25 17:01:08 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/26 15:48:01 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tests/test_list.hpp"
-#include "tests/test_vector.hpp"
-#include "tests/test_map.hpp"
-#include "tests/test_deque.hpp"
-#include "tests/test_stack.hpp"
-#include "tests/test_queue.hpp"
-#include "tests/test_set.hpp"
-#include "tests/test_multiset.hpp"
+#include "Test/test_list.hpp"
+#include "Test/test_vector.hpp"
+#include "Test/test_map.hpp"
+#include "Test/test_deque.hpp"
+#include "Test/test_stack.hpp"
+#include "Test/test_queue.hpp"
+#include "Test/test_set.hpp"
+#include "Test/test_multiset.hpp"
+#include "Test/test_multimap.hpp"
 #include <fstream>
 
 int		error(std::string msg, int ret)
@@ -53,6 +54,8 @@ int		main(int ac, char **av)
 		nset::test_set();
 	else if (!par.compare("Multiset") || !par.compare("multiset"))
 		nmultiset::test_multiset();
+	else if (!par.compare("Multimap") || !par.compare("multimap"))
+		nmultimap::test_multimap();
 	else
 	{
 		std::cout.rdbuf(out_sav);

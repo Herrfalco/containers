@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/24 16:18:51 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/26 15:42:18 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ class	MapIter
 		//Friendship :
 		template <class Key2, class T2, class Compare2>
 		friend class			Map;
+		template <class Key2, class T2, class Compare2>
+		friend class			Multimap;
 
 		//Attibutes :
 		MapNode<value_type>		*_node;
