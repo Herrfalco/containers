@@ -6,12 +6,15 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:07:57 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/24 16:29:55 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/28 17:44:18 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAPNODE_HPP
 # define MAPNODE_HPP
+
+namespace	ft
+{
 
 # ifndef T_NODE
 #  define T_NODE
@@ -75,6 +78,8 @@ MapNode<T>	&MapNode<T>::operator=(const MapNode<T> &m)
 	val = m.val;
 	valptr = !m.valptr ? 0 : &val;
 	return (*this);
+}
+
 }
 
 #endif //MAPNODE_HPP

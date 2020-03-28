@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/28 16:41:47 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/28 18:53:37 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,20 @@ class	Deque
 		const_reverse_iterator	rend(void) const;
 
 		//Capacity :
-		size_type				size() const;
-		size_type				max_size() const;
+		size_type				size(void) const;
+		size_type				max_size(void) const;
 		void					resize(size_type n, value_type val = value_type());
-		bool					empty() const;
+		bool					empty(void) const;
   
     	//Element access :
   		reference				operator[](size_type n);
   		const_reference			operator[](size_type n) const;
   		reference				at(size_type n);
   		const_reference			at(size_type n) const;
-		reference				front();
-		const_reference			front() const;
-		reference				back();
-		const_reference			back() const;
+		reference				front(void);
+		const_reference			front(void) const;
+		reference				back(void);
+		const_reference			back(void) const;
 
 		//Modifiers :
 		template <class InputIterator>
@@ -177,40 +177,40 @@ template <class T>
 typename Deque<T>::reverse_iterator
 Deque<T>::rbegin(void)
 {
-	return (Deque<T>::reverse_iterator(end()));
+	return (reverse_iterator(end()));
 }
 
 template <class T>
 typename Deque<T>::const_reverse_iterator
 Deque<T>::rbegin(void) const
 {
-	return (Deque<T>::const_reverse_iterator(end()));
+	return (const_reverse_iterator(end()));
 }
 
 template <class T>
 typename Deque<T>::reverse_iterator
 Deque<T>::rend(void)
 {
-	return (Deque<T>::reverse_iterator(begin()));
+	return (reverse_iterator(begin()));
 }
 
 template <class T>
 typename Deque<T>::const_reverse_iterator
 Deque<T>::rend(void) const
 {
-	return (Deque<T>::const_reverse_iterator(begin()));
+	return (const_reverse_iterator(begin()));
 }
 
 template <class T>
 typename Deque<T>::size_type
-Deque<T>::size() const
+Deque<T>::size(void) const
 {
 	return (_down.size() + _up.size());
 }
 
 template <class T>
 typename Deque<T>::size_type
-Deque<T>::max_size() const
+Deque<T>::max_size(void) const
 {
 	return (std::numeric_limits<size_type>::max());
 }
@@ -230,7 +230,7 @@ Deque<T>::resize(size_type n, value_type val)
 
 template <class T>
 bool
-Deque<T>::empty() const
+Deque<T>::empty(void) const
 {
 	return (size() ? false : true);
 }
@@ -265,28 +265,28 @@ Deque<T>::at(size_type n) const
 
 template <class T>
 typename Deque<T>::reference
-Deque<T>::front()
+Deque<T>::front(void)
 {
 	return (*begin());
 }
 
 template <class T>
 typename Deque<T>::const_reference
-Deque<T>::front() const
+Deque<T>::front(void) const
 {
 	return (*begin());
 }
 
 template <class T>
 typename Deque<T>::reference
-Deque<T>::back()
+Deque<T>::back(void)
 {
 	return (*rbegin());
 }
 
 template <class T>
 typename Deque<T>::const_reference
-Deque<T>::back() const
+Deque<T>::back(void) const
 {
 	return (*rbegin());
 }
@@ -426,7 +426,7 @@ Deque<T>::swap(Deque &x)
 
 template <class T>
 void
-Deque<T>::clear()
+Deque<T>::clear(void)
 {
 	_up.clear();
 	_down.clear();
@@ -436,15 +436,7 @@ template <class T>
 bool
 operator==(const Deque<T> &lhs, const Deque<T> &rhs)
 {
-	typename Deque<T>::const_iterator		lhs_it(lhs.begin());
-	typename Deque<T>::const_iterator		rhs_it(rhs.begin());
-
-	if (lhs.size() != rhs.size())
-		return (false);
-	for (; lhs_it != lhs.end(); ++lhs_it, ++rhs_it)
-		if (*lhs_it != *rhs_it)
-			return (false);
-	return (true);
+	return (lhs < rhs || rhs < lhs ? false : true);
 }
 
 template <class T>

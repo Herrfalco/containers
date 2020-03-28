@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/25 16:58:08 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/28 18:56:17 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,20 @@ class	Set
 {
 	public:
 		//Member types :
-		typedef T														key_type;
-		typedef T														value_type;
-		typedef Compare													key_compare;
-		typedef Compare													value_compare;
-		typedef value_type&												reference;
-		typedef const value_type&										const_reference;
-		typedef value_type*												pointer;
+		typedef T												key_type;
+		typedef T												value_type;
+		typedef Compare											key_compare;
+		typedef Compare											value_compare;
+		typedef value_type&										reference;
+		typedef const value_type&								const_reference;
+		typedef value_type*										pointer;
 		typedef const value_type*										const_pointer;
 		typedef SetIter<bidirectional_iterator_tag, value_type>			iterator;
 		typedef SetIter<bidirectional_iterator_tag, const value_type>	const_iterator;
 		typedef RevIter<iterator>										reverse_iterator;
-		typedef RevIter<const_iterator>									const_reverse_iterator;
-		typedef ptrdiff_t												difference_type;
-		typedef size_t													size_type;
+		typedef RevIter<const_iterator>							const_reverse_iterator;
+		typedef ptrdiff_t										difference_type;
+		typedef size_t											size_type;
 
 		//Constructors, destructor and assignation :
 		explicit Set(const key_compare &comp = key_compare());
@@ -66,7 +66,7 @@ class	Set
 		//Capacity :
 		bool						empty(void) const;
 		size_type					size(void) const;
-		size_type					max_size() const;
+		size_type					max_size(void) const;
 
 		//Modifiers :
 		ft::Pair<iterator, bool>	insert(const value_type &val);
@@ -84,11 +84,11 @@ class	Set
 		value_compare				value_comp(void) const;
 	
 		//Operations :
-		iterator								find(const value_type &v) const;
-		size_type								count(const value_type &v) const;
-		iterator								lower_bound(const value_type &v) const;
-		iterator								upper_bound(const value_type &v) const;
-		ft::Pair<iterator, iterator>			equal_range(const value_type &v) const;
+		iterator						find(const value_type &v) const;
+		size_type						count(const value_type &v) const;
+		iterator						lower_bound(const value_type &v) const;
+		iterator						upper_bound(const value_type &v) const;
+		ft::Pair<iterator, iterator>	equal_range(const value_type &v) const;
 
 	private:
 		//Attibutes :
@@ -166,60 +166,57 @@ template <class T, class Compare>
 typename Set<T, Compare>::iterator
 Set<T, Compare>::begin(void)
 {
-	return (Set<T, Compare>::iterator(_front.up));
+	return (iterator(_front.up));
 }
 
 template <class T, class Compare>
 typename Set<T, Compare>::const_iterator
 Set<T, Compare>::begin(void) const
 {
-	return (Set<T, Compare>::
-		const_iterator(reinterpret_cast<SetNode<const value_type> *>(_front.up)));
+	return (const_iterator(reinterpret_cast<SetNode<const value_type> *>(_front.up)));
 }
 
 template <class T, class Compare>
 typename Set<T, Compare>::iterator
 Set<T, Compare>::end(void)
 {
-	return (_size ? Set<T, Compare>::iterator(&_back) : begin());
+	return (_size ? iterator(&_back) : begin());
 }
 
 template <class T, class Compare>
 typename Set<T, Compare>::const_iterator
 Set<T, Compare>::end(void) const
 {
-	return (Set<T, Compare>::
-		const_iterator(_size ?
-			reinterpret_cast<SetNode<const value_type> *>(_back.up->right) : begin()));
+	return (const_iterator(_size ?
+		reinterpret_cast<SetNode<const value_type> *>(_back.up->right) : begin()));
 }
 
 template <class T, class Compare>
 typename Set<T, Compare>::reverse_iterator
 Set<T, Compare>::rbegin(void)
 {
-	return (Set<T, Compare>::reverse_iterator(end()));
+	return (reverse_iterator(end()));
 }
 
 template <class T, class Compare>
 typename Set<T, Compare>::const_reverse_iterator
 Set<T, Compare>::rbegin(void) const
 {
-	return (Set<T, Compare>::const_reverse_iterator(end()));
+	return (const_reverse_iterator(end()));
 }
 
 template <class T, class Compare>
 typename Set<T, Compare>::reverse_iterator
 Set<T, Compare>::rend(void)
 {
-	return (_size ? Set<T, Compare>::reverse_iterator(begin()) : rbegin());
+	return (_size ? reverse_iterator(begin()) : rbegin());
 }
 
 template <class T, class Compare>
 typename Set<T, Compare>::const_reverse_iterator
 Set<T, Compare>::rend(void) const
 {
-	return (_size ? Set<T, Compare>::const_reverse_iterator(begin()) :
-		rbegin());
+	return (_size ? const_reverse_iterator(begin()) : rbegin());
 }
 
 template <class T, class Compare>
@@ -473,9 +470,7 @@ void
 Set<T, Compare>::clear(void)
 {
 	while (_size)
-	{
 		erase(begin());
-	}
 }
 
 template <class T, class Compare>

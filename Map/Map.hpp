@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/18 19:52:08 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/28 18:46:26 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,21 @@ class	Map
 {
 	public:
 		//Member types :
-		typedef Key														key_type;
-		typedef T														mapped_type;
-		typedef ft::Pair<const key_type, mapped_type>					value_type;
-		typedef Compare													key_compare;
-		class															value_compare;
-		typedef value_type&												reference;
-		typedef const value_type&										const_reference;
-		typedef value_type*												pointer;
+		typedef Key												key_type;
+		typedef T												mapped_type;
+		typedef ft::Pair<const key_type, mapped_type>			value_type;
+		typedef Compare											key_compare;
+		class													value_compare;
+		typedef value_type&										reference;
+		typedef const value_type&								const_reference;
+		typedef value_type*										pointer;
 		typedef const value_type*										const_pointer;
 		typedef MapIter<bidirectional_iterator_tag, value_type>			iterator;
 		typedef MapIter<bidirectional_iterator_tag, const value_type>	const_iterator;
 		typedef RevIter<iterator>										reverse_iterator;
-		typedef RevIter<const_iterator>									const_reverse_iterator;
-		typedef ptrdiff_t												difference_type;
-		typedef size_t													size_type;
+		typedef RevIter<const_iterator>							const_reverse_iterator;
+		typedef ptrdiff_t										difference_type;
+		typedef size_t											size_type;
 
 		//Constructors, destructor and assignation :
 		explicit Map(const key_compare &comp = key_compare());
@@ -68,7 +68,7 @@ class	Map
 		//Capacity :
 		bool						empty(void) const;
 		size_type					size(void) const;
-		size_type					max_size() const;
+		size_type					max_size(void) const;
 
 		//Element access :
 		mapped_type					&operator[](const key_type &k);
@@ -156,8 +156,7 @@ Map<Key, T, Compare>::Map(const key_compare &comp) : _comp(comp), _root(0), _fro
 template <class Key, class T, class Compare>
 template <class InputIterator>
 Map<Key, T, Compare>::Map(InputIterator first, InputIterator last,
-	const key_compare &comp) : _comp(comp), _root(0),
-	_front(), _back(), _size(0)
+	const key_compare &comp) : _comp(comp), _root(0), _front(), _back(), _size(0)
 {
 	_front.type = lft;
 	_back.type = rht;
@@ -206,60 +205,57 @@ template <class Key, class T, class Compare>
 typename Map<Key, T, Compare>::iterator
 Map<Key, T, Compare>::begin(void)
 {
-	return (Map<Key, T, Compare>::iterator(_front.up));
+	return (iterator(_front.up));
 }
 
 template <class Key, class T, class Compare>
 typename Map<Key, T, Compare>::const_iterator
 Map<Key, T, Compare>::begin(void) const
 {
-	return (Map<Key, T, Compare>::
-		const_iterator(reinterpret_cast<MapNode<const value_type> *>(_front.up)));
+	return (const_iterator(reinterpret_cast<MapNode<const value_type> *>(_front.up)));
 }
 
 template <class Key, class T, class Compare>
 typename Map<Key, T, Compare>::iterator
 Map<Key, T, Compare>::end(void)
 {
-	return (_size ? Map<Key, T, Compare>::iterator(&_back) : begin());
+	return (_size ? iterator(&_back) : begin());
 }
 
 template <class Key, class T, class Compare>
 typename Map<Key, T, Compare>::const_iterator
 Map<Key, T, Compare>::end(void) const
 {
-	return (Map<Key, T, Compare>::
-		const_iterator(_size ?
-			reinterpret_cast<MapNode<const value_type> *>(_back.up->right) : begin()));
+	return (const_iterator(_size ?
+		reinterpret_cast<MapNode<const value_type> *>(_back.up->right) : begin()));
 }
 
 template <class Key, class T, class Compare>
 typename Map<Key, T, Compare>::reverse_iterator
 Map<Key, T, Compare>::rbegin(void)
 {
-	return (Map<Key, T, Compare>::reverse_iterator(end()));
+	return (reverse_iterator(end()));
 }
 
 template <class Key, class T, class Compare>
 typename Map<Key, T, Compare>::const_reverse_iterator
 Map<Key, T, Compare>::rbegin(void) const
 {
-	return (Map<Key, T, Compare>::const_reverse_iterator(end()));
+	return (const_reverse_iterator(end()));
 }
 
 template <class Key, class T, class Compare>
 typename Map<Key, T, Compare>::reverse_iterator
 Map<Key, T, Compare>::rend(void)
 {
-	return (_size ? Map<Key, T, Compare>::reverse_iterator(begin()) : rbegin());
+	return (_size ? reverse_iterator(begin()) : rbegin());
 }
 
 template <class Key, class T, class Compare>
 typename Map<Key, T, Compare>::const_reverse_iterator
 Map<Key, T, Compare>::rend(void) const
 {
-	return (_size ? Map<Key, T, Compare>::const_reverse_iterator(begin()) :
-		rbegin());
+	return (_size ? const_reverse_iterator(begin()) : rbegin());
 }
 
 template <class Key, class T, class Compare>
@@ -519,9 +515,7 @@ void
 Map<Key, T, Compare>::clear(void)
 {
 	while (_size)
-	{
 		erase(begin());
-	}
 }
 
 template <class Key, class T, class Compare>

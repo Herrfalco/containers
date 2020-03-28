@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/28 17:09:17 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/28 19:08:45 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ DequeIter<Category, T, Distance, Pointer, Reference>::DequeIter(size_t i, Vector
 }
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-DequeIter<Category, T, Distance, Pointer, Reference>::DequeIter(const DequeIter<Category,
-	T, Distance, Pointer, Reference> &v)
+DequeIter<Category, T, Distance, Pointer, Reference>::DequeIter(const
+	DequeIter<Category,	T, Distance, Pointer, Reference> &v)
 {
 	_attr.id = v._attr.id;
 	_attr.data[down] = v._attr.data[down];
@@ -117,7 +117,8 @@ DequeIter<Category, T, Distance, Pointer, Reference>::operator=(const DequeIter 
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 bool
-DequeIter<Category, T, Distance, Pointer, Reference>::operator==(const DequeIter &v) const
+DequeIter<Category, T, Distance, Pointer, Reference>::operator==(const
+	DequeIter &v) const
 {
 	return (_attr.data[_attr.side] == v._attr.data[v._attr.side]
 		&& _attr.id == v._attr.id);
@@ -125,7 +126,8 @@ DequeIter<Category, T, Distance, Pointer, Reference>::operator==(const DequeIter
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 bool
-DequeIter<Category, T, Distance, Pointer, Reference>::operator!=(const DequeIter &v) const
+DequeIter<Category, T, Distance, Pointer, Reference>::operator!=(const
+	DequeIter &v) const
 {
 	return (!(*this == v));
 }
@@ -146,7 +148,8 @@ DequeIter<Category, T, Distance, Pointer, Reference>::operator->(void)
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 Reference
-DequeIter<Category, T, Distance, Pointer, Reference>::operator[](difference_type n) const
+DequeIter<Category, T, Distance, Pointer, Reference>::operator[](
+	difference_type n) const
 {
 	return (*(*this + n));
 }
@@ -243,9 +246,8 @@ DequeIter<Category, T, Distance, Pointer, Reference>
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
 DequeIter<Category, T, Distance, Pointer, Reference>
-operator+(
-	typename DequeIter<Category, T, Distance, Pointer, Reference>::difference_type n,
-	const DequeIter<Category, T, Distance, Pointer, Reference> &v)
+operator+(typename DequeIter<Category, T, Distance, Pointer, Reference>::
+	difference_type n, const DequeIter<Category, T, Distance, Pointer, Reference> &v)
 {
 	return (v + n);
 }

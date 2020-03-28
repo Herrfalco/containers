@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/26 16:09:00 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/28 19:02:19 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,21 @@ class	Multimap
 {
 	public:
 		//Member types :
-		typedef Key														key_type;
-		typedef T														mapped_type;
-		typedef ft::Pair<const key_type, mapped_type>					value_type;
-		typedef Compare													key_compare;
-		class															value_compare;
-		typedef value_type&												reference;
-		typedef const value_type&										const_reference;
-		typedef value_type*												pointer;
+		typedef Key												key_type;
+		typedef T												mapped_type;
+		typedef ft::Pair<const key_type, mapped_type>			value_type;
+		typedef Compare											key_compare;
+		class													value_compare;
+		typedef value_type&										reference;
+		typedef const value_type&								const_reference;
+		typedef value_type*										pointer;
 		typedef const value_type*										const_pointer;
 		typedef MapIter<bidirectional_iterator_tag, value_type>			iterator;
 		typedef MapIter<bidirectional_iterator_tag, const value_type>	const_iterator;
 		typedef RevIter<iterator>										reverse_iterator;
-		typedef RevIter<const_iterator>									const_reverse_iterator;
-		typedef ptrdiff_t												difference_type;
-		typedef size_t													size_type;
+		typedef RevIter<const_iterator>							const_reverse_iterator;
+		typedef ptrdiff_t										difference_type;
+		typedef size_t											size_type;
 
 		//Constructors, destructor and assignation :
 		explicit Multimap(const key_compare &comp = key_compare());
@@ -86,12 +86,12 @@ class	Multimap
 		value_compare				value_comp(void) const;
 	
 		//Operations :
-		iterator									find(const key_type &k);
-		const_iterator								find(const key_type &k) const;
-		size_type									count(const key_type &k) const;
-		iterator									lower_bound(const key_type &k);
-		const_iterator								lower_bound(const key_type &k) const;
-		iterator									upper_bound(const key_type &k);
+		iterator					find(const key_type &k);
+		const_iterator				find(const key_type &k) const;
+		size_type					count(const key_type &k) const;
+		iterator					lower_bound(const key_type &k);
+		const_iterator				lower_bound(const key_type &k) const;
+		iterator					upper_bound(const key_type &k);
 		const_iterator								upper_bound(const key_type &k) const;
 		ft::Pair<const_iterator, const_iterator>	equal_range(const key_type &k) const;
 		ft::Pair<iterator, iterator>				equal_range(const key_type &k);
@@ -174,8 +174,8 @@ Multimap<Key, T, Compare>::rec_insert(const MapNode<value_type> *n)
 }
 
 template <class Key, class T, class Compare>
-Multimap<Key, T, Compare>::Multimap(const Multimap &m) : _comp(m._comp), _root(0), _front(), _back(),
-	_size(0)
+Multimap<Key, T, Compare>::Multimap(const Multimap &m) : _comp(m._comp), _root(0),
+	_front(), _back(), _size(0)
 {
 	_front.type = lft;
 	_back.type = rht;
@@ -203,30 +203,28 @@ template <class Key, class T, class Compare>
 typename Multimap<Key, T, Compare>::iterator
 Multimap<Key, T, Compare>::begin(void)
 {
-	return (Multimap<Key, T, Compare>::iterator(_front.up));
+	return (iterator(_front.up));
 }
 
 template <class Key, class T, class Compare>
 typename Multimap<Key, T, Compare>::const_iterator
 Multimap<Key, T, Compare>::begin(void) const
 {
-	return (Multimap<Key, T, Compare>::
-		const_iterator(reinterpret_cast<MapNode<const value_type> *>(_front.up)));
+	return (const_iterator(reinterpret_cast<MapNode<const value_type> *>(_front.up)));
 }
 
 template <class Key, class T, class Compare>
 typename Multimap<Key, T, Compare>::iterator
 Multimap<Key, T, Compare>::end(void)
 {
-	return (_size ? Multimap<Key, T, Compare>::iterator(&_back) : begin());
+	return (_size ? iterator(&_back) : begin());
 }
 
 template <class Key, class T, class Compare>
 typename Multimap<Key, T, Compare>::const_iterator
 Multimap<Key, T, Compare>::end(void) const
 {
-	return (Multimap<Key, T, Compare>::
-		const_iterator(_size ?
+	return (const_iterator(_size ?
 			reinterpret_cast<MapNode<const value_type> *>(_back.up->right) : begin()));
 }
 
@@ -234,29 +232,28 @@ template <class Key, class T, class Compare>
 typename Multimap<Key, T, Compare>::reverse_iterator
 Multimap<Key, T, Compare>::rbegin(void)
 {
-	return (Multimap<Key, T, Compare>::reverse_iterator(end()));
+	return (reverse_iterator(end()));
 }
 
 template <class Key, class T, class Compare>
 typename Multimap<Key, T, Compare>::const_reverse_iterator
 Multimap<Key, T, Compare>::rbegin(void) const
 {
-	return (Multimap<Key, T, Compare>::const_reverse_iterator(end()));
+	return (const_reverse_iterator(end()));
 }
 
 template <class Key, class T, class Compare>
 typename Multimap<Key, T, Compare>::reverse_iterator
 Multimap<Key, T, Compare>::rend(void)
 {
-	return (_size ? Multimap<Key, T, Compare>::reverse_iterator(begin()) : rbegin());
+	return (_size ? reverse_iterator(begin()) : rbegin());
 }
 
 template <class Key, class T, class Compare>
 typename Multimap<Key, T, Compare>::const_reverse_iterator
 Multimap<Key, T, Compare>::rend(void) const
 {
-	return (_size ? Multimap<Key, T, Compare>::const_reverse_iterator(begin()) :
-		rbegin());
+	return (_size ? const_reverse_iterator(begin()) : rbegin());
 }
 
 template <class Key, class T, class Compare>

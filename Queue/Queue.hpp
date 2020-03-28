@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/23 14:54:19 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/28 18:48:45 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ class	Queue
 		~Queue(void);
 
 		//Capacity :
-		bool					empty() const;
-		size_type				size() const;
-		value_type				&front();
-		const value_type		&front() const;
-		value_type				&back();
-		const value_type		&back() const;
+		bool					empty(void) const;
+		size_type				size(void) const;
+		value_type				&front(void);
+		const value_type		&front(void) const;
+		value_type				&back(void);
+		const value_type		&back(void) const;
 		void					push(const value_type &val);
-		void					pop();
+		void					pop(void);
 
 	private:
 		//Friendship :
@@ -131,7 +131,7 @@ Queue<T, Container>::push(const value_type &val)
 
 template <class T, class Container>
 void
-Queue<T, Container>::pop()
+Queue<T, Container>::pop(void)
 {
 	_cont.pop_back();	
 }

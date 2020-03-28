@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/22 17:10:07 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/28 18:47:50 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ class	Stack
 		~Stack(void);
 
 		//Capacity :
-		bool					empty() const;
-		size_type				size() const;
-		value_type				&top();
-		const value_type		&top() const;
+		bool					empty(void) const;
+		size_type				size(void) const;
+		value_type				&top(void);
+		const value_type		&top(void) const;
 		void					push(const value_type &val);
-		void					pop();
+		void					pop(void);
 
 	private:
 		//Friendship :
@@ -45,7 +45,7 @@ class	Stack
 		friend bool
 		operator<(const Stack<T2, Container2> &lhs, const Stack<T2, Container2> &rhs);
 
-		//Private constructor, destructor & assignation :
+		//Private constructor & assignation :
 		Stack(const Stack &s);
 		Stack					&operator=(const Stack &s);
 
@@ -115,7 +115,7 @@ Stack<T, Container>::push(const value_type &val)
 
 template <class T, class Container>
 void
-Stack<T, Container>::pop()
+Stack<T, Container>::pop(void)
 {
 	_cont.pop_back();	
 }

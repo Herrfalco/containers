@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:08:02 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/28 16:35:35 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/28 19:06:21 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ class	VectorIter
 };
 
 template <class Category, class T, class Distance, class Pointer, class Reference>
-VectorIter<Category, T, Distance, Pointer, Reference>::VectorIter(value_type *p) : _ptr(p)
+VectorIter<Category, T, Distance, Pointer, Reference>::VectorIter(value_type *p) :
+	_ptr(p)
 {
 }
 

@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/19 16:52:16 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/28 18:36:30 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,24 +58,24 @@ class	List
 		const_reverse_iterator	rend(void) const;
 
 		//Capacity :
-		bool					empty() const;
-		size_type				size() const;
-		size_type				max_size() const;
+		bool					empty(void) const;
+		size_type				size(void) const;
+		size_type				max_size(void) const;
 
 		//Element access :
-		reference				front();
-		const_reference			front() const;
-		reference				back();
-		const_reference			back() const;
+		reference				front(void);
+		const_reference			front(void) const;
+		reference				back(void);
+		const_reference			back(void) const;
 
 		//Modifiers :
 		template <class InputIterator>
 		void					assign(InputIterator first, InputIterator last);
 		void					assign(size_type n, const value_type &val);
 		void					push_front(const value_type &val);
-		void					pop_front();
+		void					pop_front(void);
 		void					push_back(const value_type &val);
-		void					pop_back();
+		void					pop_back(void);
 		iterator				insert(iterator it, const value_type &val);
 		void					insert(iterator it, size_type n, const value_type &val);
 		template <class InputIterator>
@@ -84,7 +84,7 @@ class	List
 		iterator				erase(iterator first, iterator last);
 		void					swap(List &x);
 		void					resize(size_type n, value_type val = value_type());
-		void					clear();
+		void					clear(void);
 
 		//Operations :
 		void					splice(iterator position, List &x);
@@ -93,16 +93,16 @@ class	List
 		void					remove(const value_type &val);
 		template <class Predicate>
 		void					remove_if(Predicate pred);
-		void					unique();
+		void					unique(void);
 		template <class BinaryPredicate>
 		void					unique(BinaryPredicate binary_pred);
 		void					merge(List &x);
 		template <class Compare>
 		void					merge(List &x, Compare comp);
-		void					sort();
+		void					sort(void);
 		template <class Compare>
 		void					sort(Compare comp);
-		void					reverse();
+		void					reverse(void);
 
 	private:
 		//Attibutes :
@@ -168,105 +168,103 @@ template <class T>
 typename List<T>::iterator
 List<T>::begin(void)
 {
-	return (List<T>::iterator(_front.next));
+	return (iterator(_front.next));
 }
 
 template <class T>
 typename List<T>::const_iterator
 List<T>::begin(void) const
 {
-	return (List<T>::const_iterator(reinterpret_cast<ListNode<const T>*>
-		(_front.next)));
+	return (const_iterator(reinterpret_cast<ListNode<const T>*>(_front.next)));
 }
 
 template <class T>
 typename List<T>::iterator
 List<T>::end(void)
 {
-	return (List<T>::iterator(&_back));
+	return (iterator(&_back));
 }
 
 template <class T>
 typename List<T>::const_iterator
 List<T>::end(void) const
 {
-	return (List<T>::const_iterator(reinterpret_cast<ListNode<const T>*>
-		(_back.prev->next)));
+	return (const_iterator(reinterpret_cast<ListNode<const T>*>(_back.prev->next)));
 }
 
 template <class T>
 typename List<T>::reverse_iterator
 List<T>::rbegin(void)
 {
-	return (List<T>::reverse_iterator(end()));
+	return (reverse_iterator(end()));
 }
 
 template <class T>
 typename List<T>::const_reverse_iterator
 List<T>::rbegin(void) const
 {
-	return (List<T>::const_reverse_iterator(end()));
+	return (const_reverse_iterator(end()));
 }
 
 template <class T>
 typename List<T>::reverse_iterator
 List<T>::rend(void)
 {
-	return (List<T>::reverse_iterator(begin()));
+	return (reverse_iterator(begin()));
 }
 
 template <class T>
 typename List<T>::const_reverse_iterator
 List<T>::rend(void) const
 {
-	return (List<T>::const_reverse_iterator(begin()));
+	return (const_reverse_iterator(begin()));
 }
 
 template <class T>
 bool
-List<T>::empty() const
+List<T>::empty(void) const
 {
 	return (_size ? false : true);
 }
 
 template <class T>
 typename List<T>::size_type
-List<T>::size() const
+List<T>::size(void) const
 {
 	return (_size);
 }
 
 template <class T>
 typename List<T>::size_type
-List<T>::max_size() const
+List<T>::max_size(void) const
 {
 	return (std::numeric_limits<size_type>::max());
 }
 
 template <class T>
 typename List<T>::reference
-List<T>::front()
+List<T>::front(void)
 {
 	return (*begin());
 }
 
 template <class T>
 typename List<T>::const_reference
-List<T>::front() const
+List<T>::front(void) const
 {
 	return (*begin());
 }
 
 template <class T>
 typename List<T>::reference
-List<T>::back()
+List<T>::back(void)
 {
 	return (*rbegin());
 }
 
 template <class T>
 typename List<T>::const_reference
-List<T>::back() const
+List<T>::back(void) const
 {
 	return (*rbegin());
 }
@@ -299,7 +297,7 @@ List<T>::push_front(const value_type &val)
 
 template <class T>
 void
-List<T>::pop_front()
+List<T>::pop_front(void)
 {
 	erase(begin());
 }
@@ -313,7 +311,7 @@ List<T>::push_back(const value_type &val)
 
 template <class T>
 void
-List<T>::pop_back()
+List<T>::pop_back(void)
 {
 	iterator	it = end();
 
@@ -384,8 +382,8 @@ template <class T>
 void
 List<T>::swap(List &x)
 {
-	ListNode<T>					*fst = _front.next;
-	ListNode<T>					*lst = _back.prev;
+	ListNode<T>			*fst = _front.next;
+	ListNode<T>			*lst = _back.prev;
 	List<T>::size_type	tmp = _size;
 
 	if (_size)
@@ -424,7 +422,7 @@ List<T>::resize(size_type n, value_type val)
 
 template <class T>
 void
-List<T>::clear()
+List<T>::clear(void)
 {
 	while (_size)
 		pop_back();
@@ -455,7 +453,7 @@ template <class T>
 void
 List<T>::splice(iterator position, List<T> &x, iterator fst, iterator lst)
 {
-	List<T>::iterator	tmp(fst);
+	iterator	tmp(fst);
 
 	for (; fst != lst; fst = tmp)
 	{
@@ -468,9 +466,9 @@ template <class T>
 void
 List<T>::remove(const value_type &val)
 {
-	List<T>::iterator tmp;
+	iterator	tmp;
 
-	for (List<T>::iterator it(begin()); (tmp = it++) != end(); )
+	for (iterator it(begin()); (tmp = it++) != end(); )
 		if (*tmp == val)
 			erase(tmp);
 }
@@ -480,9 +478,9 @@ template <class Predicate>
 void
 List<T>::remove_if(Predicate pred)
 {
-	List<T>::iterator	tmp;
+	iterator	tmp;
 
-	for (List<T>::iterator it(begin()); (tmp = it++) != end(); )
+	for (iterator it(begin()); (tmp = it++) != end(); )
 		if (pred(*tmp))
 			erase(tmp);
 }
@@ -499,9 +497,9 @@ template <class BinaryPredicate>
 void
 List<T>::unique(BinaryPredicate binary_pred)
 {
-	List<T>::iterator	it(begin());
-	List<T>::iterator	tmp;
-	T							last;
+	iterator	it(begin());
+	iterator	tmp;
+	T			last;
 
 	if (it != end())
 		last = *(it++);
@@ -528,12 +526,12 @@ template <class Compare>
 void
 List<T>::merge(List &x, Compare comp)
 {
-	List<T>::iterator	tmp;
-	List<T>::iterator	to(begin());
+	iterator	tmp;
+	iterator	to(begin());
 
 	if (&x == this)
 		return ;
-	for (List<T>::iterator from(x.begin()); (tmp = from++) != x.end(); )
+	for (iterator from(x.begin()); (tmp = from++) != x.end(); )
 	{
 		while (to != end() && !comp(*tmp, *to))
 			++to;
@@ -560,9 +558,9 @@ template <class Compare>
 void
 List<T>::sort(Compare comp)
 {
-	List<T>::iterator it1;
-	List<T>::iterator it2;
-	bool	sorted = false;
+	iterator	it1;
+	iterator	it2;
+	bool		sorted = false;
 
 	while (!sorted)
 	{
@@ -588,10 +586,10 @@ template <class T>
 void
 List<T>::reverse(void)
 {
-	List<T>::iterator	it_beg(begin());
-	List<T>::iterator	it_end(end());
-	ListNode<T>					*tmp_next;
-	ListNode<T>					*tmp_prev;
+	iterator		it_beg(begin());
+	iterator		it_end(end());
+	ListNode<T>		*tmp_next;
+	ListNode<T>		*tmp_prev;
 	
 	for (; it_beg != it_end-- && it_beg != it_end; ++it_beg)
 	{
@@ -623,15 +621,7 @@ template <class T>
 bool
 operator==(const List<T> &lhs, const List<T> &rhs)
 {
-	typename List<T>::const_iterator		lhs_it(lhs.begin());
-	typename List<T>::const_iterator		rhs_it(rhs.begin());
-
-	if (lhs.size() != rhs.size())
-		return (false);
-	for (; lhs_it != lhs.end(); ++lhs_it, ++rhs_it)
-		if (*lhs_it != *rhs_it)
-			return (false);
-	return (true);
+	return (lhs < rhs || rhs < lhs ? false : true);
 }
 
 template <class T>

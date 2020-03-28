@@ -6,12 +6,15 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:07:57 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/24 16:30:31 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/28 17:45:42 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SETNODE_HPP
 # define SETNODE_HPP
+
+namespace	ft
+{
 
 # ifndef T_NODE
 #  define T_NODE
@@ -75,6 +78,8 @@ SetNode<T>	&SetNode<T>::operator=(const SetNode<T> &s)
 	val = s.val;
 	valptr = !s.valptr ? 0 : &val;
 	return (*this);
+}
+
 }
 
 #endif //SETNODE_HPP

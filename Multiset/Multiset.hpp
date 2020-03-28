@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/28 17:16:51 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/28 18:59:12 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ class	Multiset
 		//Capacity :
 		bool						empty(void) const;
 		size_type					size(void) const;
-		size_type					max_size() const;
+		size_type					max_size(void) const;
 
 		//Modifiers :
 		iterator					insert(const value_type &val);
@@ -85,19 +85,19 @@ class	Multiset
 		value_compare				value_comp(void) const;
 	
 		//Operations :
-		iterator								find(const value_type &v) const;
-		size_type								count(const value_type &v) const;
-		iterator								lower_bound(const value_type &v) const;
-		iterator								upper_bound(const value_type &v) const;
-		ft::Pair<iterator, iterator>			equal_range(const value_type &v) const;
+		iterator						find(const value_type &v) const;
+		size_type						count(const value_type &v) const;
+		iterator						lower_bound(const value_type &v) const;
+		iterator						upper_bound(const value_type &v) const;
+		ft::Pair<iterator, iterator>	equal_range(const value_type &v) const;
 
 	private:
 		//Attibutes :
-		key_compare			_comp;
-		SetNode<value_type>	*_root;
-		SetNode<value_type>	_front;
-		SetNode<value_type>	_back;
-		size_type			_size;
+		key_compare				_comp;
+		SetNode<value_type>		*_root;
+		SetNode<value_type>		_front;
+		SetNode<value_type>		_back;
+		size_type				_size;
 
 		//Utils :
 		void					rec_insert(const SetNode<value_type> *n);
@@ -166,30 +166,28 @@ template <class T, class Compare>
 typename Multiset<T, Compare>::iterator
 Multiset<T, Compare>::begin(void)
 {
-	return (Multiset<T, Compare>::iterator(_front.up));
+	return (iterator(_front.up));
 }
 
 template <class T, class Compare>
 typename Multiset<T, Compare>::const_iterator
 Multiset<T, Compare>::begin(void) const
 {
-	return (Multiset<T, Compare>::
-		const_iterator(reinterpret_cast<SetNode<const value_type> *>(_front.up)));
+	return (const_iterator(reinterpret_cast<SetNode<const value_type> *>(_front.up)));
 }
 
 template <class T, class Compare>
 typename Multiset<T, Compare>::iterator
 Multiset<T, Compare>::end(void)
 {
-	return (_size ? Multiset<T, Compare>::iterator(&_back) : begin());
+	return (_size ? iterator(&_back) : begin());
 }
 
 template <class T, class Compare>
 typename Multiset<T, Compare>::const_iterator
 Multiset<T, Compare>::end(void) const
 {
-	return (Multiset<T, Compare>::
-		const_iterator(_size ?
+	return (const_iterator(_size ?
 		reinterpret_cast<SetNode<const value_type> *>(_back.up->right) : begin()));
 }
 
@@ -197,29 +195,28 @@ template <class T, class Compare>
 typename Multiset<T, Compare>::reverse_iterator
 Multiset<T, Compare>::rbegin(void)
 {
-	return (Multiset<T, Compare>::reverse_iterator(end()));
+	return (reverse_iterator(end()));
 }
 
 template <class T, class Compare>
 typename Multiset<T, Compare>::const_reverse_iterator
 Multiset<T, Compare>::rbegin(void) const
 {
-	return (Multiset<T, Compare>::const_reverse_iterator(end()));
+	return (const_reverse_iterator(end()));
 }
 
 template <class T, class Compare>
 typename Multiset<T, Compare>::reverse_iterator
 Multiset<T, Compare>::rend(void)
 {
-	return (_size ? Multiset<T, Compare>::reverse_iterator(begin()) : rbegin());
+	return (_size ? reverse_iterator(begin()) : rbegin());
 }
 
 template <class T, class Compare>
 typename Multiset<T, Compare>::const_reverse_iterator
 Multiset<T, Compare>::rend(void) const
 {
-	return (_size ? Multiset<T, Compare>::const_reverse_iterator(begin()) :
-		rbegin());
+	return (_size ? const_reverse_iterator(begin()) : rbegin());
 }
 
 template <class T, class Compare>

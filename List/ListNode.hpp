@@ -6,12 +6,15 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 13:07:57 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/12 20:48:55 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/28 17:43:01 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LISTNODE_HPP
 # define LISTNODE_HPP
+
+namespace	ft
+{
 
 template	<typename T>
 struct		ListNode
@@ -64,6 +67,8 @@ ListNode<T>	&ListNode<T>::operator=(const ListNode<T> &l)
 	val = l.val;
 	valptr = !l.valptr ? 0 : &val;
 	return (*this);
+}
+
 }
 
 #endif //LISTNODE_HPP

@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/25 13:52:37 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/28 18:50:13 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ class	Vector
 		const_reverse_iterator	rend(void) const;
 
 		//Capacity :
-		size_type				size() const;
-		size_type				max_size() const;
+		size_type				size(void) const;
+		size_type				max_size(void) const;
 		void					resize(size_type n, value_type val = value_type());
-  		size_type				capacity() const;
-		bool					empty() const;
+  		size_type				capacity(void) const;
+		bool					empty(void) const;
   		void					reserve(size_type n);
   
     	//Element access :
@@ -72,17 +72,17 @@ class	Vector
   		const_reference			operator[](size_type n) const;
   		reference				at(size_type n);
   		const_reference			at(size_type n) const;
-		reference				front();
-		const_reference			front() const;
-		reference				back();
-		const_reference			back() const;
+		reference				front(void);
+		const_reference			front(void) const;
+		reference				back(void);
+		const_reference			back(void) const;
 
 		//Modifiers :
 		template <class InputIterator>
 		void					assign(InputIterator first, InputIterator last);
 		void					assign(size_type n, const value_type &val);
 		void					push_back(const value_type &val);
-		void					pop_back();
+		void					pop_back(void);
 		iterator				insert(iterator it, const value_type &val);
 		void					insert(iterator it, size_type n, const value_type &val);
 		template <class InputIterator>
@@ -90,7 +90,7 @@ class	Vector
 		iterator				erase(iterator position);
 		iterator				erase(iterator first, iterator last);
 		void					swap(Vector &x);
-		void					clear();
+		void					clear(void);
 
 	private:
 		//Attibutes :
@@ -177,40 +177,40 @@ template <class T>
 typename Vector<T>::reverse_iterator
 Vector<T>::rbegin(void)
 {
-	return (Vector<T>::reverse_iterator(end()));
+	return (reverse_iterator(end()));
 }
 
 template <class T>
 typename Vector<T>::const_reverse_iterator
 Vector<T>::rbegin(void) const
 {
-	return (Vector<T>::const_reverse_iterator(end()));
+	return (const_reverse_iterator(end()));
 }
 
 template <class T>
 typename Vector<T>::reverse_iterator
 Vector<T>::rend(void)
 {
-	return (Vector<T>::reverse_iterator(begin()));
+	return (reverse_iterator(begin()));
 }
 
 template <class T>
 typename Vector<T>::const_reverse_iterator
 Vector<T>::rend(void) const
 {
-	return (Vector<T>::const_reverse_iterator(begin()));
+	return (const_reverse_iterator(begin()));
 }
 
 template <class T>
 typename Vector<T>::size_type
-Vector<T>::size() const
+Vector<T>::size(void) const
 {
 	return (_size);
 }
 
 template <class T>
 typename Vector<T>::size_type
-Vector<T>::max_size() const
+Vector<T>::max_size(void) const
 {
 	return (std::numeric_limits<size_type>::max());
 }
@@ -239,14 +239,14 @@ Vector<T>::resize(size_type n, value_type val)
 
 template <class T>
 typename Vector<T>::size_type
-Vector<T>::capacity() const
+Vector<T>::capacity(void) const
 {
 	return (!_cap_level ? 0 : powl(2, _cap_level - 1));
 }
 
 template <class T>
 bool
-Vector<T>::empty() const
+Vector<T>::empty(void) const
 {
 	return (_size ? false : true);
 }
@@ -304,28 +304,28 @@ Vector<T>::at(size_type n) const
 
 template <class T>
 typename Vector<T>::reference
-Vector<T>::front()
+Vector<T>::front(void)
 {
 	return (*begin());
 }
 
 template <class T>
 typename Vector<T>::const_reference
-Vector<T>::front() const
+Vector<T>::front(void) const
 {
 	return (*begin());
 }
 
 template <class T>
 typename Vector<T>::reference
-Vector<T>::back()
+Vector<T>::back(void)
 {
 	return (*rbegin());
 }
 
 template <class T>
 typename Vector<T>::const_reference
-Vector<T>::back() const
+Vector<T>::back(void) const
 {
 	return (*rbegin());
 }
@@ -356,7 +356,7 @@ Vector<T>::push_back(const value_type &val)
 
 template <class T>
 void
-Vector<T>::pop_back()
+Vector<T>::pop_back(void)
 {
 	if (_size)
 		erase(end() - 1);
@@ -468,7 +468,7 @@ Vector<T>::swap(Vector &x)
 
 template <class T>
 void
-Vector<T>::clear()
+Vector<T>::clear(void)
 {
 	resize(0);
 }
@@ -477,15 +477,7 @@ template <class T>
 bool
 operator==(const Vector<T> &lhs, const Vector<T> &rhs)
 {
-	typename Vector<T>::const_iterator		lhs_it(lhs.begin());
-	typename Vector<T>::const_iterator		rhs_it(rhs.begin());
-
-	if (lhs.size() != rhs.size())
-		return (false);
-	for (; lhs_it != lhs.end(); ++lhs_it, ++rhs_it)
-		if (*lhs_it != *rhs_it)
-			return (false);
-	return (true);
+	return (lhs < rhs || rhs < lhs ? false : true);
 }
 
 template <class T>
