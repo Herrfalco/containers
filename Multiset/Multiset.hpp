@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 12:21:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/26 14:16:25 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/28 17:16:51 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,11 @@ class	Multiset
 
 	private:
 		//Attibutes :
-		key_compare					_comp;
+		key_compare			_comp;
 		SetNode<value_type>	*_root;
 		SetNode<value_type>	_front;
 		SetNode<value_type>	_back;
-		size_type					_size;
+		size_type			_size;
 
 		//Utils :
 		void					rec_insert(const SetNode<value_type> *n);
