@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/18 15:27:28 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/19 00:42:44 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/28 17:23:22 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ struct	Pair
 	private:
 		//Non member overloads :
 		template <class U1, class U2>
-		friend bool operator<  (const Pair<U1,U2>& lhs, const Pair<U1,U2>& rhs);
+		friend bool operator<(const Pair<U1,U2>& lhs, const Pair<U1,U2>& rhs);
 };
 
 template <class T1, class T2>
@@ -86,7 +86,8 @@ template <class T1, class T2>
 bool
 operator<(const Pair<T1,T2> &lhs, const Pair<T1,T2> &rhs)
 {
-	return (lhs.first < rhs.first || (!(rhs.first < lhs.first) && lhs.second < rhs.second));
+	return (lhs.first < rhs.first || (!(rhs.first < lhs.first)
+		&& lhs.second < rhs.second));
 }
 
 template <class T1, class T2>
