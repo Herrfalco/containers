@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 17:00:58 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/24 18:05:02 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/03/29 16:22:06 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,12 @@ void	print_cont(const T &cont, const std::string &name, const std::string &msg)
 	typename T::const_iterator		it_var;
 
 	if (msg.size())
-		std::cout << "      \033[1;36m" << msg << "\n";
+	{
+		std::cout << "      ";
+		for (size_t i = 0; i < msg.size(); ++i)
+			std::cout << "\033[1;36m" << msg[i];
+		std::cout << std::endl;
+	}
 	std::cout << "         \033[0m" << name << " : [ ";
 	for (typename T::const_iterator it(cont.begin()); it != cont.end(); ++it)
 	{
@@ -48,7 +53,12 @@ void	rprint_cont(const T &cont, const std::string &name, const std::string &msg)
 	typename T::const_reverse_iterator		rit_var;
 
 	if (msg.size())
-		std::cout << "      \033[1;36m" << msg << "\n";
+	{
+		std::cout << "      ";
+		for (size_t i = 0; i < msg.size(); ++i)
+			std::cout << "\033[1;36m" << msg[i];
+		std::cout << std::endl;
+	}
 	std::cout << "         \033[0m" << name << " : [ ";
 	typename T::const_iterator				it(cont.end());
 	for (typename T::const_reverse_iterator rit(cont.rbegin()); rit != cont.rend(); ++rit)
