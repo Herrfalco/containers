@@ -6,7 +6,7 @@
 /*   By: fcadet <cadet.florian@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 17:04:56 by fcadet            #+#    #+#             */
-/*   Updated: 2020/03/26 15:48:01 by fcadet           ###   ########.fr       */
+/*   Updated: 2020/04/02 16:29:29 by fcadet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,7 @@ int		main(int ac, char **av)
 	}
 	std::cout << std::endl;
 	std::cout.rdbuf(out_sav);
-	return (system("cat .tmp | less"));
+	system("cat .tmp | less");
+	remove(".tmp");
+	return (0);
 }
