@@ -10,8 +10,8 @@ SRCS	=	Test/test_list.cpp \
 			Test/test_multimap.cpp \
 			main.cpp
 OBJS	=	$(SRCS:.cpp=.opp)
-CC		=	clang++-8 -std=c++98
-CFLAGS	=	-Wall -Wextra -Werror -fsanitize=address -fno-omit-frame-pointer
+CC		=	clang++
+CFLAGS	=	-Wall -Wextra -Werror
 RM		=	rm -rf
 
 all		:	$(NAME)
