@@ -133,7 +133,7 @@ template <class T, class Container>
 void
 Queue<T, Container>::pop(void)
 {
-	_cont.pop_back();	
+	_cont.pop_front();	
 }
 
 template <class T, class Container>
